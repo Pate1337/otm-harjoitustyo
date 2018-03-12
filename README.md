@@ -13,3 +13,8 @@ Yksinkertainen | taulukko
 ----------- | -----------
 tuskin | toimii
 olen shokissa | että toimi:D
+
+### Viikko 2
+[Maksukortti](https://github.com/Pate1337/otm-harjoitustyo/tree/master/laskarit/viikko2/Maksukortti)
+
+[Unicafe](https://github.com/Pate1337/otm-harjoitustyo/tree/master/laskarit/viikko2/Unicafe)
