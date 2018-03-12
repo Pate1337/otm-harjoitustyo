@@ -118,4 +118,6 @@ Date:   Mon Mar 12 13:43:53 2018 +0200
 
  viikko1/tiedosto.txt | 0
  1 file changed, 0 insertions(+), 0 deletions(-)
+ 
+ Tänne nyt pikkuriikkinen muokkaus operaatio
 
