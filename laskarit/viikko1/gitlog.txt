@@ -1,0 +1,121 @@
+commit 07f364a4063ccfcb37d959ddb091152e296dea9a
+Author: Pate1337 <paavo.hemmo@hotmail.com>
+Date:   Mon Mar 12 14:11:27 2018 +0200
+
+    jeesh
+
+ viikko1/tiedostoja/file1  | 0
+ viikko1/tiedostoja/file2  | 0
+ viikko1/tiedostoja/file22 | 0
+ 3 files changed, 0 insertions(+), 0 deletions(-)
+
+commit 95d11e700bcc9d44029ea2bb486c67cd85ebfa15
+Author: Pate1337 <paavo.hemmo@hotmail.com>
+Date:   Mon Mar 12 14:08:25 2018 +0200
+
+    Unohtu commitoida ekana
+
+ viikko1/tiedostoja/file1 | 0
+ viikko1/tiedostoja/file2 | 0
+ viikko1/tiedostoja/file3 | 0
+ 3 files changed, 0 insertions(+), 0 deletions(-)
+
+commit 9a2e59760ce1a5e51f7ef95b3bc79be9802ed6a2
+Author: Pate1337 <paavo.hemmo@hotmail.com>
+Date:   Mon Mar 12 14:00:51 2018 +0200
+
+    git add -p, interesting
+
+ viikko1/eka.txt    | 2 +-
+ viikko1/kolmas.txt | 1 +
+ 2 files changed, 2 insertions(+), 1 deletion(-)
+
+commit 2ff8c8e4aaedcad3e7caefe8b4f26067ed7a7272
+Author: Pate1337 <paavo.hemmo@hotmail.com>
+Date:   Mon Mar 12 13:57:49 2018 +0200
+
+    Ei tarttenu erikseen käyttää git rm, riitti git add .
+
+ viikko1/eka.txt      | 10 ++++++++++
+ viikko1/tiedosto.txt | 10 ----------
+ 2 files changed, 10 insertions(+), 10 deletions(-)
+
+commit 846e513da686456b668caca378be06f9359b6b01
+Author: Pate1337 <paavo.hemmo@hotmail.com>
+Date:   Mon Mar 12 13:56:30 2018 +0200
+
+    toinen.txt poistettu
+
+ viikko1/toinen.txt | 1 -
+ 1 file changed, 1 deletion(-)
+
+commit 2dbb1eb14e8a9f27045121c8689e7899e2ab2632
+Author: Pate1337 <paavo.hemmo@hotmail.com>
+Date:   Mon Mar 12 13:55:18 2018 +0200
+
+    tiedosto.txt poistettu osa tekstiä ja lisätty uutta
+
+ viikko1/tiedosto.txt | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+commit bfb7c5dcb68f2a196cddc3beaf69af2f5642fa30
+Author: Pate1337 <paavo.hemmo@hotmail.com>
+Date:   Mon Mar 12 13:53:51 2018 +0200
+
+    tiedosto.txt muokattu
+
+ viikko1/tiedosto.txt | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+commit e37ed99d59bd1607629dd5855485f64a09190eec
+Author: Pate1337 <paavo.hemmo@hotmail.com>
+Date:   Mon Mar 12 13:49:48 2018 +0200
+
+    stuff/stuff.txt luotu
+
+ viikko1/stuff/stuff.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit 7189043b7e9d45b32fc6ea1816ef6274cc54077a
+Author: Pate1337 <paavo.hemmo@hotmail.com>
+Date:   Mon Mar 12 13:48:57 2018 +0200
+
+    muokattu tiedostoja toinen.txt ja kolmas.txt
+
+ viikko1/kolmas.txt | 1 +
+ viikko1/toinen.txt | 1 +
+ 2 files changed, 2 insertions(+)
+
+commit 133fe2e67ccdd5e62a0d7dd6a784d10d64175bba
+Author: Pate1337 <paavo.hemmo@hotmail.com>
+Date:   Mon Mar 12 13:48:06 2018 +0200
+
+    kolmas.txt luotu
+
+ viikko1/kolmas.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit acef24860405100ae81c413d7faed926d7563294
+Author: Pate1337 <paavo.hemmo@hotmail.com>
+Date:   Mon Mar 12 13:46:10 2018 +0200
+
+    toinen.txt lisätty ja tiedosto.txt muokattu
+
+ viikko1/Unicafe/pom.xml                            | 52 +++++++++++++++
+ .../java/com/mycompany/unicafe/Kassapaate.java     | 74 ++++++++++++++++++++++
+ .../java/com/mycompany/unicafe/Maksukortti.java    | 36 +++++++++++
+ .../java/com/mycompany/unicafe/Paaohjelma.java     | 14 ++++
+ .../com/mycompany/unicafe/MaksukorttiTest.java     | 20 ++++++
+ viikko1/tiedosto.txt                               |  1 +
+ viikko1/toinen.txt                                 |  0
+ 7 files changed, 197 insertions(+)
+
+commit 0d3a7892045584ca2d64078e73ecada4b1942f12
+Author: Pate1337 <paavo.hemmo@hotmail.com>
+Date:   Mon Mar 12 13:43:53 2018 +0200
+
+    tiedosto.txt luotu
+
+ viikko1/tiedosto.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
