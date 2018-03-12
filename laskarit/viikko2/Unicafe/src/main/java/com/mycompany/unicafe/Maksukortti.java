@@ -29,7 +29,11 @@ public class Maksukortti {
     @Override
     public String toString() {
         int euroa = saldo/100;
+        //Täähän on ihan vituillaan
         int senttia = saldo%100;
+        if (senttia < 10) {
+            return "saldo: " + euroa + ".0" + senttia;
+        }
         return "saldo: "+euroa+"."+senttia;
     } 
     
