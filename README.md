@@ -12,3 +12,4 @@ Tämä on minun **ensimmäinen** *kertani*
 Yksinkertainen | taulukko
 ----------- | -----------
 tuskin | toimii
+olen shokissa | että toimi:D
