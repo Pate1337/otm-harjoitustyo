@@ -1,8 +1,14 @@
-# Markdown
+# Space Invaders
 
-Tämä on minun **ensimmäinen** *kertani*
+Projekti kurssille Ohjelmistotekniikan menetelmät. Sovellus on peli, joka pohjautuu vanhaan arcadepeliin Space Invacers.
 
-## Tehtävät
+##Dokumentaatio
+
+[Vaatimusmäärittely]()
+
+[Työaikakirjanpito]()
+
+## Viikottaiset Tehtävät
 
 ### Viikko 1
 [gitlog.txt](https://github.com/Pate1337/otm-harjoitustyo/blob/master/laskarit/viikko1/gitlog.txt)
