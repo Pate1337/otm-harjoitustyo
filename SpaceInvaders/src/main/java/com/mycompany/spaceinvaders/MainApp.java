@@ -1,25 +1,46 @@
 package com.mycompany.spaceinvaders;
 
+import javafx.scene.paint.Color;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
+import javafx.scene.Group;
 import javafx.scene.Scene;
+//import javafx.fxml.FXMLLoader;
+//import javafx.scene.Parent;
+//import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
+//import javafx.scene.image.Image;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 
 
 public class MainApp extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/Scene.fxml"));
+        stage.setTitle("Space Invaders!!");
         
-        Scene scene = new Scene(root);
-        scene.getStylesheets().add("/styles/Styles.css");
+        Group root = new Group();
+        Scene theScene = new Scene( root );
+        stage.setScene( theScene );
         
-        stage.setTitle("JavaFX and Maven");
-        stage.setScene(scene);
+        Canvas canvas = new Canvas(800, 800);
+        root.getChildren().add( canvas );
+        
+        GraphicsContext gc = canvas.getGraphicsContext2D();
+        gc.setFill(Color.RED);
+        gc.setStroke(Color.BLACK);
+        gc.setLineWidth(2);
+        Font theFont = Font.font( "Times New Roman", FontWeight.BOLD, 48 );
+        gc.setFont( theFont );
+        gc.fillText("Press PLAY to start playing!", 30, 370);
+        gc.strokeText("Press PLAY to start playing!", 30, 370);
+//        Image space = new Image("space.png");
+//        gc.drawImage( space, 0, 0 );
         stage.show();
+        
     }
 
     /**
@@ -31,7 +52,7 @@ public class MainApp extends Application {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        launch(args);
+        launch(MainApp.class);
     }
 
 }
