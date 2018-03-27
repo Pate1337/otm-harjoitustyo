@@ -2,11 +2,11 @@
 
 Projekti kurssille Ohjelmistotekniikan menetelmät. Sovellus on peli, joka pohjautuu vanhaan arcadepeliin Space Invacers.
 
-##Dokumentaatio
+## Dokumentaatio
 
-[Vaatimusmäärittely]()
+[Vaatimusmäärittely](https://github.com/Pate1337/otm-harjoitustyo/blob/master/harjoitustyo/documentation/vaatimusmaarittely.md)
 
-[Työaikakirjanpito]()
+[Työaikakirjanpito](https://github.com/Pate1337/otm-harjoitustyo/blob/master/harjoitustyo/documentation/tuntikirjanpito.md)
 
 ## Viikottaiset Tehtävät
 
