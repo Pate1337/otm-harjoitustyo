@@ -19,6 +19,7 @@ import javafx.scene.text.FontWeight;
 import java.util.ArrayList;
 import java.util.Properties;
 import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Node;
@@ -54,10 +55,11 @@ public class MainApp extends Application {
         backGround = imageView;
     }
     
-    public void drawMenu() {
+    public void drawMenu(Stage stage) {
         System.out.println("Moro");
         rootJoo.getChildren().clear();
-        rootJoo.getChildren().add(backGround);
+        Group newGroup = new Group();
+        newGroup.getChildren().add(backGround);
  
         VBox menu = new VBox();
         menu.setSpacing(10);
@@ -65,7 +67,26 @@ public class MainApp extends Application {
         menu.getChildren().add(createMenuButton("Highscores"));
         menu.setLayoutX(200);
         menu.setLayoutY(400);
-        rootJoo.getChildren().add(menu);   
+        newGroup.getChildren().add(menu);  
+        
+        Scene menuScene = new Scene(newGroup);
+        
+        menuScene.setOnMouseClicked(
+            new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent e) {
+                    double x = e.getX();
+                    double y = e.getY();
+                    if ((x >= 200 && x <= 600) && (y >= 400 && y <= 450)) {
+                        System.out.println("PLAY PAINETTU");
+                    } else if ((x >= 200 && x <= 600) && (y >= 460 && y <= 510)) {
+                        System.out.println("HIGHSCORES PAINETTU");
+                    }
+                }
+            });
+        
+        stage.setScene(menuScene);
+        stage.show();
     }
     
     public Node createMenuButton(String text) {
@@ -111,8 +132,8 @@ public class MainApp extends Application {
         gc.setLineWidth(2);
         Font theFont = Font.font( "Times New Roman", FontWeight.BOLD, 48 );
         gc.setFont( theFont );
-        gc.fillText("Press any key to start!", 50, 370);
-        gc.strokeText("Press any key to start!", 50, 370);
+        gc.fillText("Press any key to start!", 70, 370);
+        gc.strokeText("Press any key to start!", 70, 370);
         
         startScene = new Scene(rootJoo);
         
@@ -120,9 +141,9 @@ public class MainApp extends Application {
             new EventHandler<KeyEvent>() {
                 @Override
                 public void handle(KeyEvent e) {
-                    System.out.println("Toimii");
+                    System.out.println("Toimii");                   
 //                    stage.setScene(menuScene);
-                    drawMenu();
+                    drawMenu(stage);
                 }
             });
         startScene.setOnMouseClicked(
@@ -131,7 +152,7 @@ public class MainApp extends Application {
                 public void handle(MouseEvent e) {
                     System.out.println("Toimii");
 //                    stage.setScene(menuScene);
-                    drawMenu();
+                    drawMenu(stage);
                 }
             });
         
