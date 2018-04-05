@@ -17,25 +17,43 @@ import javafx.scene.image.ImageView;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import java.util.ArrayList;
+import java.util.Properties;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 
 
 public class MainApp extends Application {
+    private String backGroundImage;
+    private Scene startScene;
+    
+    @Override
+    public void init() throws Exception {
+        Properties properties = new Properties();
 
+        properties.load(new FileInputStream("config.properties"));
+        
+        String backGroundPicture = properties.getProperty("backGround");
+        backGroundImage = backGroundPicture;
+    }
+    
     @Override
     public void start(Stage stage) throws Exception {
-        stage.setTitle("Space Invaders!!");
+//        
+//         theScene.setOnKeyReleased(
+//            new EventHandler<KeyEvent>()
+//            {
+//                public void handle(KeyEvent e)
+//                {
+//                    String code = e.getCode().toString();
+//                    input.remove( code );
+//                }
+//            });
         
+        //Alkunäytön asetus
         Group root = new Group();
-        Scene theScene = new Scene( root );
-        stage.setScene( theScene );
-        
-//        Canvas canvas = new Canvas(800, 800);
-//        root.getChildren().add( canvas );
-        
-        Image image = new Image(new FileInputStream("/home/paavo/otm-harjoitustyo/SpaceInvaders/space1.jpg"));
+        Image image = new Image(new FileInputStream(backGroundImage));
         ImageView imageView = new ImageView(image);
         imageView.setX(0); 
         imageView.setY(0);
@@ -53,53 +71,29 @@ public class MainApp extends Application {
         gc.setLineWidth(2);
         Font theFont = Font.font( "Times New Roman", FontWeight.BOLD, 48 );
         gc.setFont( theFont );
-        gc.fillText("Press PLAY to start playing!", 30, 370);
-        gc.strokeText("Press PLAY to start playing!", 30, 370);
-        final ArrayList<String> input = new ArrayList<String>();
- 
-        theScene.setOnKeyPressed(
+        gc.fillText("Press any key to start!", 50, 370);
+        gc.strokeText("Press any key to start!", 50, 370);
+        
+        startScene = new Scene(root);
+        
+        startScene.setOnKeyPressed(
             new EventHandler<KeyEvent>() {
                 public void handle(KeyEvent e) {
-                    String code = e.getCode().toString();
- 
-                    // only add once... prevent duplicates
-                    if ( !input.contains(code) ) {
-                        input.add( code );
-                        gc.clearRect(0, 0, 800, 800);
-                        System.out.println("Painettu " + code);
-                    }
+                    System.out.println("Toimii");
+                    
+                }
+            });
+        startScene.setOnMouseClicked(
+            new EventHandler<MouseEvent>() {
+                public void handle(MouseEvent e) {
+                    System.out.println("Toimii");
                     
                 }
             });
         
-         theScene.setOnKeyReleased(
-            new EventHandler<KeyEvent>()
-            {
-                public void handle(KeyEvent e)
-                {
-                    String code = e.getCode().toString();
-                    input.remove( code );
-                }
-            });
-        
-        //Tehdään menupainike
-        gc.setFill(Color.GREY);
-        gc.setStroke(Color.BLACK);
-        gc.setLineWidth(5);
-        gc.fillRect(0, 0, 300, 50);
-        gc.strokeRect(0, 0, 300, 50);
-        gc.setFill(Color.RED);
-        theFont = Font.font( "Times New Roman", FontWeight.BOLD, 20 );
-        gc.setFont( theFont );
-        gc.fillText("PLAY", 10, 20);
-         
-        VBox valikko = new VBox();
-        valikko.setSpacing(10);
-//        valikko.getChildren().add(jotain)
-        
-        
+        stage.setTitle("Space Invaders!!!!");
+        stage.setScene(startScene);
         stage.show();
-        
     }
 
     /**
