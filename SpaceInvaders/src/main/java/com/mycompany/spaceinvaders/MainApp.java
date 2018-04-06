@@ -30,6 +30,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.TextAlignment;
 
 
@@ -37,9 +38,10 @@ public class MainApp extends Application {
     private String backGroundImage;
     private Scene startScene;
     private ImageView backGround;
-    private Group rootJoo;
-    private Group menuGroup;
     private Stage mainStage;
+    private Group mainGroup;
+    private String selected;
+    private String prevSelected = "none";
     
     @Override
     public void init() throws Exception {
@@ -61,43 +63,136 @@ public class MainApp extends Application {
     
     public void drawMenu() {
         System.out.println("Moro");
-        rootJoo.getChildren().clear();
-        menuGroup = new Group();
-        menuGroup.getChildren().add(backGround);
+        selected = "none";
+        mainGroup.getChildren().clear();
+        mainGroup = new Group();
+        mainGroup.getChildren().add(backGround);
+        Scene menuScene = new Scene(mainGroup);
+        mainStage.setScene(menuScene);
+        
+        
+        Rectangle menuTarget1 = new Rectangle(200, 400, 400, 50);
+        menuTarget1.setOpacity(0.0);
+        Rectangle menuTarget2 = new Rectangle(200, 460, 400, 50);
+        menuTarget2.setOpacity(0.0);
  
-        VBox menu = new VBox();
+        final VBox menu = new VBox();
         menu.setSpacing(10);
         menu.getChildren().add(createMenuButton("Play"));
         menu.getChildren().add(createMenuButton("Highscores"));
         menu.setLayoutX(200);
         menu.setLayoutY(400);
-        menuGroup.getChildren().add(menu);  
+        mainGroup.getChildren().add(menu); 
+        mainGroup.getChildren().add(menuTarget1);
+        mainGroup.getChildren().add(menuTarget2);
         
-        Scene menuScene = new Scene(menuGroup);
+        menuTarget1.setOnMouseEntered(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent e) {
+                System.out.println("PLAY");
+                selected = "Play";
+            }
+        });
         
-//        menuScene.setOnMouseClicked(
-//            new EventHandler<MouseEvent>() {
-//                @Override
-//                public void handle(MouseEvent e) {
-//                    double x = e.getX();
-//                    double y = e.getY();
-//                    if ((x >= 200 && x <= 600) && (y >= 400 && y <= 450)) {
-//                        System.out.println("PLAY PAINETTU");
-//                    } else if ((x >= 200 && x <= 600) && (y >= 460 && y <= 510)) {
-//                        System.out.println("HIGHSCORES PAINETTU");
-//                    }
-//                }
-//            });
+        menuTarget1.setOnMouseExited(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent e) {
+                System.out.println("NONE");
+                selected = "none";
+            }
+        });
         
-        mainStage.setScene(menuScene);
+        menuTarget1.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            public void handle(MouseEvent e) {
+                selected = "stop";
+            }
+        });
+        
+        menuTarget2.setOnMouseEntered(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent e) {
+                System.out.println("HIGHSCORES");
+                selected = "Highscores";
+            }
+        });
+        
+        menuTarget2.setOnMouseExited(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent e) {
+                System.out.println("NONE");
+                selected = "none";
+            }
+        });
+        
+        menuScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent e) {
+                String code = e.getCode().toString();
+                if (code.equals("S")) {
+                    System.out.println("S painettu");
+                    if (selected.equals("none")) {
+                        selected = "Play";
+                    } else if (selected.equals("Play")) {
+                        selected = "Highscores";
+                    } else if (selected.equals("Highscores")) {
+                        selected = "Play";
+                    } else {
+                        selected = "none";
+                    }
+                } else if (code.equals("W")) {
+                    System.out.println("W painettu");
+                    if (selected.equals("none")) {
+                        selected = "Play";
+                    } else if (selected.equals("Play")) {
+                        selected = "Highscores";
+                    } else if (selected.equals("Highscores")) {
+                        selected = "Play";
+                    } else {
+                        selected = "none";
+                    }
+                } else if (code.equals("ENTER")) {
+                    selected = "stop";
+                }
+            }
+        });
+        
+        new AnimationTimer() {
+            @Override
+            public void handle(long currentNanoTime) {
+                if (selected.equals("stop")) {
+                    System.out.println("Lopetettu");
+                    drawGame();
+                    this.stop();
+                } else if (!selected.equals("none") && !prevSelected.equals(selected)) { // && !inputs.isEmpty()
+                    System.out.println("Piirretään koska !== none");
+                    menu.getChildren().clear();
+                    menu.getChildren().add(createMenuButton("Play"));
+                    menu.getChildren().add(createMenuButton("Highscores"));
+                } else if (selected.equals("none") && !prevSelected.equals(selected)) {
+                    System.out.println("Piirretään koska none");
+                    menu.getChildren().clear();
+                    menu.getChildren().add(createMenuButton("Play"));
+                    menu.getChildren().add(createMenuButton("Highscores"));
+                }
+                //Piirretään vain kun tapahtuu muutos, ei turhaan
+                prevSelected = selected;
+            }
+        }.start();
+
         mainStage.show();
     }
     
     public Node createMenuButton(final String text) {
         Canvas canvas = new Canvas(400, 50);
         GraphicsContext gc = canvas.getGraphicsContext2D();
-        gc.setFill(Color.BLACK);
-        gc.fillRect(0, 0, 400, 50);
+        if (selected.equals(text)) {
+            gc.setFill(Color.YELLOW);
+            gc.fillRect(0, 0, 400, 50);
+        } else {
+            gc.setFill(Color.BLACK);
+            gc.fillRect(0, 0, 400, 50);
+        }
+
         gc.setFill(Color.GREY);
         gc.fillRect(4, 4, 392, 42);
         
@@ -117,41 +212,69 @@ public class MainApp extends Application {
             Math.round(canvas.getWidth()  / 2), 
             Math.round(canvas.getHeight() / 2)
         );
-        canvas.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent e) {
-                    System.out.println(text + " painettu");
-                    if (text.equals("Play")) {
-                        drawGame();
-                    } else if (text.equals("Highscores")) {
-                        System.out.println("");
-                    }
-                }
-            });
+
         return canvas;
     }
     
     public void drawGame() {
         System.out.println("Piirretään peli");
-        menuGroup.getChildren().clear();
-        Group gameGroup = new Group();
-        gameGroup.getChildren().add(backGround);
-        Scene gameScene = new Scene(gameGroup);
+        mainGroup.getChildren().clear();
+        mainGroup = new Group();
+        mainGroup.getChildren().add(backGround);
+        Scene gameScene = new Scene(mainGroup);
         mainStage.setScene(gameScene);
         
         Canvas canvas = new Canvas(800, 800);
-        gameGroup.getChildren().add( canvas );
+        mainGroup.getChildren().add( canvas );
         
         //Tähän eventit
+        final ArrayList<String> input = new ArrayList<String>();
+        gameScene.setOnKeyPressed(
+            new EventHandler<KeyEvent>() {
+                @Override
+                public void handle(KeyEvent e) {
+                    String code = e.getCode().toString();
+                    if (!input.contains(code)) {
+                        input.add(code);
+                    }
+                }
+            });
+        
+        gameScene.setOnKeyReleased(
+            new EventHandler<KeyEvent>() {
+                @Override
+                public void handle(KeyEvent e) {
+                    String code = e.getCode().toString();
+                    input.remove(code);
+                }
+            });
         
         final GraphicsContext gc = canvas.getGraphicsContext2D();
         
         new AnimationTimer()
         {
+            @Override
             public void handle(long currentNanoTime)
             {
                 // Clear the canvas
                 //Tänne mitä piirretään
+                gc.clearRect(0, 0, 800, 800);
+                if (input.contains("A")) {
+                    gc.setFill(Color.RED);
+                    gc.fillRect(200, 400, 30, 30);
+                } else if (input.contains("D")) {
+                    gc.setFill(Color.BLUE);
+                    gc.fillRect(600, 400, 30, 30);
+                } else if (input.contains("W")) {
+                    gc.setFill(Color.GREEN);
+                    gc.fillRect(400, 200, 30, 30);
+                } else if (input.contains("S")) {
+                    gc.setFill(Color.YELLOW);
+                    gc.fillRect(400, 600, 30, 30);
+                } else if (input.contains("ESCAPE")) {
+                    drawMenu();
+                    this.stop();
+                }
                 
             }
         }.start();
@@ -163,12 +286,12 @@ public class MainApp extends Application {
     public void start(Stage stage) throws Exception {
         //Alkunäytön asetus
         mainStage = stage;
-        rootJoo = new Group();
+        mainGroup = new Group();
         
-        rootJoo.getChildren().add(backGround);
+        mainGroup.getChildren().add(backGround);
         
         Canvas canvas = new Canvas(800, 800);
-        rootJoo.getChildren().add( canvas );
+        mainGroup.getChildren().add( canvas );
         
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.setFill(Color.RED);
@@ -179,7 +302,7 @@ public class MainApp extends Application {
         gc.fillText("Press any key to start!", 70, 370);
         gc.strokeText("Press any key to start!", 70, 370);
         
-        startScene = new Scene(rootJoo);
+        startScene = new Scene(mainGroup);
         
         startScene.setOnKeyPressed(
             new EventHandler<KeyEvent>() {
