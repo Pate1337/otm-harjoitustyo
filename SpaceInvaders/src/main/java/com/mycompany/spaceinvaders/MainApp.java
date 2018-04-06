@@ -18,6 +18,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import java.util.ArrayList;
 import java.util.Properties;
+import javafx.animation.AnimationTimer;
 import javafx.event.EventHandler;
 import javafx.event.EventType;
 import javafx.geometry.Pos;
@@ -28,6 +29,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Circle;
 import javafx.scene.text.TextAlignment;
 
 
@@ -36,6 +38,8 @@ public class MainApp extends Application {
     private Scene startScene;
     private ImageView backGround;
     private Group rootJoo;
+    private Group menuGroup;
+    private Stage mainStage;
     
     @Override
     public void init() throws Exception {
@@ -55,11 +59,11 @@ public class MainApp extends Application {
         backGround = imageView;
     }
     
-    public void drawMenu(Stage stage) {
+    public void drawMenu() {
         System.out.println("Moro");
         rootJoo.getChildren().clear();
-        Group newGroup = new Group();
-        newGroup.getChildren().add(backGround);
+        menuGroup = new Group();
+        menuGroup.getChildren().add(backGround);
  
         VBox menu = new VBox();
         menu.setSpacing(10);
@@ -67,29 +71,29 @@ public class MainApp extends Application {
         menu.getChildren().add(createMenuButton("Highscores"));
         menu.setLayoutX(200);
         menu.setLayoutY(400);
-        newGroup.getChildren().add(menu);  
+        menuGroup.getChildren().add(menu);  
         
-        Scene menuScene = new Scene(newGroup);
+        Scene menuScene = new Scene(menuGroup);
         
-        menuScene.setOnMouseClicked(
-            new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent e) {
-                    double x = e.getX();
-                    double y = e.getY();
-                    if ((x >= 200 && x <= 600) && (y >= 400 && y <= 450)) {
-                        System.out.println("PLAY PAINETTU");
-                    } else if ((x >= 200 && x <= 600) && (y >= 460 && y <= 510)) {
-                        System.out.println("HIGHSCORES PAINETTU");
-                    }
-                }
-            });
+//        menuScene.setOnMouseClicked(
+//            new EventHandler<MouseEvent>() {
+//                @Override
+//                public void handle(MouseEvent e) {
+//                    double x = e.getX();
+//                    double y = e.getY();
+//                    if ((x >= 200 && x <= 600) && (y >= 400 && y <= 450)) {
+//                        System.out.println("PLAY PAINETTU");
+//                    } else if ((x >= 200 && x <= 600) && (y >= 460 && y <= 510)) {
+//                        System.out.println("HIGHSCORES PAINETTU");
+//                    }
+//                }
+//            });
         
-        stage.setScene(menuScene);
-        stage.show();
+        mainStage.setScene(menuScene);
+        mainStage.show();
     }
     
-    public Node createMenuButton(String text) {
+    public Node createMenuButton(final String text) {
         Canvas canvas = new Canvas(400, 50);
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.setFill(Color.BLACK);
@@ -113,12 +117,52 @@ public class MainApp extends Application {
             Math.round(canvas.getWidth()  / 2), 
             Math.round(canvas.getHeight() / 2)
         );
+        canvas.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent e) {
+                    System.out.println(text + " painettu");
+                    if (text.equals("Play")) {
+                        drawGame();
+                    } else if (text.equals("Highscores")) {
+                        System.out.println("");
+                    }
+                }
+            });
         return canvas;
     }
     
+    public void drawGame() {
+        System.out.println("Piirretään peli");
+        menuGroup.getChildren().clear();
+        Group gameGroup = new Group();
+        gameGroup.getChildren().add(backGround);
+        Scene gameScene = new Scene(gameGroup);
+        mainStage.setScene(gameScene);
+        
+        Canvas canvas = new Canvas(800, 800);
+        gameGroup.getChildren().add( canvas );
+        
+        //Tähän eventit
+        
+        final GraphicsContext gc = canvas.getGraphicsContext2D();
+        
+        new AnimationTimer()
+        {
+            public void handle(long currentNanoTime)
+            {
+                // Clear the canvas
+                //Tänne mitä piirretään
+                
+            }
+        }.start();
+        
+        mainStage.show();
+    }
+    
     @Override
-    public void start(final Stage stage) throws Exception {
+    public void start(Stage stage) throws Exception {
         //Alkunäytön asetus
+        mainStage = stage;
         rootJoo = new Group();
         
         rootJoo.getChildren().add(backGround);
@@ -143,7 +187,7 @@ public class MainApp extends Application {
                 public void handle(KeyEvent e) {
                     System.out.println("Toimii");                   
 //                    stage.setScene(menuScene);
-                    drawMenu(stage);
+                    drawMenu();
                 }
             });
         startScene.setOnMouseClicked(
@@ -152,14 +196,14 @@ public class MainApp extends Application {
                 public void handle(MouseEvent e) {
                     System.out.println("Toimii");
 //                    stage.setScene(menuScene);
-                    drawMenu(stage);
+                    drawMenu();
                 }
             });
         
    
-        stage.setTitle("Space Invaders!!!!");
-        stage.setScene(startScene);
-        stage.show();
+        mainStage.setTitle("Space Invaders!!!!");
+        mainStage.setScene(startScene);
+        mainStage.show();
     }
 
     /**

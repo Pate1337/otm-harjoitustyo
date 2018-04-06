@@ -9,3 +9,4 @@
  05.04.18 | 2h | Saatu jonkinnäköinen käsitys miten rakentaa sovellus. Aloiteltu refaktoroimalla mainia. Lisätty konfiguraatiotiedosto, josta sovelluksen taustakuva.
  05.04.18 | 2h | Menunäyttö saatu rakennettua. Toiminnallisuutta ei vielä.
  05.04.18 | 1h | Menunäyttöön saatu tapahtumankuuntelijat kun tiettyä menupainiketta painetaan.
+ 06.04.18 | 1,5h | Toiminnallisuus nyt sillä mallilla, että itse peliä voi ruveta koodaamaan. Playtä painaessa käynnistetään AnimationTimer.
