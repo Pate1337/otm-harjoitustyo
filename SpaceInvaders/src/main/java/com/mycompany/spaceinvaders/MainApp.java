@@ -19,6 +19,7 @@ import javafx.scene.text.FontWeight;
 import java.util.ArrayList;
 import java.util.Properties;
 import javafx.animation.AnimationTimer;
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.event.EventType;
 import javafx.geometry.Pos;
@@ -32,6 +33,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.TextAlignment;
+import javafx.stage.WindowEvent;
 
 
 public class MainApp extends Application {
@@ -42,6 +44,7 @@ public class MainApp extends Application {
     private Group mainGroup;
     private String selected;
     private String prevSelected = "none";
+    private boolean gamePaused = false;
     
     @Override
     public void init() throws Exception {
@@ -64,10 +67,10 @@ public class MainApp extends Application {
     public void drawMenu() {
         System.out.println("Moro");
         selected = "none";
-        mainGroup.getChildren().clear();
-        mainGroup = new Group();
-        mainGroup.getChildren().add(backGround);
-        Scene menuScene = new Scene(mainGroup);
+//        mainGroup.getChildren().clear();
+        Group menuGroup = new Group();
+        menuGroup.getChildren().add(backGround);
+        Scene menuScene = new Scene(menuGroup);
         mainStage.setScene(menuScene);
         
         
@@ -75,22 +78,39 @@ public class MainApp extends Application {
         menuTarget1.setOpacity(0.0);
         Rectangle menuTarget2 = new Rectangle(200, 460, 400, 50);
         menuTarget2.setOpacity(0.0);
+        Rectangle menuTarget3 = new Rectangle(200, 520, 400, 50);
+        menuTarget3.setOpacity(0.0);
  
         final VBox menu = new VBox();
         menu.setSpacing(10);
-        menu.getChildren().add(createMenuButton("Play"));
+        if (gamePaused) {
+            menu.getChildren().add(createMenuButton("Resume"));
+        } else {
+            menu.getChildren().add(createMenuButton("Play"));
+        }
         menu.getChildren().add(createMenuButton("Highscores"));
+        if (gamePaused) {
+            menu.getChildren().add(createMenuButton("Exit to main menu"));
+        } else {
+            menu.getChildren().add(createMenuButton("Quit"));
+        }
         menu.setLayoutX(200);
         menu.setLayoutY(400);
-        mainGroup.getChildren().add(menu); 
-        mainGroup.getChildren().add(menuTarget1);
-        mainGroup.getChildren().add(menuTarget2);
+        menuGroup.getChildren().add(menu); 
+        menuGroup.getChildren().add(menuTarget1);
+        menuGroup.getChildren().add(menuTarget2);
+        menuGroup.getChildren().add(menuTarget3);
         
         menuTarget1.setOnMouseEntered(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent e) {
-                System.out.println("PLAY");
-                selected = "Play";
+                if (!gamePaused) {
+                    System.out.println("PLAY");
+                    selected = "Play";
+                } else {
+                    System.out.println("RESUME");
+                    selected = "Resume";
+                }
             }
         });
         
@@ -124,34 +144,99 @@ public class MainApp extends Application {
             }
         });
         
+        menuTarget3.setOnMouseEntered(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent e) {
+                if (!gamePaused) {
+                    System.out.println("QUIT");
+                    selected = "Quit";
+                } else {
+                    System.out.println("Exit to main menu");
+                    selected = "Exit to main menu";
+                }
+            }
+        });
+        
+        menuTarget3.setOnMouseExited(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent e) {
+                System.out.println("NONE");
+                selected = "none";
+            }
+        });
+        
+        menuTarget3.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            public void handle(MouseEvent e) {
+                if (gamePaused) {
+                    selected = "ExitToMenu";
+                } else {
+                    selected = "QuitApp";
+                }
+            }
+        });
+        
         menuScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent e) {
                 String code = e.getCode().toString();
-                if (code.equals("S")) {
+                if (code.equals("S") && !gamePaused) {
                     System.out.println("S painettu");
                     if (selected.equals("none")) {
                         selected = "Play";
                     } else if (selected.equals("Play")) {
                         selected = "Highscores";
                     } else if (selected.equals("Highscores")) {
+                        selected = "Quit";
+                    } else if (selected.equals("Quit")){
                         selected = "Play";
                     } else {
                         selected = "none";
                     }
-                } else if (code.equals("W")) {
+                } else if (code.equals("W") && !gamePaused) {
                     System.out.println("W painettu");
                     if (selected.equals("none")) {
                         selected = "Play";
                     } else if (selected.equals("Play")) {
+                        selected = "Quit";
+                    } else if (selected.equals("Quit")) {
                         selected = "Highscores";
                     } else if (selected.equals("Highscores")) {
                         selected = "Play";
                     } else {
                         selected = "none";
                     }
-                } else if (code.equals("ENTER")) {
+                } else if (code.equals("S") && gamePaused) {
+                    System.out.println("S painettu");
+                    if (selected.equals("none")) {
+                        selected = "Resume";
+                    } else if (selected.equals("Resume")) {
+                        selected = "Highscores";
+                    } else if (selected.equals("Highscores")) {
+                        selected = "Exit to main menu";
+                    } else if (selected.equals("Exit to main menu")) {
+                        selected = "Resume";
+                    } else {
+                        selected = "none";
+                    }
+                } else if (code.equals("W") && gamePaused) {
+                    System.out.println("W painettu");
+                    if (selected.equals("none")) {
+                        selected = "Resume";
+                    } else if (selected.equals("Resume")) {
+                        selected = "Exit to main menu";
+                    } else if (selected.equals("Exit to main menu")) {
+                        selected = "Highscores";
+                    } else if (selected.equals("Highscores")) {
+                        selected = "Resume";
+                    } else {
+                        selected = "none";
+                    }
+                } else if (code.equals("ENTER") && (selected.equals("Play") || selected.equals("Resume"))) {
                     selected = "stop";
+                } else if (code.equals("ENTER") && selected.equals("Quit")) {
+                    selected = "QuitApp";
+                } else if (code.equals("ENTER") && selected.equals("Exit to main menu")) {
+                    selected = "ExitToMenu";
                 }
             }
         });
@@ -161,18 +246,42 @@ public class MainApp extends Application {
             public void handle(long currentNanoTime) {
                 if (selected.equals("stop")) {
                     System.out.println("Lopetettu");
+                    gamePaused = false;
                     drawGame();
                     this.stop();
-                } else if (!selected.equals("none") && !prevSelected.equals(selected)) { // && !inputs.isEmpty()
+                } else if (selected.equals("QuitApp")) {
+                    System.out.println("Nyt pitäis apin sulkeutua");
+                    Platform.exit();
+                    System.exit(0);
+                } else if (selected.equals("ExitToMenu")) {
+                    System.out.println("Exit to menu");
+                    gamePaused = false;
+                    drawMenu();
+                    this.stop();
+                } else if (!gamePaused && !selected.equals("none") && !prevSelected.equals(selected)) { // && !inputs.isEmpty()
                     System.out.println("Piirretään koska !== none");
                     menu.getChildren().clear();
                     menu.getChildren().add(createMenuButton("Play"));
                     menu.getChildren().add(createMenuButton("Highscores"));
-                } else if (selected.equals("none") && !prevSelected.equals(selected)) {
+                    menu.getChildren().add(createMenuButton("Quit"));
+                } else if (!gamePaused && selected.equals("none") && !prevSelected.equals(selected)) {
                     System.out.println("Piirretään koska none");
                     menu.getChildren().clear();
                     menu.getChildren().add(createMenuButton("Play"));
                     menu.getChildren().add(createMenuButton("Highscores"));
+                    menu.getChildren().add(createMenuButton("Quit"));
+                } else if (gamePaused && !selected.equals("none") && !prevSelected.equals(selected)) {
+                    System.out.println("Piirretään koska !== none");
+                    menu.getChildren().clear();
+                    menu.getChildren().add(createMenuButton("Resume"));
+                    menu.getChildren().add(createMenuButton("Highscores"));
+                    menu.getChildren().add(createMenuButton("Exit to main menu"));
+                } else if (gamePaused && selected.equals("none") && !prevSelected.equals(selected)) {
+                    System.out.println("Piirretään koska none");
+                    menu.getChildren().clear();
+                    menu.getChildren().add(createMenuButton("Resume"));
+                    menu.getChildren().add(createMenuButton("Highscores"));
+                    menu.getChildren().add(createMenuButton("Exit to main menu"));
                 }
                 //Piirretään vain kun tapahtuu muutos, ei turhaan
                 prevSelected = selected;
@@ -256,7 +365,6 @@ public class MainApp extends Application {
             @Override
             public void handle(long currentNanoTime)
             {
-                // Clear the canvas
                 //Tänne mitä piirretään
                 gc.clearRect(0, 0, 800, 800);
                 if (input.contains("A")) {
@@ -272,7 +380,9 @@ public class MainApp extends Application {
                     gc.setFill(Color.YELLOW);
                     gc.fillRect(400, 600, 30, 30);
                 } else if (input.contains("ESCAPE")) {
+                    gamePaused = true;
                     drawMenu();
+                    //Laitetaan kaikki pauselle ja piirretään menu päälle
                     this.stop();
                 }
                 
