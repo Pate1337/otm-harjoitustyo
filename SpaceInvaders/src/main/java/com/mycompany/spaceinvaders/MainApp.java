@@ -35,6 +35,8 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.WindowEvent;
+import spaceInvaders.domain.Key;
+import spaceinvaders.dao.FileKeyDao;
 
 
 public class MainApp extends Application {
@@ -65,11 +67,13 @@ public class MainApp extends Application {
         imageView.setFitWidth(800);
         imageView.setPreserveRatio(false);
         backGround = imageView;
+        String keyFile = properties.getProperty("keyFile");
+        FileKeyDao keyDao = new FileKeyDao(keyFile);
     }
     
     public void drawMenu() {
         System.out.println("Moro");
-        selected = "none";
+//        selected = "none";
 //        mainGroup.getChildren().clear();
         menuGroup = new Group();
         menuGroup.getChildren().add(backGround);
@@ -87,8 +91,10 @@ public class MainApp extends Application {
         final VBox menu = new VBox();
         menu.setSpacing(10);
         if (gamePaused) {
+            selected = "Resume";
             menu.getChildren().add(createMenuButton("Resume", 400, 50, 40));
         } else {
+            selected = "Play";
             menu.getChildren().add(createMenuButton("Play", 400, 50, 40));
         }
         menu.getChildren().add(createMenuButton("Highscores", 400, 50, 40));
@@ -182,7 +188,7 @@ public class MainApp extends Application {
             @Override
             public void handle(KeyEvent e) {
                 String code = e.getCode().toString();
-                if (code.equals("S") && !gamePaused) {
+                if (code.equals(Key.DOWN.getKeyCode()) && !gamePaused) {
                     System.out.println("S painettu");
                     if (selected.equals("none")) {
                         selected = "Play";
@@ -195,7 +201,7 @@ public class MainApp extends Application {
                     } else {
                         selected = "none";
                     }
-                } else if (code.equals("W") && !gamePaused) {
+                } else if (code.equals(Key.UP.getKeyCode()) && !gamePaused) {
                     System.out.println("W painettu");
                     if (selected.equals("none")) {
                         selected = "Play";
@@ -208,7 +214,7 @@ public class MainApp extends Application {
                     } else {
                         selected = "none";
                     }
-                } else if (code.equals("S") && gamePaused) {
+                } else if (code.equals(Key.DOWN.getKeyCode()) && gamePaused) {
                     System.out.println("S painettu");
                     if (selected.equals("none")) {
                         selected = "Resume";
@@ -221,7 +227,7 @@ public class MainApp extends Application {
                     } else {
                         selected = "none";
                     }
-                } else if (code.equals("W") && gamePaused) {
+                } else if (code.equals(Key.UP.getKeyCode()) && gamePaused) {
                     System.out.println("W painettu");
                     if (selected.equals("none")) {
                         selected = "Resume";
@@ -253,15 +259,9 @@ public class MainApp extends Application {
                     drawGame();
                     this.stop();
                 } else if (selected.equals("QuitApp")) {
-//                    System.out.println("Nyt pitäis apin sulkeutua");
-//                    Platform.exit();
-//                    System.exit(0);
                     drawConfirm("Quit");
                     this.stop();
                 } else if (selected.equals("ExitToMenu")) {
-//                    System.out.println("Exit to menu");
-//                    gamePaused = false;
-//                    drawMenu();
                     drawConfirm("Exit to main menu");
                     this.stop();
                 } else if (!gamePaused && !selected.equals("none") && !prevSelected.equals(selected)) { // && !inputs.isEmpty()
@@ -332,7 +332,7 @@ public class MainApp extends Application {
     }
     
     public void drawConfirm(final String text) {
-        selected = "none";
+        selected = text;
         Node areYouSure = areYouSure(text);
         areYouSure.setLayoutX(200);
         areYouSure.setLayoutY(300);
@@ -410,7 +410,7 @@ public class MainApp extends Application {
             @Override
             public void handle(KeyEvent e) {
                 String code = e.getCode().toString();
-                if (code.equals("A")) {
+                if (code.equals(Key.LEFT.getKeyCode())) {
                     System.out.println("A painettu");
                     if (selected.equals("none")) {
                         selected = text;
@@ -419,7 +419,7 @@ public class MainApp extends Application {
                     } else if (selected.equals("Cancel")) {
                         selected = text;
                     }
-                } else if (code.equals("D")) {
+                } else if (code.equals(Key.RIGHT.getKeyCode())) {
                     System.out.println("D painettu");
                     if (selected.equals("none")) {
                         selected = text;
@@ -558,16 +558,16 @@ public class MainApp extends Application {
                 gc.clearRect(0, 0, 800, 800);
                 gc.setFill(Color.BLUE);
                 gc.fillRect(100, 100, 50, 50);
-                if (input.contains("A")) {
+                if (input.contains(Key.LEFT.getKeyCode())) {
                     gc.setFill(Color.RED);
                     gc.fillRect(200, 400, 30, 30);
-                } else if (input.contains("D")) {
+                } else if (input.contains(Key.RIGHT.getKeyCode())) {
                     gc.setFill(Color.BLUE);
                     gc.fillRect(600, 400, 30, 30);
-                } else if (input.contains("W")) {
+                } else if (input.contains(Key.UP.getKeyCode())) {
                     gc.setFill(Color.GREEN);
                     gc.fillRect(400, 200, 30, 30);
-                } else if (input.contains("S")) {
+                } else if (input.contains(Key.DOWN.getKeyCode())) {
                     gc.setFill(Color.YELLOW);
                     gc.fillRect(400, 600, 30, 30);
                 } else if (input.contains("ESCAPE")) {

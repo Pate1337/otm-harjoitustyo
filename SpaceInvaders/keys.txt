@@ -1,0 +1,4 @@
+left=A
+up=W
+right=D
+down=S

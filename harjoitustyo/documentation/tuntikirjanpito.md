@@ -13,3 +13,4 @@
  06.04.18 | 2h | Menun toimintaa paranneltu. Pystyy hallitsemaan näppäimistöllä ja hiirellä. Painikkeet muuttavat väriään kun ne ovat valittuina.
  06.04.18 | 2h | Menuun lisätty painikkeita. Painikkeet vaihtuvat riippuen laitetaanko peli paussille escapella vai ollaanko Main menussa.
  08.04.18 | 3,5h | Menuun lisätty varmistusikkuna, kun painetaan Quit tai Exit to main Menu.
+ 08.04.18 | 1,5h | Lisätty näppäimille enum-luokka ja tiedosto, joka pitää sisältää bindatut näppäimet.
