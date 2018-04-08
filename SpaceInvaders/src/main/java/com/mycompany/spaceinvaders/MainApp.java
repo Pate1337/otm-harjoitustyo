@@ -6,9 +6,6 @@ import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-//import javafx.fxml.FXMLLoader;
-//import javafx.scene.Parent;
-//import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -22,19 +19,14 @@ import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.event.EventType;
-import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.TextAlignment;
-import javafx.stage.WindowEvent;
 import spaceInvaders.domain.Key;
 import spaceinvaders.dao.FileKeyDao;
 
@@ -43,6 +35,7 @@ public class MainApp extends Application {
     private String backGroundImage;
     private Scene startScene;
     private Scene menuScene;
+    private Scene gameScene;
     private ImageView backGround;
     private Stage mainStage;
     private Group mainGroup;
@@ -75,11 +68,19 @@ public class MainApp extends Application {
         System.out.println("Moro");
 //        selected = "none";
 //        mainGroup.getChildren().clear();
-        menuGroup = new Group();
-        menuGroup.getChildren().add(backGround);
-        menuScene = new Scene(menuGroup);
-        mainStage.setScene(menuScene);
-        
+        final Rectangle behind = new Rectangle(0, 0, 800, 800);
+        if (gamePaused) {
+            menuGroup = mainGroup;
+            menuScene = gameScene;
+            behind.setFill(Color.BLACK);
+            behind.setOpacity(0.9);
+            menuGroup.getChildren().add(behind);
+        } else {
+            menuGroup = new Group();
+            menuGroup.getChildren().add(backGround);
+            menuScene = new Scene(menuGroup);
+            mainStage.setScene(menuScene); 
+        }
         
         Rectangle menuTarget1 = new Rectangle(200, 400, 400, 50);
         menuTarget1.setOpacity(0.0);
@@ -132,6 +133,7 @@ public class MainApp extends Application {
         });
         
         menuTarget1.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
             public void handle(MouseEvent e) {
                 selected = "stop";
             }
@@ -262,6 +264,9 @@ public class MainApp extends Application {
                     drawConfirm("Quit");
                     this.stop();
                 } else if (selected.equals("ExitToMenu")) {
+                    if (menuGroup.getChildren().contains(behind)) {
+                        menuGroup.getChildren().remove(behind);
+                    }
                     drawConfirm("Exit to main menu");
                     this.stop();
                 } else if (!gamePaused && !selected.equals("none") && !prevSelected.equals(selected)) { // && !inputs.isEmpty()
@@ -333,11 +338,11 @@ public class MainApp extends Application {
     
     public void drawConfirm(final String text) {
         selected = text;
-        Node areYouSure = areYouSure(text);
+        final Node areYouSure = areYouSure(text);
         areYouSure.setLayoutX(200);
         areYouSure.setLayoutY(300);
         
-        Rectangle behind = new Rectangle(0, 0, 800, 800);
+        final Rectangle behind = new Rectangle(0, 0, 800, 800);
         behind.setFill(Color.BLACK);
         behind.setOpacity(0.9);
         menuGroup.getChildren().add(behind);
@@ -469,6 +474,10 @@ public class MainApp extends Application {
                     drawMenu();
                     this.stop();
                 } else if (selected.equals("goBack")) {
+                    if (menuGroup.getChildren().contains(behind)) {
+                        menuGroup.getChildren().remove(behind);
+                    }
+                    menuGroup.getChildren().remove(areYouSure);
                     drawMenu();
                     this.stop();
                 }
@@ -519,7 +528,7 @@ public class MainApp extends Application {
         mainGroup.getChildren().clear();
         mainGroup = new Group();
         mainGroup.getChildren().add(backGround);
-        Scene gameScene = new Scene(mainGroup);
+        gameScene = new Scene(mainGroup);
         mainStage.setScene(gameScene);
         
         Canvas canvas = new Canvas(800, 800);
