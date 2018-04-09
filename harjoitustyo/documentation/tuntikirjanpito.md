@@ -16,3 +16,4 @@
  08.04.18 | 1,5h | Lisätty näppäimille enum-luokka ja tiedosto, joka sisältää bindatut näppäimet.
  08.04.18 | 1h | Muokattu menua vielä siten, että kun painetaan kesken pelin esciä, niin peli näkyy taustalla, mutta tummana. Samoin varmistusikkunan ollessa näkyvissä.
  08.04.18 | 1h | Lisätty menuun settings painike. Toiminnallisuus mietitty, mutta ei toteutettu.
+ 09.04.18 | 9h | Settings painikkeen toiminnallisuus. Painikkeita voi nyt muuttaa asetuksista. Asetukset eivät talletu vielä tiedostoon.

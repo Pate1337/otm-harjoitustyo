@@ -14,7 +14,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Properties;
+import java.util.Set;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
@@ -28,6 +31,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.TextAlignment;
 import spaceInvaders.domain.Key;
+import spaceInvaders.domain.KeyService;
 import spaceinvaders.dao.FileKeyDao;
 
 
@@ -43,6 +47,12 @@ public class MainApp extends Application {
     private String prevSelected = "none";
     private boolean gamePaused = false;
     private Group menuGroup;
+    private boolean cameFromGame = false;
+    private Image image;
+    private KeyService keyService;
+    private String selectedKey;
+    private String changeKey;
+    private String prevSelectedKey;
     
     @Override
     public void init() throws Exception {
@@ -52,7 +62,7 @@ public class MainApp extends Application {
         
         String backGroundPicture = properties.getProperty("backGround");
         backGroundImage = backGroundPicture;
-        Image image = new Image(new FileInputStream(backGroundImage));
+        image = new Image(new FileInputStream(backGroundImage));
         ImageView imageView = new ImageView(image);
         imageView.setX(0); 
         imageView.setY(0);
@@ -62,18 +72,21 @@ public class MainApp extends Application {
         backGround = imageView;
         String keyFile = properties.getProperty("keyFile");
         FileKeyDao keyDao = new FileKeyDao(keyFile);
+        keyService = new KeyService(keyDao);
     }
     
     public void drawMenu() {
         System.out.println("Moro");
-//        selected = "none";
-//        mainGroup.getChildren().clear();
         final Rectangle behind = new Rectangle(0, 0, 800, 800);
+        behind.setFill(Color.BLACK);
+        behind.setOpacity(0.9);
         if (gamePaused) {
-            menuGroup = mainGroup;
-            menuScene = gameScene;
-            behind.setFill(Color.BLACK);
-            behind.setOpacity(0.9);
+            //Tää on tod näk se mikä kusee kun tullaan settingeistä
+            if (cameFromGame) {
+                menuGroup = mainGroup;
+                menuScene = gameScene;
+                cameFromGame = false;
+            }
             menuGroup.getChildren().add(behind);
         } else {
             menuGroup = new Group();
@@ -94,13 +107,8 @@ public class MainApp extends Application {
         final VBox menu = new VBox();
         menu.setSpacing(10);
         if (gamePaused) {
-//            selected = "Resume";
             menu.getChildren().add(createMenuButton("Resume", 400, 50, 40));
         } else {
-//            selected = "Play";
-//            if (selected == null) {
-//                selected = "Play";
-//            }
             menu.getChildren().add(createMenuButton("Play", 400, 50, 40));
         }
         menu.getChildren().add(createMenuButton("Highscores", 400, 50, 40));
@@ -181,7 +189,7 @@ public class MainApp extends Application {
         menuTarget3.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent e) {
-                selected = "Settings";
+                selected = "GoToSettings";
             }
         });
         
@@ -313,7 +321,11 @@ public class MainApp extends Application {
                     this.stop();
                 } else if (selected.equals("GoToSettings")) {
                     prevSelected = selected;
-                    selected = "Settings";
+                    //Laitetaan se mikä halutaan olla valittuna kun mennään settings
+                    selected = "Keyboard";
+                    if (menuGroup.getChildren().contains(behind)) {
+                        menuGroup.getChildren().remove(behind);
+                    }
                     drawSettings();
                     this.stop();
                 } else if (!gamePaused && !selected.equals("none") && !prevSelected.equals(selected)) { // && !inputs.isEmpty()
@@ -355,6 +367,344 @@ public class MainApp extends Application {
     
     public void drawSettings() {
         System.out.println("Terve, ollaan settingseissä!");
+        try {
+            image = new Image(new FileInputStream(backGroundImage));
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        final ImageView view = new ImageView(image);
+        view.setX(0);
+        view.setY(0);
+        view.setFitHeight(800);
+        view.setFitWidth(800);
+        view.setPreserveRatio(false);
+        menuGroup.getChildren().add(view);
+        
+        
+        final VBox settingsMenu = new VBox();
+        settingsMenu.setSpacing(10);
+        settingsMenu.getChildren().add(createMenuButton("Keyboard", 400, 50, 40));
+        settingsMenu.getChildren().add(createMenuButton("Back to menu", 400, 50, 40));
+        final Rectangle settingsTarget1 = new Rectangle(200, 400, 400, 50);
+        final Rectangle settingsTarget2 = new Rectangle(200, 460, 400, 50);
+        settingsTarget1.setOpacity(0.0);
+        settingsTarget2.setOpacity(0.0);
+        settingsMenu.setLayoutX(200);
+        settingsMenu.setLayoutY(400);
+        menuGroup.getChildren().add(settingsMenu);
+        menuGroup.getChildren().add(settingsTarget1);
+        menuGroup.getChildren().add(settingsTarget2);
+        
+        settingsTarget1.setOnMouseEntered(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent e) {
+                selected = "Keyboard";
+            }
+        });
+        
+        settingsTarget1.setOnMouseExited(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent e) {
+                selected = "none";
+            }
+        });
+        
+        settingsTarget1.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent e) {
+                selected = "KeyboardSettings";
+            }
+        });
+        
+        settingsTarget2.setOnMouseEntered(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent e) {
+                selected = "Back to menu";
+            }
+        });
+        
+        settingsTarget2.setOnMouseExited(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent e) {
+                selected = "none";
+            }
+        });
+        
+        settingsTarget2.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent e) {
+                selected = "BackToMenu";
+            }
+        });
+        
+        menuScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent e) {
+                String code = e.getCode().toString();
+                if (code.equals(Key.DOWN.getKeyCode())) {
+                    if (selected.equals("none")) {
+                        selected = "Keyboard";
+                    } else if (selected.equals("Keyboard")) {
+                        selected = "Back to menu";
+                    } else if (selected.equals("Back to menu")) {
+                        selected = "Keyboard";
+                    } else {
+                        selected = "none";
+                    }
+                } else if (code.equals(Key.UP.getKeyCode())) {
+                    if (selected.equals("none")) {
+                        selected = "Keyboard";
+                    } else if (selected.equals("Keyboard")) {
+                        selected = "Back to menu";
+                    } else if (selected.equals("Back to menu")) {
+                        selected = "Keyboard";
+                    } else {
+                        selected = "none";
+                    }
+                } else if (code.equals("ENTER")) {
+                    if (selected.equals("Keyboard")) {
+                        selected = "KeyboardSettings";
+                    } else if (selected.equals("Back to menu")) {
+                        selected = "BackToMenu";
+                    }
+                }
+            }
+        });
+        
+        new AnimationTimer() {
+            @Override
+            public void handle(long currentNanoTime) {
+                if (selected.equals("KeyboardSettings")) {
+                    prevSelected = selected;
+                    selected = "Keyboard";
+                    //keyboardSettingissä ei käytetä samaa selectediä
+                    menuGroup.getChildren().remove(view);
+                    menuGroup.getChildren().remove(settingsMenu);
+                    menuGroup.getChildren().remove(settingsTarget1);
+                    menuGroup.getChildren().remove(settingsTarget2);
+                    drawKeyboardSettings();
+                    this.stop();
+                } else if (selected.equals("BackToMenu")) {
+                    prevSelected = selected;
+                    selected = "Settings";
+                    menuGroup.getChildren().remove(view);
+                    menuGroup.getChildren().remove(settingsMenu);
+                    menuGroup.getChildren().remove(settingsTarget1);
+                    menuGroup.getChildren().remove(settingsTarget2);
+                    drawMenu();
+                    this.stop();
+                } else if (selected.equals("Keyboard") && !prevSelected.equals(selected)) {
+                    settingsMenu.getChildren().clear();
+                    settingsMenu.getChildren().add(createMenuButton("Keyboard", 400, 50, 40));
+                    settingsMenu.getChildren().add(createMenuButton("Back to menu", 400, 50, 40));
+                } else if (selected.equals("Back to menu") && !prevSelected.equals(selected)) {
+                    settingsMenu.getChildren().clear();
+                    settingsMenu.getChildren().add(createMenuButton("Keyboard", 400, 50, 40));
+                    settingsMenu.getChildren().add(createMenuButton("Back to menu", 400, 50, 40));
+                }
+                prevSelected = selected;
+            }
+        }.start();
+        
+//        mainStage.show();
+    }
+    
+    public void drawKeyboardSettings() {
+        System.out.println("Moi");
+        selectedKey = "none";
+        prevSelectedKey = "none";
+        changeKey = "none";
+        try {
+            image = new Image(new FileInputStream(backGroundImage));
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        final ImageView view = new ImageView(image);
+        view.setX(0);
+        view.setY(0);
+        view.setFitHeight(800);
+        view.setFitWidth(800);
+        view.setPreserveRatio(false);
+        menuGroup.getChildren().add(view);
+        
+        final ArrayList<Key> keys = keyService.getKeys();
+        final ArrayList<String> keyNames = keyService.getKeyNames();
+        
+        final VBox keyButtons = new VBox();
+        keyButtons.setSpacing(10);
+        keyButtons.setLayoutX(100);
+        keyButtons.setLayoutY(200);
+        for (int i = 0; i < keys.size(); i++) {
+            keyButtons.getChildren().add(createKeyButton(keys.get(i), 600, 100, 40));
+        }
+        menuGroup.getChildren().add(keyButtons);
+
+        Rectangle rec = null;
+        for (int i = 0; i < keys.size(); i++) {
+            final int indx = i;
+            if (i == 0) {
+                rec = new Rectangle(100, 200, 600, 100);
+            } else {
+                rec = new Rectangle(100, (200 + (i * 110)), 600, 100);
+            }
+            rec.setOpacity(0.0);
+            rec.setOnMouseEntered(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent e) {
+                    selectedKey = keys.get(indx).getKeyName();
+                }
+            });
+            rec.setOnMouseExited(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent e) {
+                    selectedKey = "none";
+                }
+            });
+            rec.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent e) {
+                    changeKey = keys.get(indx).getKeyName();
+                    prevSelectedKey = "none";
+                }
+            });
+            menuGroup.getChildren().add(rec);
+        }
+        menuScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent e) {
+                String code = e.getCode().toString();
+                if (!changeKey.equals("none")) {
+                    //Nyt pitää asettaa uusi näppäin!!
+                    //Tarkistetaan onko jollain jo se näppäin
+                    for (int i = 0; i < keys.size(); i++) {
+                        if (keys.get(i).getKeyCode().equals(code)) {
+                            //asetetaan tyhjäksi
+                            keys.get(i).setKeyCode("");
+                        }
+                    }
+                    //Asetetaan uusi
+                    int index = keyNames.indexOf(changeKey);
+                    Key key = keys.get(index);
+                    key.setKeyCode(code);
+                    changeKey = "none";
+                    selectedKey = "none";
+                    prevSelected = "jotain";
+                } else if (code.equals(Key.DOWN.getKeyCode())) {
+                    if (!selectedKey.equals("none")) {
+                        int index = keyNames.indexOf(selectedKey);
+                        if (index == keyNames.size() - 1) {
+                            selectedKey = keyNames.get(0);
+                        } else {
+                            selectedKey = keyNames.get(index + 1);
+                        }
+                    } else {
+                        selectedKey = keyNames.get(0);
+                    }
+                } else if (code.equals(Key.UP.getKeyCode())) {
+                    if (!selectedKey.equals("none")) {
+                        int index = keyNames.indexOf(selectedKey);
+                        if (index == 0) {
+                            selectedKey = keyNames.get(keyNames.size() - 1);
+                        } else {
+                            selectedKey = keyNames.get(index - 1);
+                        }
+                    } else {
+                        selectedKey = keyNames.get(0);
+                    }
+                } else if (code.equals("ENTER")) {
+                    if (selectedKey.equals("none")) {
+                        changeKey = "none";
+                        prevSelectedKey = "jotain";
+                    } else {
+                        changeKey = selectedKey;
+                        prevSelectedKey = "none";
+                    }
+                }
+            }
+        });
+        //Jos tarvii nii tän voi poistaa ku tekee EventHandler = new EventHanddler..
+        menuScene.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent e) {
+                System.out.println("Menusceneen asetettu onclick");
+                if (selectedKey.equals("none")) {
+                    changeKey = "none";
+                    prevSelectedKey = "jotain";
+                }
+            }
+        });
+//        //Loppuun
+//        int index = menuGroup.getChildren().size() - 1;
+//        for (int i = 0; i < keys.size(); i++) {
+//            menuGroup.getChildren().remove(index);
+//            index--;
+//        } 
+        
+        new AnimationTimer() {
+            @Override
+            public void handle(long currentNanoTime) {
+                if (!selectedKey.equals(prevSelectedKey)) {
+                    System.out.println("Piirretään selectedKey=" + selectedKey);
+                    keyButtons.getChildren().clear();
+                    for (int i = 0; i < keys.size(); i++) {
+                        keyButtons.getChildren().add(createKeyButton(keys.get(i), 600, 100, 40));
+                    }
+                }
+                prevSelectedKey = selectedKey;
+            }
+        }.start();
+    }
+    
+    public Node createKeyButton(final Key key, double width, double height, double fontSize) {
+        Canvas canvas = new Canvas(width, height);
+        GraphicsContext gc = canvas.getGraphicsContext2D();
+        if (selectedKey.equals(key.getKeyName())) {
+            gc.setFill(Color.YELLOW);
+            gc.fillRect(0, 0, width, height);
+            gc.setFill(Color.GREY);
+            gc.fillRect(4, 4, width - 8, height - 8);
+        } else {
+            gc.setFill(Color.GREY);
+            gc.fillRect(0, 0, width, height);
+        }
+        
+        gc.setFill(Color.RED);
+        gc.setStroke(Color.BLACK);
+        gc.setLineWidth(2);
+        Font theFont = Font.font( "Times New Roman", FontWeight.BOLD, fontSize );
+        gc.setFont( theFont );
+        gc.setTextBaseline(VPos.CENTER);
+        gc.fillText(key.getKeyName(), 20, canvas.getHeight() / 2);
+        gc.strokeText(key.getKeyName(), 20, canvas.getHeight() / 2);
+        
+        //Nyt vielä pikkulaatikko johon näppäin
+        gc.setFill(Color.BLACK);
+        gc.fillRect(Math.round(canvas.getWidth() / 2), 
+            Math.round(canvas.getHeight() / 4), 
+            Math.round((canvas.getWidth() / 2) - 20), 
+            Math.round((canvas.getHeight() / 4) * 2)
+        );
+        
+        gc.setFill(Color.WHITE);
+        gc.setLineWidth(2);
+        theFont = Font.font( "Times New Roman", FontWeight.BOLD, fontSize );
+        gc.setFont( theFont );
+        gc.setTextAlign(TextAlignment.CENTER);
+        gc.setTextBaseline(VPos.CENTER);
+        if (!changeKey.equals(key.getKeyName())) {
+            gc.fillText(
+                key.getKeyCode(), 
+                Math.round((canvas.getWidth() / 4) * 3), 
+                Math.round((canvas.getHeight() / 4) * 2)
+            );
+        } else {
+            gc.fillText(
+                "Press a key", 
+                Math.round((canvas.getWidth() / 4) * 3), 
+                Math.round((canvas.getHeight() / 4) * 2)
+            );
+        }
+        return canvas;
     }
     
     public Node createMenuButton(final String text, double width, double height, double fontSize) {
@@ -643,6 +993,7 @@ public class MainApp extends Application {
                 } else if (input.contains("ESCAPE")) {
                     gamePaused = true;
                     selected = "Resume";
+                    cameFromGame = true;
                     drawMenu();
                     //Laitetaan kaikki pauselle ja piirretään menu päälle
                     this.stop();
