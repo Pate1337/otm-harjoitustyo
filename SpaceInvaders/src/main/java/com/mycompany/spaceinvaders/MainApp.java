@@ -537,6 +537,9 @@ public class MainApp extends Application {
         for (int i = 0; i < keys.size(); i++) {
             keyButtons.getChildren().add(createKeyButton(keys.get(i), 600, 100, 40));
         }
+        //Vielä painikkeet Back to Settings ja Apply settings
+        keyButtons.getChildren().add(createMenuButton("Apply settings", 600, 50, 40));
+        keyButtons.getChildren().add(createMenuButton("Back to settings", 600, 50, 40));
         menuGroup.getChildren().add(keyButtons);
 
         Rectangle rec = null;
@@ -569,6 +572,43 @@ public class MainApp extends Application {
             });
             menuGroup.getChildren().add(rec);
         }
+        for (int i = 0; i < 2; i++) {
+            final int indx = i;
+            double first = 310 + ((keys.size() - 1) * 110);
+            rec = new Rectangle(100, first + (i * 60), 600, 50);
+            rec.setOpacity(0.0);
+            rec.setOnMouseEntered(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent e) {
+                    if (indx == 0) {
+                        selected = "Apply settings";
+                    } else {
+                        selected = "Back to settings";
+                    }
+                    System.out.println("Ollaan " + selected + " päällä");
+                }
+            });
+            rec.setOnMouseExited(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent e) {
+                    selected = "none";
+                    System.out.println("Ei olla enää mnikään päällä");
+                }
+            });
+            rec.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent e) {
+                    if (indx == 0) {
+                        selected = "SaveSettings";
+                    } else {
+                        selected = "BackToSettings";
+                    }
+                    System.out.println("selected= " + selected);
+                }
+            });
+            menuGroup.getChildren().add(rec);
+        }
+        
         menuScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent e) {
@@ -644,13 +684,31 @@ public class MainApp extends Application {
             @Override
             public void handle(long currentNanoTime) {
                 if (!selectedKey.equals(prevSelectedKey)) {
+                    selected = "none";
                     System.out.println("Piirretään selectedKey=" + selectedKey);
                     keyButtons.getChildren().clear();
                     for (int i = 0; i < keys.size(); i++) {
                         keyButtons.getChildren().add(createKeyButton(keys.get(i), 600, 100, 40));
                     }
+                    keyButtons.getChildren().add(createMenuButton("Apply settings", 600, 50, 40));
+                    keyButtons.getChildren().add(createMenuButton("Back to settings", 600, 50, 40));
+                } else if (!selected.equals(prevSelected)) {
+                    selectedKey = "none";
+                    System.out.println("Piirretään menunpainikkeiden takia");
+//                    keyButtons.getChildren().remove(keyButtons.getChildren().size() - 1);
+//                    keyButtons.getChildren().remove(keyButtons.getChildren().size() - 1);
+//                    
+//                    keyButtons.getChildren().add(createMenuButton("Apply settings", 400, 50, 40));
+//                    keyButtons.getChildren().add(createMenuButton("Back to settings", 400, 50, 40));
+                    keyButtons.getChildren().clear();
+                    for (int i = 0; i < keys.size(); i++) {
+                        keyButtons.getChildren().add(createKeyButton(keys.get(i), 600, 100, 40));
+                    }
+                    keyButtons.getChildren().add(createMenuButton("Apply settings", 600, 50, 40));
+                    keyButtons.getChildren().add(createMenuButton("Back to settings", 600, 50, 40));
                 }
                 prevSelectedKey = selectedKey;
+                prevSelected = selected;
             }
         }.start();
     }

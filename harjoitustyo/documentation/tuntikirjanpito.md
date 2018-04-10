@@ -17,3 +17,4 @@
  08.04.18 | 1h | Muokattu menua vielä siten, että kun painetaan kesken pelin esciä, niin peli näkyy taustalla, mutta tummana. Samoin varmistusikkunan ollessa näkyvissä.
  08.04.18 | 1h | Lisätty menuun settings painike. Toiminnallisuus mietitty, mutta ei toteutettu.
  09.04.18 | 9h | Settings painikkeen toiminnallisuus. Painikkeita voi nyt muuttaa asetuksista. Asetukset eivät talletu vielä tiedostoon.
+ 10.04.18 | 2h | Lisätty Keyboard settingsiin painikkeet "Apply" ja "Back to Settings".
