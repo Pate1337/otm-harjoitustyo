@@ -1,5 +1,6 @@
 package com.mycompany.spaceinvaders;
 
+import java.io.File;
 import java.io.FileInputStream;
 import javafx.scene.paint.Color;
 import javafx.application.Application;
@@ -27,6 +28,9 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.TextAlignment;
 import spaceInvaders.domain.Key;
@@ -52,6 +56,9 @@ public class MainApp extends Application {
     private String selectedKey;
     private String changeKey;
     private String prevSelectedKey;
+    private String menuSound;
+//    private MediaPlayer soundPlayer;
+//    private MediaView media;
     
     @Override
     public void init() throws Exception {
@@ -72,6 +79,11 @@ public class MainApp extends Application {
         String keyFile = properties.getProperty("keyFile");
         FileKeyDao keyDao = new FileKeyDao(keyFile);
         keyService = new KeyService(keyDao);
+        menuSound = properties.getProperty("menuSound");
+//        System.out.println("menuSound: " + menuSound);
+//        Media sound = new Media(new File(menuSound).toURI().toString());
+//        soundPlayer = new MediaPlayer(sound);
+//        media = new MediaView(soundPlayer);
     }
     
     public void drawMenu() {
@@ -93,6 +105,7 @@ public class MainApp extends Application {
             menuScene = new Scene(menuGroup);
             mainStage.setScene(menuScene); 
         }
+//        menuGroup.getChildren().add(media);
         
         Rectangle menuTarget1 = new Rectangle(200, 400, 400, 50);
         menuTarget1.setOpacity(0.0);
@@ -128,6 +141,8 @@ public class MainApp extends Application {
         menuTarget1.setOnMouseEntered(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent e) {
+                Utils.playSound(menuSound);
+//                soundPlayer.play();
                 if (!gamePaused) {
                     System.out.println("PLAY");
                     selected = "Play";
@@ -149,6 +164,8 @@ public class MainApp extends Application {
         menuTarget1.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent e) {
+                Utils.playSound(menuSound);
+//                soundPlayer.play();
                 selected = "stop";
             }
         });
@@ -156,6 +173,8 @@ public class MainApp extends Application {
         menuTarget2.setOnMouseEntered(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent e) {
+                Utils.playSound(menuSound);
+//                soundPlayer.play();
                 System.out.println("HIGHSCORES");
                 selected = "Highscores";
             }
@@ -172,6 +191,8 @@ public class MainApp extends Application {
         menuTarget3.setOnMouseEntered(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent e) {
+                Utils.playSound(menuSound);
+//                soundPlayer.play();
                 System.out.println("SETTINGS");
                 selected = "Settings";
             }
@@ -188,6 +209,8 @@ public class MainApp extends Application {
         menuTarget3.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent e) {
+                Utils.playSound(menuSound);
+//                soundPlayer.play();
                 selected = "GoToSettings";
             }
         });
@@ -195,6 +218,8 @@ public class MainApp extends Application {
         menuTarget4.setOnMouseEntered(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent e) {
+//                soundPlayer.play();
+                Utils.playSound(menuSound);
                 if (!gamePaused) {
                     System.out.println("QUIT");
                     selected = "Quit";
@@ -216,6 +241,8 @@ public class MainApp extends Application {
         menuTarget4.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent e) {
+//                soundPlayer.play();
+                Utils.playSound(menuSound);
                 if (gamePaused) {
                     selected = "ExitToMenu";
                 } else {
@@ -228,6 +255,7 @@ public class MainApp extends Application {
         menuScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent e) {
+                Utils.playSound(menuSound);
                 String code = e.getCode().toString();
                 if (code.equals(Key.DOWN.getKeyCode()) && !gamePaused) {
                     System.out.println("S painettu");
@@ -397,6 +425,7 @@ public class MainApp extends Application {
         settingsTarget1.setOnMouseEntered(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent e) {
+                Utils.playSound(menuSound);
                 selected = "Keyboard";
             }
         });
@@ -411,6 +440,7 @@ public class MainApp extends Application {
         settingsTarget1.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent e) {
+                Utils.playSound(menuSound);
                 selected = "KeyboardSettings";
             }
         });
@@ -418,6 +448,7 @@ public class MainApp extends Application {
         settingsTarget2.setOnMouseEntered(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent e) {
+                Utils.playSound(menuSound);
                 selected = "Back to menu";
             }
         });
@@ -432,6 +463,7 @@ public class MainApp extends Application {
         settingsTarget2.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent e) {
+                Utils.playSound(menuSound);
                 selected = "BackToMenu";
             }
         });
@@ -439,6 +471,7 @@ public class MainApp extends Application {
         menuScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent e) {
+                Utils.playSound(menuSound);
                 String code = e.getCode().toString();
                 if (code.equals(Key.DOWN.getKeyCode())) {
                     if (selected.equals("none")) {
@@ -554,6 +587,7 @@ public class MainApp extends Application {
             rec.setOnMouseEntered(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent e) {
+                    Utils.playSound(menuSound);
                     selected = "none";
                     selectedKey = keys.get(indx).getKeyName();
                 }
@@ -567,6 +601,7 @@ public class MainApp extends Application {
             rec.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent e) {
+                    Utils.playSound(menuSound);
                     changeKey = keys.get(indx).getKeyName();
                     prevSelectedKey = "none";
                 }
@@ -581,6 +616,7 @@ public class MainApp extends Application {
             rec.setOnMouseEntered(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent e) {
+                    Utils.playSound(menuSound);
                     selectedKey = "none";
                     if (indx == 0) {
                         selected = "Apply settings";
@@ -600,6 +636,7 @@ public class MainApp extends Application {
             rec.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent e) {
+                    Utils.playSound(menuSound);
                     if (indx == 0) {
                         selected = "SaveSettings";
                     } else {
@@ -614,6 +651,7 @@ public class MainApp extends Application {
         menuScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent e) {
+                Utils.playSound(menuSound);
                 String code = e.getCode().toString();
                 if (!changeKey.equals("none")) {
                     //Nyt pitää asettaa uusi näppäin!!
@@ -870,6 +908,7 @@ public class MainApp extends Application {
         menuTarget1.setOnMouseEntered(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent e) {
+                Utils.playSound(menuSound);
                 System.out.println("Ollaan tekstin päällä");
                 if (text.equals("Quit")) {
                     selected = "Quit";
@@ -888,6 +927,7 @@ public class MainApp extends Application {
         menuTarget1.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent e) {
+                Utils.playSound(menuSound);
                 if (text.equals("Quit")) {
                     selected = "QuitApp";
                 } else {
@@ -898,6 +938,7 @@ public class MainApp extends Application {
         menuTarget2.setOnMouseEntered(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent e) {
+                Utils.playSound(menuSound);
                 System.out.println("Ollaan Cancelin päällä");
                 selected = "Cancel";
             }
@@ -912,12 +953,14 @@ public class MainApp extends Application {
         menuTarget2.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent e) {
+                Utils.playSound(menuSound);
                 selected = "goBack";
             }
         });
         menuScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent e) {
+                Utils.playSound(menuSound);
                 String code = e.getCode().toString();
                 if (code.equals(Key.LEFT.getKeyCode())) {
                     System.out.println("A painettu");
@@ -1111,6 +1154,7 @@ public class MainApp extends Application {
         mainGroup = new Group();
         
         mainGroup.getChildren().add(backGround);
+//        mainGroup.getChildren().add(media);
         
         Canvas canvas = new Canvas(800, 800);
         mainGroup.getChildren().add( canvas );
@@ -1130,7 +1174,9 @@ public class MainApp extends Application {
             new EventHandler<KeyEvent>() {
                 @Override
                 public void handle(KeyEvent e) {
-                    System.out.println("Toimii");                   
+                    System.out.println("Toimii");  
+//                    soundPlayer.play();
+                        Utils.playSound(menuSound);
 //                    stage.setScene(menuScene);
                     drawMenu();
                 }
@@ -1140,6 +1186,8 @@ public class MainApp extends Application {
                 @Override
                 public void handle(MouseEvent e) {
                     System.out.println("Toimii");
+                    Utils.playSound(menuSound);
+//                    soundPlayer.play();
 //                    stage.setScene(menuScene);
                     drawMenu();
                 }
