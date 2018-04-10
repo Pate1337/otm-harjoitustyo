@@ -14,4 +14,5 @@ import spaceInvaders.domain.Key;
  */
 public interface KeyDao {
     ArrayList<Key> getAll();
+    void update();
 }

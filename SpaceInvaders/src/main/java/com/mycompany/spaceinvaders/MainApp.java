@@ -21,7 +21,6 @@ import java.util.Set;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.input.KeyEvent;
@@ -511,6 +510,7 @@ public class MainApp extends Application {
     
     public void drawKeyboardSettings() {
         System.out.println("Moi");
+        final int kidsAtStart = menuGroup.getChildren().size();
         selectedKey = "none";
         prevSelectedKey = "none";
         changeKey = "none";
@@ -554,6 +554,7 @@ public class MainApp extends Application {
             rec.setOnMouseEntered(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent e) {
+                    selected = "none";
                     selectedKey = keys.get(indx).getKeyName();
                 }
             });
@@ -580,6 +581,7 @@ public class MainApp extends Application {
             rec.setOnMouseEntered(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent e) {
+                    selectedKey = "none";
                     if (indx == 0) {
                         selected = "Apply settings";
                     } else {
@@ -627,16 +629,25 @@ public class MainApp extends Application {
                     Key key = keys.get(index);
                     key.setKeyCode(code);
                     changeKey = "none";
-                    selectedKey = "none";
+//                    selectedKey = "none";
                     prevSelected = "jotain";
                 } else if (code.equals(Key.DOWN.getKeyCode())) {
                     if (!selectedKey.equals("none")) {
                         int index = keyNames.indexOf(selectedKey);
                         if (index == keyNames.size() - 1) {
-                            selectedKey = keyNames.get(0);
+                            System.out.println("Oltiin vikassa näppäimessä");
+                            selectedKey = "none";
+                            selected = "Apply settings";
+                            prevSelected = "jotain";
                         } else {
                             selectedKey = keyNames.get(index + 1);
                         }
+                    } else if (selected.equals("Apply settings")) {
+                        System.out.println("selected=" + selected);
+                        selected = "Back to settings";
+                    } else if (selected.equals("Back to settings")) {
+                        selected = "none";
+                        selectedKey = keyNames.get(0);
                     } else {
                         selectedKey = keyNames.get(0);
                     }
@@ -644,10 +655,17 @@ public class MainApp extends Application {
                     if (!selectedKey.equals("none")) {
                         int index = keyNames.indexOf(selectedKey);
                         if (index == 0) {
-                            selectedKey = keyNames.get(keyNames.size() - 1);
+                            selectedKey = "none";
+                            selected = "Back to settings";
+                            prevSelected = "jotain";
                         } else {
                             selectedKey = keyNames.get(index - 1);
                         }
+                    } else if (selected.equals("Back to settings")) {
+                        selected = "Apply settings";
+                    } else if (selected.equals("Apply settings")) {
+                        selected = "none";
+                        selectedKey = keyNames.get(keyNames.size() - 1);
                     } else {
                         selectedKey = keyNames.get(0);
                     }
@@ -655,6 +673,11 @@ public class MainApp extends Application {
                     if (selectedKey.equals("none")) {
                         changeKey = "none";
                         prevSelectedKey = "jotain";
+                        if (selected.equals("Apply settings")) {
+                            selected = "SaveSettings";
+                        } else if (selected.equals("Back to settings")) {
+                            selected = "BackToSettings";
+                        }
                     } else {
                         changeKey = selectedKey;
                         prevSelectedKey = "none";
@@ -663,7 +686,7 @@ public class MainApp extends Application {
             }
         });
         //Jos tarvii nii tän voi poistaa ku tekee EventHandler = new EventHanddler..
-        menuScene.setOnMouseClicked(new EventHandler<MouseEvent>() {
+        final EventHandler onClick = new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent e) {
                 System.out.println("Menusceneen asetettu onclick");
@@ -672,19 +695,43 @@ public class MainApp extends Application {
                     prevSelectedKey = "jotain";
                 }
             }
-        });
-//        //Loppuun
-//        int index = menuGroup.getChildren().size() - 1;
-//        for (int i = 0; i < keys.size(); i++) {
-//            menuGroup.getChildren().remove(index);
-//            index--;
-//        } 
+        };
+        menuScene.setOnMouseClicked(onClick);
         
         new AnimationTimer() {
             @Override
             public void handle(long currentNanoTime) {
-                if (!selectedKey.equals(prevSelectedKey)) {
-                    selected = "none";
+                if (selected.equals("BackToSettings")) {
+                    //Poistetaan kaikki lisätyt lapset menuGrouppiin
+                    int kidsNow = menuGroup.getChildren().size();
+                    int kidsAdded = kidsNow - kidsAtStart;
+                    for (int i = 0; i < kidsAdded; i++) {
+                        menuGroup.getChildren().remove(menuGroup.getChildren().size() - 1);
+                    }
+                    //Ei nyt onnistu toi mouseEventhandlerin poisto. Olkoon.
+                    //Asetetaan selected = "Keyboard"
+                    selected = "Keyboard";
+                    //Haetaan painikkeet tiedostosta, eli init()
+                    try {
+                        init();
+                    } catch (Exception e) {
+                        System.out.println(e);
+                    }
+                    //Piirretään drawSetting()
+                    drawSettings();
+                    //this.stop();
+                    this.stop();
+                } else if (selected.equals("SaveSettings")) {
+                    System.out.println("Nyt talletetaan tiedot");
+                    selected = "Back to settings";
+                    keyService.updateFile();
+                    keyButtons.getChildren().clear();
+                    for (int i = 0; i < keys.size(); i++) {
+                        keyButtons.getChildren().add(createKeyButton(keys.get(i), 600, 100, 40));
+                    }
+                    keyButtons.getChildren().add(createMenuButton("Apply settings", 600, 50, 40));
+                    keyButtons.getChildren().add(createMenuButton("Back to settings", 600, 50, 40));
+                } else if (!selectedKey.equals(prevSelectedKey)) {
                     System.out.println("Piirretään selectedKey=" + selectedKey);
                     keyButtons.getChildren().clear();
                     for (int i = 0; i < keys.size(); i++) {
@@ -693,13 +740,7 @@ public class MainApp extends Application {
                     keyButtons.getChildren().add(createMenuButton("Apply settings", 600, 50, 40));
                     keyButtons.getChildren().add(createMenuButton("Back to settings", 600, 50, 40));
                 } else if (!selected.equals(prevSelected)) {
-                    selectedKey = "none";
                     System.out.println("Piirretään menunpainikkeiden takia");
-//                    keyButtons.getChildren().remove(keyButtons.getChildren().size() - 1);
-//                    keyButtons.getChildren().remove(keyButtons.getChildren().size() - 1);
-//                    
-//                    keyButtons.getChildren().add(createMenuButton("Apply settings", 400, 50, 40));
-//                    keyButtons.getChildren().add(createMenuButton("Back to settings", 400, 50, 40));
                     keyButtons.getChildren().clear();
                     for (int i = 0; i < keys.size(); i++) {
                         keyButtons.getChildren().add(createKeyButton(keys.get(i), 600, 100, 40));

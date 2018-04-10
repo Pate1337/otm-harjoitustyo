@@ -32,4 +32,8 @@ public class KeyService {
         }
         return keyNames;
     }
+    
+    public void updateFile() {
+        this.keyDao.update();
+    }
 }

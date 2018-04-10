@@ -52,4 +52,48 @@ public class FileKeyDao implements KeyDao {
     public ArrayList<Key> getAll() {
         return keys;
     }
+    
+    @Override
+    public void update() {
+        File originalFile = new File(this.file);
+        File tempFile = new File("tempfile.txt");
+        String line = null;
+        try {
+            Scanner reader = new Scanner(originalFile);
+            FileWriter writer = new FileWriter(tempFile);
+            while (reader.hasNextLine()) {
+                String[] parts = reader.nextLine().split("=");
+                line = parts[0] + "=" + parts[1] + "\n";
+                if (parts[0].equals("left")) {
+                    if (!parts[1].equals(Key.LEFT.getKeyCode())) {
+                        line = parts[0] + "=" + Key.LEFT.getKeyCode() + "\n";
+                    }
+                } else if (parts[0].equals("up")) {
+                    if (!parts[1].equals(Key.UP.getKeyCode())) {
+                        line = parts[0] + "=" + Key.UP.getKeyCode() + "\n";
+                    }
+                } else if (parts[0].equals("right")) {
+                    if (!parts[1].equals(Key.RIGHT.getKeyCode())) {
+                        line = parts[0] + "=" + Key.RIGHT.getKeyCode() + "\n";
+                    }
+                } else if (parts[0].equals("down")) {
+                    if (!parts[1].equals(Key.DOWN.getKeyCode())) {
+                        line = parts[0] + "=" + Key.DOWN.getKeyCode() + "\n";
+                    }
+                }
+                writer.write(line);
+            }
+            reader.close();
+            writer.close();
+            if (!originalFile.delete()) {
+                System.out.println("Could not delete file");
+                return;
+            }
+            if (!tempFile.renameTo(originalFile)) {
+                System.out.println("Could not rename file");
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
 }
