@@ -19,3 +19,4 @@
  09.04.18 | 9h | Settings painikkeen toiminnallisuus. Painikkeita voi nyt muuttaa asetuksista. Asetukset eivät talletu vielä tiedostoon.
  10.04.18 | 2h | Lisätty Keyboard settingsiin painikkeet "Apply" ja "Back to Settings".
  10.04.18 | 2h | Muutetut näppäimet tallentuvat nyt tiedostoon, kun painetaan Apply settings, muutoin eivät.
+ 10.04.18 | 1h | Testiriippuvuudet ja kaksi testiä lisätty. Siistitty README.
