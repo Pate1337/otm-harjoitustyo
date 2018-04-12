@@ -13,7 +13,8 @@ public enum Key {
     LEFT("A", "Left"),
     UP("W", "Up"),
     RIGHT("D", "Right"),
-    DOWN("S", "Down");
+    DOWN("S", "Down"),
+    SHOOT("ENTER", "Shoot");
     
     private String keyCode;
     private String keyName;

@@ -40,6 +40,9 @@ public class FileKeyDao implements KeyDao {
                 } else if (parts[0].equals("down")) {
                     Key.DOWN.setKeyCode(parts[1]);
                     keys.add(Key.DOWN);
+                } else if (parts[0].equals("shoot")) {
+                    Key.SHOOT.setKeyCode(parts[1]);
+                    keys.add(Key.SHOOT);
                 }
             }
         } catch (Exception e) {
@@ -79,6 +82,10 @@ public class FileKeyDao implements KeyDao {
                 } else if (parts[0].equals("down")) {
                     if (!parts[1].equals(Key.DOWN.getKeyCode())) {
                         line = parts[0] + "=" + Key.DOWN.getKeyCode() + "\n";
+                    }
+                } else if (parts[0].equals("shoot")) {
+                    if (!parts[1].equals(Key.SHOOT.getKeyCode())) {
+                        line = parts[0] + "=" + Key.SHOOT.getKeyCode() + "\n";
                     }
                 }
                 writer.write(line);

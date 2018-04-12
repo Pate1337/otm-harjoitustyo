@@ -382,16 +382,16 @@ public class MainApp extends Application {
                     } else {
                         selected = "none";
                     }
-                } else if (code.equals("ENTER") && (selected.equals("Play") || selected.equals("Resume"))) {
+                } else if (code.equals(Key.SHOOT.getKeyCode()) && (selected.equals("Play") || selected.equals("Resume"))) {
                     Utils.playSound(menuSound);
                     selected = "stop";
-                } else if (code.equals("ENTER") && selected.equals("Quit")) {
+                } else if (code.equals(Key.SHOOT.getKeyCode()) && selected.equals("Quit")) {
                     Utils.playSound(menuSound);
                     selected = "QuitApp";
-                } else if (code.equals("ENTER") && selected.equals("Exit to main menu")) {
+                } else if (code.equals(Key.SHOOT.getKeyCode()) && selected.equals("Exit to main menu")) {
                     Utils.playSound(menuSound);
                     selected = "ExitToMenu";
-                } else if (code.equals("ENTER") && selected.equals("Settings")) {
+                } else if (code.equals(Key.SHOOT.getKeyCode()) && selected.equals("Settings")) {
                     Utils.playSound(menuSound);
                     selected = "GoToSettings";
                 }
@@ -577,7 +577,7 @@ public class MainApp extends Application {
                     } else {
                         selected = "none";
                     }
-                } else if (code.equals("ENTER")) {
+                } else if (code.equals(Key.SHOOT.getKeyCode())) {
                     Utils.playSound(menuSound);
                     if (selected.equals("Keyboard")) {
                         selected = "KeyboardSettings";
@@ -681,7 +681,7 @@ public class MainApp extends Application {
         final VBox keyButtons = new VBox();
         keyButtons.setSpacing(10);
         keyButtons.setLayoutX(100);
-        keyButtons.setLayoutY(200);
+        keyButtons.setLayoutY(100);
         for (int i = 0; i < keys.size(); i++) {
             keyButtons.getChildren().add(createKeyButton(keys.get(i), 600, 100, 40));
         }
@@ -694,9 +694,9 @@ public class MainApp extends Application {
         for (int i = 0; i < keys.size(); i++) {
             final int indx = i;
             if (i == 0) {
-                rec = new Rectangle(100, 200, 600, 100);
+                rec = new Rectangle(100, 100, 600, 100);
             } else {
-                rec = new Rectangle(100, (200 + (i * 110)), 600, 100);
+                rec = new Rectangle(100, (100 + (i * 110)), 600, 100);
             }
             rec.setOpacity(0.0);
             rec.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -725,7 +725,7 @@ public class MainApp extends Application {
         }
         for (int i = 0; i < 2; i++) {
             final int indx = i;
-            double first = 310 + ((keys.size() - 1) * 110);
+            double first = 210 + ((keys.size() - 1) * 110);
             rec = new Rectangle(100, first + (i * 60), 600, 50);
             rec.setOpacity(0.0);
             rec.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -824,7 +824,7 @@ public class MainApp extends Application {
                     } else {
                         selectedKey = keyNames.get(0);
                     }
-                } else if (code.equals("ENTER")) {
+                } else if (code.equals(Key.SHOOT.getKeyCode())) {
                     Utils.playSound(menuSound);
                     if (selectedKey.equals("none")) {
                         changeKey = "none";
@@ -1099,7 +1099,7 @@ public class MainApp extends Application {
                     } else if (selected.equals("Cancel")) {
                         selected = text;
                     }
-                } else if (code.equals("ENTER")) {
+                } else if (code.equals(Key.SHOOT.getKeyCode())) {
                     Utils.playSound(menuSound);
                     if (selected.equals("Cancel")) {
                         selected = "goBack";

@@ -22,3 +22,4 @@
  10.04.18 | 1h | Testiriippuvuudet ja kaksi testiä lisätty. Siistitty README.
  10.04.18 | 2h | Lisätty menuun äänet.
  12.04.18 | 4h | Menuun lisätty kuvapainike, joka kertoo onko äänet päällä vai pois. Kuvaketta painamalla kuva muuttuu ja äänet menevät päälle tai pois.
+ 12.04.18 | 0,5h | Lisätty Shoot -näppäin.
