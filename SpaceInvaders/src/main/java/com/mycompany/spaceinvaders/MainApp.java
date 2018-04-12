@@ -136,7 +136,6 @@ public class MainApp extends Application {
         button.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent e) {
-                System.out.println("Painettiin mutepainiketta!");
                 mutePressed = true;
             }
         });
@@ -144,7 +143,6 @@ public class MainApp extends Application {
     }
     
     public void drawMenu() {
-        System.out.println("Moro");
         final Rectangle behind = new Rectangle(0, 0, 800, 800);
         behind.setFill(Color.BLACK);
         behind.setOpacity(0.9);
@@ -206,10 +204,8 @@ public class MainApp extends Application {
                 Utils.playSound(menuSound);
 //                soundPlayer.play();
                 if (!gamePaused) {
-                    System.out.println("PLAY");
                     selected = "Play";
                 } else {
-                    System.out.println("RESUME");
                     selected = "Resume";
                 }
             }
@@ -218,7 +214,6 @@ public class MainApp extends Application {
         menuTarget1.setOnMouseExited(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent e) {
-                System.out.println("NONE");
                 selected = "none";
             }
         });
@@ -237,7 +232,6 @@ public class MainApp extends Application {
             public void handle(MouseEvent e) {
                 Utils.playSound(menuSound);
 //                soundPlayer.play();
-                System.out.println("HIGHSCORES");
                 selected = "Highscores";
             }
         });
@@ -245,7 +239,6 @@ public class MainApp extends Application {
         menuTarget2.setOnMouseExited(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent e) {
-                System.out.println("NONE");
                 selected = "none";
             }
         });
@@ -255,7 +248,6 @@ public class MainApp extends Application {
             public void handle(MouseEvent e) {
                 Utils.playSound(menuSound);
 //                soundPlayer.play();
-                System.out.println("SETTINGS");
                 selected = "Settings";
             }
         });
@@ -263,7 +255,6 @@ public class MainApp extends Application {
         menuTarget3.setOnMouseExited(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent e) {
-                System.out.println("NONE");
                 selected = "none";
             }
         });
@@ -283,10 +274,8 @@ public class MainApp extends Application {
 //                soundPlayer.play();
                 Utils.playSound(menuSound);
                 if (!gamePaused) {
-                    System.out.println("QUIT");
                     selected = "Quit";
                 } else {
-                    System.out.println("Exit to main menu");
                     selected = "Exit to main menu";
                 }
             }
@@ -295,7 +284,6 @@ public class MainApp extends Application {
         menuTarget4.setOnMouseExited(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent e) {
-                System.out.println("NONE");
                 selected = "none";
             }
         });
@@ -320,7 +308,6 @@ public class MainApp extends Application {
                 String code = e.getCode().toString();
                 if (code.equals(Key.DOWN.getKeyCode()) && !gamePaused) {
                     Utils.playSound(menuSound);
-                    System.out.println("S painettu");
                     if (selected.equals("none")) {
                         selected = "Play";
                     } else if (selected.equals("Play")) {
@@ -336,7 +323,6 @@ public class MainApp extends Application {
                     }
                 } else if (code.equals(Key.UP.getKeyCode()) && !gamePaused) {
                     Utils.playSound(menuSound);
-                    System.out.println("W painettu");
                     if (selected.equals("none")) {
                         selected = "Play";
                     } else if (selected.equals("Play")) {
@@ -352,7 +338,6 @@ public class MainApp extends Application {
                     }
                 } else if (code.equals(Key.DOWN.getKeyCode()) && gamePaused) {
                     Utils.playSound(menuSound);
-                    System.out.println("S painettu");
                     if (selected.equals("none")) {
                         selected = "Resume";
                     } else if (selected.equals("Resume")) {
@@ -368,7 +353,6 @@ public class MainApp extends Application {
                     }
                 } else if (code.equals(Key.UP.getKeyCode()) && gamePaused) {
                     Utils.playSound(menuSound);
-                    System.out.println("W painettu");
                     if (selected.equals("none")) {
                         selected = "Resume";
                     } else if (selected.equals("Resume")) {
@@ -410,7 +394,6 @@ public class MainApp extends Application {
                     menuGroup.getChildren().add(muteButton());
                 }
                 if (selected.equals("stop")) {
-                    System.out.println("Lopetettu");
                     gamePaused = false;
                     drawGame();
                     this.stop();
@@ -435,28 +418,24 @@ public class MainApp extends Application {
                     drawSettings();
                     this.stop();
                 } else if (!gamePaused && !selected.equals("none") && !prevSelected.equals(selected)) { // && !inputs.isEmpty()
-                    System.out.println("Piirretään koska !== none");
                     menu.getChildren().clear();
                     menu.getChildren().add(createMenuButton("Play", 400, 50, 40));
                     menu.getChildren().add(createMenuButton("Highscores", 400, 50, 40));
                     menu.getChildren().add(createMenuButton("Settings", 400, 50, 40));
                     menu.getChildren().add(createMenuButton("Quit", 400, 50, 40));
                 } else if (!gamePaused && selected.equals("none") && !prevSelected.equals(selected)) {
-                    System.out.println("Piirretään koska none");
                     menu.getChildren().clear();
                     menu.getChildren().add(createMenuButton("Play", 400, 50, 40));
                     menu.getChildren().add(createMenuButton("Highscores", 400, 50, 40));
                     menu.getChildren().add(createMenuButton("Settings", 400, 50, 40));
                     menu.getChildren().add(createMenuButton("Quit", 400, 50, 40));
                 } else if (gamePaused && !selected.equals("none") && !prevSelected.equals(selected)) {
-                    System.out.println("Piirretään koska !== none");
                     menu.getChildren().clear();
                     menu.getChildren().add(createMenuButton("Resume", 400, 50, 40));
                     menu.getChildren().add(createMenuButton("Highscores", 400, 50, 40));
                     menu.getChildren().add(createMenuButton("Settings", 400, 50, 40));
                     menu.getChildren().add(createMenuButton("Exit to main menu", 400, 50, 40));
                 } else if (gamePaused && selected.equals("none") && !prevSelected.equals(selected)) {
-                    System.out.println("Piirretään koska none");
                     menu.getChildren().clear();
                     menu.getChildren().add(createMenuButton("Resume", 400, 50, 40));
                     menu.getChildren().add(createMenuButton("Highscores", 400, 50, 40));
@@ -472,7 +451,6 @@ public class MainApp extends Application {
     }
     
     public void drawSettings() {
-        System.out.println("Terve, ollaan settingseissä!");
         try {
             image = new Image(new FileInputStream(backGroundImage));
         } catch (Exception e) {
@@ -639,7 +617,6 @@ public class MainApp extends Application {
     }
     
     public void drawKeyboardSettings() {
-        System.out.println("Moi");
         final int kidsAtStart = menuGroup.getChildren().size();
         selectedKey = "none";
         prevSelectedKey = "none";
@@ -659,7 +636,6 @@ public class MainApp extends Application {
         final EventHandler onClick = new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent e) {
-                System.out.println("imageview asetettu onclick");
 //                if (selectedKey.equals("none")) {
 //                    changeKey = "none";
 //                    prevSelectedKey = "jotain";
@@ -738,14 +714,12 @@ public class MainApp extends Application {
                     } else {
                         selected = "Back to settings";
                     }
-                    System.out.println("Ollaan " + selected + " päällä");
                 }
             });
             rec.setOnMouseExited(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent e) {
                     selected = "none";
-                    System.out.println("Ei olla enää mnikään päällä");
                 }
             });
             rec.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -757,7 +731,6 @@ public class MainApp extends Application {
                     } else {
                         selected = "BackToSettings";
                     }
-                    System.out.println("selected= " + selected);
                 }
             });
             menuGroup.getChildren().add(rec);
@@ -789,7 +762,6 @@ public class MainApp extends Application {
                     if (!selectedKey.equals("none")) {
                         int index = keyNames.indexOf(selectedKey);
                         if (index == keyNames.size() - 1) {
-                            System.out.println("Oltiin vikassa näppäimessä");
                             selectedKey = "none";
                             selected = "Apply settings";
                             prevSelected = "jotain";
@@ -797,7 +769,6 @@ public class MainApp extends Application {
                             selectedKey = keyNames.get(index + 1);
                         }
                     } else if (selected.equals("Apply settings")) {
-                        System.out.println("selected=" + selected);
                         selected = "Back to settings";
                     } else if (selected.equals("Back to settings")) {
                         selected = "none";
@@ -878,7 +849,6 @@ public class MainApp extends Application {
                     //this.stop();
                     this.stop();
                 } else if (selected.equals("SaveSettings")) {
-                    System.out.println("Nyt talletetaan tiedot");
                     selected = "Back to settings";
                     keyService.updateFile();
                     keyButtons.getChildren().clear();
@@ -888,7 +858,6 @@ public class MainApp extends Application {
                     keyButtons.getChildren().add(createMenuButton("Apply settings", 600, 50, 40));
                     keyButtons.getChildren().add(createMenuButton("Back to settings", 600, 50, 40));
                 } else if (!selectedKey.equals(prevSelectedKey)) {
-                    System.out.println("Piirretään selectedKey=" + selectedKey);
                     keyButtons.getChildren().clear();
                     for (int i = 0; i < keys.size(); i++) {
                         keyButtons.getChildren().add(createKeyButton(keys.get(i), 600, 100, 40));
@@ -896,7 +865,6 @@ public class MainApp extends Application {
                     keyButtons.getChildren().add(createMenuButton("Apply settings", 600, 50, 40));
                     keyButtons.getChildren().add(createMenuButton("Back to settings", 600, 50, 40));
                 } else if (!selected.equals(prevSelected)) {
-                    System.out.println("Piirretään menunpainikkeiden takia");
                     keyButtons.getChildren().clear();
                     for (int i = 0; i < keys.size(); i++) {
                         keyButtons.getChildren().add(createKeyButton(keys.get(i), 600, 100, 40));
@@ -1027,7 +995,6 @@ public class MainApp extends Application {
             @Override
             public void handle(MouseEvent e) {
                 Utils.playSound(menuSound);
-                System.out.println("Ollaan tekstin päällä");
                 if (text.equals("Quit")) {
                     selected = "Quit";
                 } else {
@@ -1038,7 +1005,6 @@ public class MainApp extends Application {
         menuTarget1.setOnMouseExited(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent e) {
-                System.out.println("Ei olla enää tekstin päällä");
                 selected = "none";
             }
         });
@@ -1057,14 +1023,12 @@ public class MainApp extends Application {
             @Override
             public void handle(MouseEvent e) {
                 Utils.playSound(menuSound);
-                System.out.println("Ollaan Cancelin päällä");
                 selected = "Cancel";
             }
         });
         menuTarget2.setOnMouseExited(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent e) {
-                System.out.println("Ei olla enää Cancelin päällä");
                 selected = "none";
             }
         });
@@ -1081,7 +1045,6 @@ public class MainApp extends Application {
                 String code = e.getCode().toString();
                 if (code.equals(Key.LEFT.getKeyCode())) {
                     Utils.playSound(menuSound);
-                    System.out.println("A painettu");
                     if (selected.equals("none")) {
                         selected = text;
                     } else if (selected.equals(text)) {
@@ -1091,7 +1054,6 @@ public class MainApp extends Application {
                     }
                 } else if (code.equals(Key.RIGHT.getKeyCode())) {
                     Utils.playSound(menuSound);
-                    System.out.println("D painettu");
                     if (selected.equals("none")) {
                         selected = text;
                     } else if (selected.equals(text)) {
@@ -1133,7 +1095,6 @@ public class MainApp extends Application {
                     buttons.getChildren().add(createMenuButton(text, 160, 40, 15));
                     buttons.getChildren().add(createMenuButton("Cancel", 160, 40, 15));
                 } else if (selected.equals("QuitApp")) {
-                    System.out.println("Bye bye");
                     Platform.exit();
                     System.exit(0);
                 } else if (selected.equals("ExitToMenu")) {
@@ -1199,7 +1160,6 @@ public class MainApp extends Application {
     }
     
     public void drawGame() {
-        System.out.println("Piirretään peli");
         mainGroup.getChildren().clear();
         mainGroup = new Group();
         mainGroup.getChildren().add(backGround);
@@ -1297,7 +1257,6 @@ public class MainApp extends Application {
             new EventHandler<KeyEvent>() {
                 @Override
                 public void handle(KeyEvent e) {
-                    System.out.println("Toimii");  
 //                    soundPlayer.play();
                         Utils.playSound(menuSound);
 //                    stage.setScene(menuScene);
@@ -1308,7 +1267,6 @@ public class MainApp extends Application {
             new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent e) {
-                    System.out.println("Toimii");
                     Utils.playSound(menuSound);
 //                    soundPlayer.play();
 //                    stage.setScene(menuScene);
