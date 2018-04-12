@@ -24,3 +24,4 @@
  12.04.18 | 4h | Menuun lisätty kuvapainike, joka kertoo onko äänet päällä vai pois. Kuvaketta painamalla kuva muuttuu ja äänet menevät päälle tai pois.
  12.04.18 | 0,5h | Lisätty Shoot -näppäin.
  12.04.18 | 1h | Generoitu jar ja luotu mukana ladattavat tiedostot.
+ 12.04.18 | 0,5h | Lisätty käyttöohje.

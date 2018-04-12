@@ -4,7 +4,7 @@ Projekti kurssille Ohjelmistotekniikan menetelmät. Sovellus on peli, joka pohja
 
 ## Dokumentaatio
 
-[Käyttöohje]()
+[Käyttöohje](https://github.com/Pate1337/otm-harjoitustyo/blob/master/harjoitustyo/documentation/kayttoohje.md)
 
 [Vaatimusmäärittely](https://github.com/Pate1337/otm-harjoitustyo/blob/master/harjoitustyo/documentation/vaatimusmaarittely.md)
 
