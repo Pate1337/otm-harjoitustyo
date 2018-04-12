@@ -57,6 +57,12 @@ public class MainApp extends Application {
     private String changeKey;
     private String prevSelectedKey;
     private String menuSound;
+    private ImageView soundOnView;
+    private Image soundOnIcon;
+    private Image soundOffIcon;
+    private ImageView soundOffView;
+    private ImageView soundView;
+    private boolean mutePressed = false;
 //    private MediaPlayer soundPlayer;
 //    private MediaView media;
     
@@ -80,10 +86,61 @@ public class MainApp extends Application {
         FileKeyDao keyDao = new FileKeyDao(keyFile);
         keyService = new KeyService(keyDao);
         menuSound = properties.getProperty("menuSound");
+        
+        //Mutepainike
+        String soundOn = properties.getProperty("soundIconWhite");
+        soundOnIcon = new Image(new FileInputStream(soundOn));
+//        ImageView newView = new ImageView(soundIcon);
+        ImageView soundIsOnView = new ImageView(soundOnIcon);
+        soundIsOnView.setX(700); 
+        soundIsOnView.setY(700);
+        soundIsOnView.setFitHeight(64);
+        soundIsOnView.setFitWidth(64);
+        soundIsOnView.setPreserveRatio(false);
+        soundOnView = soundIsOnView;
+        
+        String soundOff = properties.getProperty("whiteMuteIcon");
+        soundOffIcon = new Image(new FileInputStream(soundOff));
+//        ImageView newView = new ImageView(soundIcon);
+        ImageView muteView = new ImageView(soundOffIcon);
+        muteView.setX(690); 
+        muteView.setY(698);
+        muteView.setFitHeight(72);
+        muteView.setFitWidth(64);
+        muteView.setPreserveRatio(false);
+        soundOffView = muteView;
+        if (!Utils.getSoundState()) {
+            soundView = soundOnView;
+        } else {
+            soundView = soundOffView;
+        }
 //        System.out.println("menuSound: " + menuSound);
 //        Media sound = new Media(new File(menuSound).toURI().toString());
 //        soundPlayer = new MediaPlayer(sound);
 //        media = new MediaView(soundPlayer);
+    }
+    
+    public void toggleSounds() {
+        if (!Utils.getSoundState()) {
+            Utils.mute();
+            soundView = soundOffView;
+        } else {
+            Utils.unMute();
+            soundView = soundOnView;
+        }
+    }
+    
+    public Node muteButton() {
+        Rectangle button = new Rectangle(700, 700, 64, 64);
+        button.setOpacity(0.0);
+        button.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent e) {
+                System.out.println("Painettiin mutepainiketta!");
+                mutePressed = true;
+            }
+        });
+        return button;
     }
     
     public void drawMenu() {
@@ -99,9 +156,11 @@ public class MainApp extends Application {
                 cameFromGame = false;
             }
             menuGroup.getChildren().add(behind);
+            menuGroup.getChildren().add(soundView);
         } else {
             menuGroup = new Group();
             menuGroup.getChildren().add(backGround);
+            menuGroup.getChildren().add(soundView);
             menuScene = new Scene(menuGroup);
             mainStage.setScene(menuScene); 
         }
@@ -137,6 +196,9 @@ public class MainApp extends Application {
         menuGroup.getChildren().add(menuTarget2);
         menuGroup.getChildren().add(menuTarget3);
         menuGroup.getChildren().add(menuTarget4);
+        
+        final Node muteButton = muteButton();
+        menuGroup.getChildren().add(muteButton);
         
         menuTarget1.setOnMouseEntered(new EventHandler<MouseEvent>() {
             @Override
@@ -255,9 +317,9 @@ public class MainApp extends Application {
         menuScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent e) {
-                Utils.playSound(menuSound);
                 String code = e.getCode().toString();
                 if (code.equals(Key.DOWN.getKeyCode()) && !gamePaused) {
+                    Utils.playSound(menuSound);
                     System.out.println("S painettu");
                     if (selected.equals("none")) {
                         selected = "Play";
@@ -273,6 +335,7 @@ public class MainApp extends Application {
                         selected = "none";
                     }
                 } else if (code.equals(Key.UP.getKeyCode()) && !gamePaused) {
+                    Utils.playSound(menuSound);
                     System.out.println("W painettu");
                     if (selected.equals("none")) {
                         selected = "Play";
@@ -288,6 +351,7 @@ public class MainApp extends Application {
                         selected = "none";
                     }
                 } else if (code.equals(Key.DOWN.getKeyCode()) && gamePaused) {
+                    Utils.playSound(menuSound);
                     System.out.println("S painettu");
                     if (selected.equals("none")) {
                         selected = "Resume";
@@ -303,6 +367,7 @@ public class MainApp extends Application {
                         selected = "none";
                     }
                 } else if (code.equals(Key.UP.getKeyCode()) && gamePaused) {
+                    Utils.playSound(menuSound);
                     System.out.println("W painettu");
                     if (selected.equals("none")) {
                         selected = "Resume";
@@ -318,12 +383,16 @@ public class MainApp extends Application {
                         selected = "none";
                     }
                 } else if (code.equals("ENTER") && (selected.equals("Play") || selected.equals("Resume"))) {
+                    Utils.playSound(menuSound);
                     selected = "stop";
                 } else if (code.equals("ENTER") && selected.equals("Quit")) {
+                    Utils.playSound(menuSound);
                     selected = "QuitApp";
                 } else if (code.equals("ENTER") && selected.equals("Exit to main menu")) {
+                    Utils.playSound(menuSound);
                     selected = "ExitToMenu";
                 } else if (code.equals("ENTER") && selected.equals("Settings")) {
+                    Utils.playSound(menuSound);
                     selected = "GoToSettings";
                 }
             }
@@ -332,6 +401,14 @@ public class MainApp extends Application {
         new AnimationTimer() {
             @Override
             public void handle(long currentNanoTime) {
+                if (mutePressed) {
+                    mutePressed = false;
+                    menuGroup.getChildren().remove(soundView);
+                    menuGroup.getChildren().remove(muteButton);
+                    toggleSounds();
+                    menuGroup.getChildren().add(soundView);
+                    menuGroup.getChildren().add(muteButton());
+                }
                 if (selected.equals("stop")) {
                     System.out.println("Lopetettu");
                     gamePaused = false;
@@ -353,6 +430,8 @@ public class MainApp extends Application {
                     if (menuGroup.getChildren().contains(behind)) {
                         menuGroup.getChildren().remove(behind);
                     }
+                    menuGroup.getChildren().remove(soundView);
+                    menuGroup.getChildren().remove(muteButton);
                     drawSettings();
                     this.stop();
                 } else if (!gamePaused && !selected.equals("none") && !prevSelected.equals(selected)) { // && !inputs.isEmpty()
@@ -406,6 +485,10 @@ public class MainApp extends Application {
         view.setFitWidth(800);
         view.setPreserveRatio(false);
         menuGroup.getChildren().add(view);
+//        menuGroup.getChildren().remove(soundView);
+        menuGroup.getChildren().add(soundView);
+        final Node muteButton = muteButton();
+        menuGroup.getChildren().add(muteButton);
         
         
         final VBox settingsMenu = new VBox();
@@ -471,9 +554,9 @@ public class MainApp extends Application {
         menuScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent e) {
-                Utils.playSound(menuSound);
                 String code = e.getCode().toString();
                 if (code.equals(Key.DOWN.getKeyCode())) {
+                    Utils.playSound(menuSound);
                     if (selected.equals("none")) {
                         selected = "Keyboard";
                     } else if (selected.equals("Keyboard")) {
@@ -484,6 +567,7 @@ public class MainApp extends Application {
                         selected = "none";
                     }
                 } else if (code.equals(Key.UP.getKeyCode())) {
+                    Utils.playSound(menuSound);
                     if (selected.equals("none")) {
                         selected = "Keyboard";
                     } else if (selected.equals("Keyboard")) {
@@ -494,6 +578,7 @@ public class MainApp extends Application {
                         selected = "none";
                     }
                 } else if (code.equals("ENTER")) {
+                    Utils.playSound(menuSound);
                     if (selected.equals("Keyboard")) {
                         selected = "KeyboardSettings";
                     } else if (selected.equals("Back to menu")) {
@@ -506,6 +591,14 @@ public class MainApp extends Application {
         new AnimationTimer() {
             @Override
             public void handle(long currentNanoTime) {
+                if (mutePressed) {
+                    mutePressed = false;
+                    menuGroup.getChildren().remove(soundView);
+                    menuGroup.getChildren().remove(muteButton);
+                    toggleSounds();
+                    menuGroup.getChildren().add(soundView);
+                    menuGroup.getChildren().add(muteButton());
+                }
                 if (selected.equals("KeyboardSettings")) {
                     prevSelected = selected;
                     selected = "Keyboard";
@@ -514,6 +607,8 @@ public class MainApp extends Application {
                     menuGroup.getChildren().remove(settingsMenu);
                     menuGroup.getChildren().remove(settingsTarget1);
                     menuGroup.getChildren().remove(settingsTarget2);
+                    menuGroup.getChildren().remove(soundView);
+                    menuGroup.getChildren().remove(muteButton);
                     drawKeyboardSettings();
                     this.stop();
                 } else if (selected.equals("BackToMenu")) {
@@ -523,6 +618,8 @@ public class MainApp extends Application {
                     menuGroup.getChildren().remove(settingsMenu);
                     menuGroup.getChildren().remove(settingsTarget1);
                     menuGroup.getChildren().remove(settingsTarget2);
+                    menuGroup.getChildren().remove(soundView);
+                    menuGroup.getChildren().remove(muteButton);
                     drawMenu();
                     this.stop();
                 } else if (selected.equals("Keyboard") && !prevSelected.equals(selected)) {
@@ -558,6 +655,24 @@ public class MainApp extends Application {
         view.setFitHeight(800);
         view.setFitWidth(800);
         view.setPreserveRatio(false);
+        
+        final EventHandler onClick = new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent e) {
+                System.out.println("imageview asetettu onclick");
+//                if (selectedKey.equals("none")) {
+//                    changeKey = "none";
+//                    prevSelectedKey = "jotain";
+//                }
+                selectedKey = "none";
+                prevSelectedKey = "jotain";
+                changeKey = "none";
+                selected = "none";
+                prevSelected = "jotain";
+            }
+        };
+        view.setOnMouseClicked(onClick);
+        
         menuGroup.getChildren().add(view);
         
         final ArrayList<Key> keys = keyService.getKeys();
@@ -651,9 +766,9 @@ public class MainApp extends Application {
         menuScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent e) {
-                Utils.playSound(menuSound);
                 String code = e.getCode().toString();
                 if (!changeKey.equals("none")) {
+                    Utils.playSound(menuSound);
                     //Nyt pitää asettaa uusi näppäin!!
                     //Tarkistetaan onko jollain jo se näppäin
                     for (int i = 0; i < keys.size(); i++) {
@@ -670,6 +785,7 @@ public class MainApp extends Application {
 //                    selectedKey = "none";
                     prevSelected = "jotain";
                 } else if (code.equals(Key.DOWN.getKeyCode())) {
+                    Utils.playSound(menuSound);
                     if (!selectedKey.equals("none")) {
                         int index = keyNames.indexOf(selectedKey);
                         if (index == keyNames.size() - 1) {
@@ -690,6 +806,7 @@ public class MainApp extends Application {
                         selectedKey = keyNames.get(0);
                     }
                 } else if (code.equals(Key.UP.getKeyCode())) {
+                    Utils.playSound(menuSound);
                     if (!selectedKey.equals("none")) {
                         int index = keyNames.indexOf(selectedKey);
                         if (index == 0) {
@@ -708,6 +825,7 @@ public class MainApp extends Application {
                         selectedKey = keyNames.get(0);
                     }
                 } else if (code.equals("ENTER")) {
+                    Utils.playSound(menuSound);
                     if (selectedKey.equals("none")) {
                         changeKey = "none";
                         prevSelectedKey = "jotain";
@@ -724,17 +842,17 @@ public class MainApp extends Application {
             }
         });
         //Jos tarvii nii tän voi poistaa ku tekee EventHandler = new EventHanddler..
-        final EventHandler onClick = new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent e) {
-                System.out.println("Menusceneen asetettu onclick");
-                if (selectedKey.equals("none")) {
-                    changeKey = "none";
-                    prevSelectedKey = "jotain";
-                }
-            }
-        };
-        menuScene.setOnMouseClicked(onClick);
+//        final EventHandler onClick = new EventHandler<MouseEvent>() {
+//            @Override
+//            public void handle(MouseEvent e) {
+//                System.out.println("Menusceneen asetettu onclick");
+//                if (selectedKey.equals("none")) {
+//                    changeKey = "none";
+//                    prevSelectedKey = "jotain";
+//                }
+//            }
+//        };
+//        menuScene.setOnMouseClicked(onClick);
         
         new AnimationTimer() {
             @Override
@@ -960,9 +1078,9 @@ public class MainApp extends Application {
         menuScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent e) {
-                Utils.playSound(menuSound);
                 String code = e.getCode().toString();
                 if (code.equals(Key.LEFT.getKeyCode())) {
+                    Utils.playSound(menuSound);
                     System.out.println("A painettu");
                     if (selected.equals("none")) {
                         selected = text;
@@ -972,6 +1090,7 @@ public class MainApp extends Application {
                         selected = text;
                     }
                 } else if (code.equals(Key.RIGHT.getKeyCode())) {
+                    Utils.playSound(menuSound);
                     System.out.println("D painettu");
                     if (selected.equals("none")) {
                         selected = text;
@@ -981,6 +1100,7 @@ public class MainApp extends Application {
                         selected = text;
                     }
                 } else if (code.equals("ENTER")) {
+                    Utils.playSound(menuSound);
                     if (selected.equals("Cancel")) {
                         selected = "goBack";
                     } else if (selected.equals("Quit")) {
@@ -1025,6 +1145,8 @@ public class MainApp extends Application {
                 } else if (selected.equals("goBack")) {
                     menuGroup.getChildren().remove(behind);
                     menuGroup.getChildren().remove(areYouSure);
+                    menuGroup.getChildren().remove(soundView);
+//                    menuGroup.getChildren().remove(muteButton);
                     prevSelected = selected;
                     if (text.equals("Quit")) {
                         selected = "Quit";
@@ -1154,6 +1276,7 @@ public class MainApp extends Application {
         mainGroup = new Group();
         
         mainGroup.getChildren().add(backGround);
+//        mainGroup.getChildren().add(soundView);
 //        mainGroup.getChildren().add(media);
         
         Canvas canvas = new Canvas(800, 800);
