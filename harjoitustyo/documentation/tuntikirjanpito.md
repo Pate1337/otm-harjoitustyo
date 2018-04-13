@@ -25,3 +25,4 @@
  12.04.18 | 0,5h | Lisätty Shoot -näppäin.
  12.04.18 | 1h | Generoitu jar ja luotu mukana ladattavat tiedostot.
  12.04.18 | 0,5h | Lisätty käyttöohje.
+ 13.04.18 | 2h | Alettu koodaamaan peliä. Luotu Game-luokka, josta peliä hallitaan. Sekä GameObject luokka joka sisältää pelihahmot (pelaaja, viholliset, ammukset).

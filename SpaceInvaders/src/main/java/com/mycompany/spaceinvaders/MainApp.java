@@ -33,8 +33,10 @@ import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.TextAlignment;
+import spaceInvaders.domain.Game;
 import spaceInvaders.domain.Key;
 import spaceInvaders.domain.KeyService;
+import spaceInvaders.domain.GameObject;
 import spaceinvaders.dao.FileKeyDao;
 
 
@@ -63,6 +65,9 @@ public class MainApp extends Application {
     private ImageView soundOffView;
     private ImageView soundView;
     private boolean mutePressed = false;
+    private Game game;
+    private long lastNanoTime = 0;
+//    private GameObject player;
 //    private MediaPlayer soundPlayer;
 //    private MediaView media;
     
@@ -114,6 +119,7 @@ public class MainApp extends Application {
         } else {
             soundView = soundOffView;
         }
+//        player = new GameObject();
 //        System.out.println("menuSound: " + menuSound);
 //        Media sound = new Media(new File(menuSound).toURI().toString());
 //        soundPlayer = new MediaPlayer(sound);
@@ -223,7 +229,11 @@ public class MainApp extends Application {
             public void handle(MouseEvent e) {
                 Utils.playSound(menuSound);
 //                soundPlayer.play();
-                selected = "stop";
+                if (!gamePaused) {
+                    selected = "newGame";
+                } else {
+                    selected = "continueGame";
+                }
             }
         });
         
@@ -366,9 +376,12 @@ public class MainApp extends Application {
                     } else {
                         selected = "none";
                     }
-                } else if (code.equals(Key.SHOOT.getKeyCode()) && (selected.equals("Play") || selected.equals("Resume"))) {
+                } else if (code.equals(Key.SHOOT.getKeyCode()) && (selected.equals("Play"))) {
                     Utils.playSound(menuSound);
-                    selected = "stop";
+                    selected = "newGame";
+                } else if (code.equals(Key.SHOOT.getKeyCode()) && selected.equals("Resume")) {
+                    Utils.playSound(menuSound);
+                    selected = "continueGame";
                 } else if (code.equals(Key.SHOOT.getKeyCode()) && selected.equals("Quit")) {
                     Utils.playSound(menuSound);
                     selected = "QuitApp";
@@ -393,7 +406,12 @@ public class MainApp extends Application {
                     menuGroup.getChildren().add(soundView);
                     menuGroup.getChildren().add(muteButton());
                 }
-                if (selected.equals("stop")) {
+                if (selected.equals("newGame")) {
+                    gamePaused = false;
+                    game = new Game();
+                    drawGame();
+                    this.stop();
+                } else if (selected.equals("continueGame")) {
                     gamePaused = false;
                     drawGame();
                     this.stop();
@@ -1191,29 +1209,37 @@ public class MainApp extends Application {
                 }
             });
         
+//        canvas.setOnMousePressed(new EventHandler<MouseEvent>() {
+//            @Override
+//            public void handle(MouseEvent e) {
+//                player.addPoints();
+//            }
+//        });
+        
         final GraphicsContext gc = canvas.getGraphicsContext2D();
+        
+        gc.setStroke(Color.BLACK);
+        gc.setLineWidth(1);
+        Font theFont = Font.font( "Times New Roman", FontWeight.BOLD, 30 );
+        gc.setFont( theFont );
         
         new AnimationTimer()
         {
             @Override
             public void handle(long currentNanoTime)
-            {
-                //Tänne mitä piirretään
-                gc.clearRect(0, 0, 800, 800);
-                gc.setFill(Color.BLUE);
-                gc.fillRect(100, 100, 50, 50);
+            {   
+                double elapsedTime;
+                if (lastNanoTime != 0) {
+                    elapsedTime = (currentNanoTime - lastNanoTime) / 1000000000.0;
+                } else {
+                    elapsedTime = 0;
+                }
+                lastNanoTime = currentNanoTime;
+                game.addPlayerVelocity(0);
                 if (input.contains(Key.LEFT.getKeyCode())) {
-                    gc.setFill(Color.RED);
-                    gc.fillRect(200, 400, 30, 30);
+                    game.addPlayerVelocity(-700);
                 } else if (input.contains(Key.RIGHT.getKeyCode())) {
-                    gc.setFill(Color.BLUE);
-                    gc.fillRect(600, 400, 30, 30);
-                } else if (input.contains(Key.UP.getKeyCode())) {
-                    gc.setFill(Color.GREEN);
-                    gc.fillRect(400, 200, 30, 30);
-                } else if (input.contains(Key.DOWN.getKeyCode())) {
-                    gc.setFill(Color.YELLOW);
-                    gc.fillRect(400, 600, 30, 30);
+                    game.addPlayerVelocity(700);
                 } else if (input.contains("ESCAPE")) {
                     gamePaused = true;
                     selected = "Resume";
@@ -1222,6 +1248,15 @@ public class MainApp extends Application {
                     //Laitetaan kaikki pauselle ja piirretään menu päälle
                     this.stop();
                 }
+                game.update(elapsedTime);
+                gc.clearRect(0, 0, 800, 800);
+                gc.setFill(Color.BLUE);
+                gc.fillRect(100, 100, 50, 50);
+                game.render(gc);
+//                gc.setFill(Color.RED);
+//                String pointsText = "Points: " + player.getPoints();
+//                gc.fillText(pointsText, 560, 50);
+//                gc.strokeText(pointsText, 560, 50);
                 
             }
         }.start();
