@@ -27,3 +27,4 @@
  12.04.18 | 0,5h | Lisätty käyttöohje.
  13.04.18 | 2h | Alettu koodaamaan peliä. Luotu Game-luokka, josta peliä hallitaan. Sekä GameObject luokka joka sisältää pelihahmot (pelaaja, viholliset, ammukset).
  13.04.18 | 2h | Pelaaja liikkuu nyt oikein ja pystyy ampumaan. Vihollisia ei vielä tehty.
+ 13.04.18 | 2h | Lisätty ääniä sekä countdown pelin alkuun.

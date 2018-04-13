@@ -7,8 +7,9 @@ package com.mycompany.spaceinvaders;
 
 import java.io.File;
 import javafx.scene.media.AudioClip;
+import javafx.scene.media.Media;
 //import javafx.scene.media.Media;
-//import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaPlayer;
 //import javafx.scene.media.Media;
 //import javafx.scene.media.MediaPlayer;
 
@@ -26,10 +27,16 @@ public class Utils {
 //        soundPlayer.play();
         
         //Audioclippi PALJON parempi!!
-        AudioClip clip = new AudioClip(new File(fileName).toURI().toString());
-        if (!muted) {
-            clip.play();
+        try {
+            AudioClip clip = new AudioClip(new File(fileName).toURI().toString());
+            if (!muted) {
+                clip.play();
+            }
+        } catch (Exception e) {
+            System.out.println("Ei voi toistaa");
         }
+        
+        
         
         
         

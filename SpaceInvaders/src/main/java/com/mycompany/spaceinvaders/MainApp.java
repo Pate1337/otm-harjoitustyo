@@ -68,6 +68,9 @@ public class MainApp extends Application {
     private Game game;
     private long lastNanoTime = 0;
     private boolean allowedToShoot = true;
+//    private String three;
+//    private String two;
+//    private String one;
 //    private GameObject player;
 //    private MediaPlayer soundPlayer;
 //    private MediaView media;
@@ -92,6 +95,9 @@ public class MainApp extends Application {
         FileKeyDao keyDao = new FileKeyDao(keyFile);
         keyService = new KeyService(keyDao);
         menuSound = properties.getProperty("menuSound");
+//        three = properties.getProperty("three");
+//        two = properties.getProperty("two");
+//        one = properties.getProperty("one");
         
         //Mutepainike
         String soundOn = properties.getProperty("soundIconWhite");

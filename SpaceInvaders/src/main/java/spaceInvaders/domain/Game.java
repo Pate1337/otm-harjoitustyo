@@ -5,6 +5,7 @@
  */
 package spaceInvaders.domain;
 
+import com.mycompany.spaceinvaders.Utils;
 import javafx.scene.canvas.GraphicsContext;
 
 /**
@@ -14,15 +15,23 @@ import javafx.scene.canvas.GraphicsContext;
 public class Game {
     private int score;
     private Player player;
+    private CountDown countDown;
     
     public Game() {
         this.score = 0;
         this.player = new Player(400, 700);
+        this.countDown = new CountDown();
+        Utils.playSound("utilities/sounds/alarm.wav");
+        Utils.playSound("utilities/sounds/three.wav");
     }
     
     public void update(double time) {
-        if (time != 0) {
+        if (time != 0 && !countDown.ready()) {
+            this.countDown.update(time);
             this.player.update(time);
+        } else if (time != 0) {
+            this.player.update(time);
+            //Ja tähän sit mylös vihollisalukset
         }
     }
     public void addPlayerVelocity(double velocityX) {
@@ -30,6 +39,9 @@ public class Game {
     }
     public void render(GraphicsContext gc) {
         this.player.render(gc);
+        if (!countDown.ready()) {
+            this.countDown.render(gc);
+        }
     }
     public void playerShoot() {
         this.player.shoot();
