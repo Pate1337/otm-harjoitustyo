@@ -36,7 +36,7 @@ import javafx.scene.text.TextAlignment;
 import spaceInvaders.domain.Game;
 import spaceInvaders.domain.Key;
 import spaceInvaders.domain.KeyService;
-import spaceInvaders.domain.GameObject;
+import spaceInvaders.domain.Player;
 import spaceinvaders.dao.FileKeyDao;
 
 
@@ -67,6 +67,7 @@ public class MainApp extends Application {
     private boolean mutePressed = false;
     private Game game;
     private long lastNanoTime = 0;
+    private boolean allowedToShoot = true;
 //    private GameObject player;
 //    private MediaPlayer soundPlayer;
 //    private MediaView media;
@@ -1194,7 +1195,10 @@ public class MainApp extends Application {
                 @Override
                 public void handle(KeyEvent e) {
                     String code = e.getCode().toString();
-                    if (!input.contains(code)) {
+                    if (code.equals(Key.SHOOT.getKeyCode()) && allowedToShoot) {
+                        input.add(code);
+                        allowedToShoot = false;
+                    } else if (!input.contains(code) && !code.equals(Key.SHOOT.getKeyCode())) {
                         input.add(code);
                     }
                 }
@@ -1205,7 +1209,11 @@ public class MainApp extends Application {
                 @Override
                 public void handle(KeyEvent e) {
                     String code = e.getCode().toString();
-                    input.remove(code);
+                    if (!code.equals(Key.SHOOT.getKeyCode())) {
+                        input.remove(code);
+                    } else {
+                        allowedToShoot = true;
+                    }
                 }
             });
         
@@ -1236,6 +1244,10 @@ public class MainApp extends Application {
                 }
                 lastNanoTime = currentNanoTime;
                 game.addPlayerVelocity(0);
+                if (input.contains(Key.SHOOT.getKeyCode())) {
+                    game.playerShoot();
+                    input.remove(Key.SHOOT.getKeyCode());
+                }
                 if (input.contains(Key.LEFT.getKeyCode())) {
                     game.addPlayerVelocity(-700);
                 } else if (input.contains(Key.RIGHT.getKeyCode())) {
@@ -1244,14 +1256,13 @@ public class MainApp extends Application {
                     gamePaused = true;
                     selected = "Resume";
                     cameFromGame = true;
+                    lastNanoTime = 0;
                     drawMenu();
                     //Laitetaan kaikki pauselle ja piirretään menu päälle
                     this.stop();
                 }
                 game.update(elapsedTime);
                 gc.clearRect(0, 0, 800, 800);
-                gc.setFill(Color.BLUE);
-                gc.fillRect(100, 100, 50, 50);
                 game.render(gc);
 //                gc.setFill(Color.RED);
 //                String pointsText = "Points: " + player.getPoints();

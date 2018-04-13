@@ -13,20 +13,28 @@ import javafx.scene.canvas.GraphicsContext;
  */
 public class Game {
     private int score;
-    private GameObject player;
+    private Player player;
     
     public Game() {
         this.score = 0;
-        this.player = new GameObject(400, 700);
+        this.player = new Player(400, 700);
     }
     
     public void update(double time) {
-        this.player.update(time);
+        if (time != 0) {
+            this.player.update(time);
+        }
     }
     public void addPlayerVelocity(double velocityX) {
-        this.player.addVelocity(velocityX, 0);
+        this.player.addVelocity(velocityX);
     }
     public void render(GraphicsContext gc) {
         this.player.render(gc);
     }
+    public void playerShoot() {
+        this.player.shoot();
+    }
+//    public int missileCount() {
+//        return player.missileCount();
+//    }
 }
