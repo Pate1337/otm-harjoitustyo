@@ -1223,19 +1223,8 @@ public class MainApp extends Application {
                 }
             });
         
-//        canvas.setOnMousePressed(new EventHandler<MouseEvent>() {
-//            @Override
-//            public void handle(MouseEvent e) {
-//                player.addPoints();
-//            }
-//        });
         
         final GraphicsContext gc = canvas.getGraphicsContext2D();
-        
-        gc.setStroke(Color.BLACK);
-        gc.setLineWidth(1);
-        Font theFont = Font.font( "Times New Roman", FontWeight.BOLD, 30 );
-        gc.setFont( theFont );
         
         new AnimationTimer()
         {
@@ -1270,11 +1259,11 @@ public class MainApp extends Application {
                 game.update(elapsedTime);
                 gc.clearRect(0, 0, 800, 800);
                 game.render(gc);
-//                gc.setFill(Color.RED);
-//                String pointsText = "Points: " + player.getPoints();
-//                gc.fillText(pointsText, 560, 50);
-//                gc.strokeText(pointsText, 560, 50);
-                
+                gc.setFill(Color.RED);
+                String pointsText = "Points: " + game.getPoints();
+                gc.fillText(pointsText, 560, 50);
+                gc.strokeText(pointsText, 560, 50);
+                game.collisions();
             }
         }.start();
         

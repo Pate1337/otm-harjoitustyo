@@ -5,10 +5,12 @@
  */
 package spaceInvaders.domain;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
 /**
@@ -24,6 +26,7 @@ public class Player implements GameObject {
     private double width;
     private double height;
     private ArrayList<Missile> missiles;
+    private Image ship;
     
     public Player(double positionX, double positionY) {
         this.positionX = positionX;
@@ -33,6 +36,7 @@ public class Player implements GameObject {
         this.width = 50;
         this.height = 50;
         this.missiles = new ArrayList<>();
+        ship = new Image(new File("utilities/images/ship.png").toURI().toString());
 //        this.image = new Rectangle(positionX, positionY, width, height);
     }
     
@@ -51,17 +55,19 @@ public class Player implements GameObject {
     }
     @Override
     public void render(GraphicsContext gc) {
-        gc.setFill(Color.BLUE);
-        gc.fillRect(positionX, positionY, width, height);
-        Iterator<Missile> missileIterator = missiles.iterator();
-        while (missileIterator.hasNext()) {
-            Missile missile = missileIterator.next();
-            if (missile.destroyed()) {
-                missileIterator.remove();
-            } else {
-                missile.render(gc);
-            }
+        gc.drawImage(ship, positionX, positionY, width, height);
+        for (int i = 0; i < missiles.size(); i++) {
+            missiles.get(i).render(gc);
         }
+//        Iterator<Missile> missileIterator = missiles.iterator();
+//        while (missileIterator.hasNext()) {
+//            Missile missile = missileIterator.next();
+//            if (missile.destroyed()) {
+//                missileIterator.remove();
+//            } else {
+//                missile.render(gc);
+//            }
+//        }
     }
     @Override
     public Rectangle2D getBoundary() {
@@ -77,6 +83,9 @@ public class Player implements GameObject {
     public void shoot() {
         double startX = positionX + (width / 2) - 5;// 5 on ammuksen leveys / 2
         missiles.add(new Missile(startX, positionY));
+    }
+    public ArrayList<Missile> getMissiles() {
+        return this.missiles;
     }
 //    public int missileCount() {
 //        return missiles.size();

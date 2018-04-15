@@ -5,6 +5,7 @@
  */
 package spaceInvaders.domain;
 
+import java.util.Random;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -13,7 +14,7 @@ import javafx.scene.paint.Color;
  *
  * @author paavo
  */
-public class Missile implements GameObject {
+public class Enemy implements GameObject {
     private double positionX;
     private double positionY;    
     private double velocityX;
@@ -22,27 +23,28 @@ public class Missile implements GameObject {
     private double height;
     private boolean destroyed;
     
-    public Missile(double positionX, double positionY) {
-        this.positionX = positionX;
-        this.positionY = positionY;
-        this.velocityX = 0;
-        this.velocityY = -1000;
-        this.width = 10;
+    public Enemy() {
+        this.width = 50;
         this.height = 30;
+        this.positionY = 0;
+        Random random = new Random();
+        this.positionX = random.nextInt(801 - (int)width);
+        this.velocityY = 200;
+        this.velocityX = 0;
         this.destroyed = false;
     }
 
     @Override
     public void update(double time) {
         positionY += velocityY * time;
-        if (positionY <= -50) {
+        if (positionY <= 0) {
             destroyed = true;
         }
     }
 
     @Override
     public void render(GraphicsContext gc) {
-        gc.setFill(Color.RED);
+        gc.setFill(Color.WHITE);
         gc.fillRect(positionX, positionY, width, height);
     }
 
@@ -55,6 +57,7 @@ public class Missile implements GameObject {
     public boolean intersects(GameObject o) {
         return o.getBoundary().intersects(this.getBoundary());
     }
+    
     public boolean destroyed() {
         return destroyed;
     }

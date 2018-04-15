@@ -74,6 +74,14 @@ public class CountDown {
             Math.round(400), 
             Math.round(400)
         );
+        //Asetetaan fontti oikein, jotta voidaan piirtää pisteet
+        gc.setTextAlign(TextAlignment.LEFT);
+        gc.setTextBaseline(VPos.BOTTOM);
+        gc.setStroke(Color.BLACK);
+        gc.setLineWidth(1);
+        theFont = Font.font( "Times New Roman", FontWeight.BOLD, 30 );
+        gc.setFont( theFont );
+      
     }
    
 }
