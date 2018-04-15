@@ -22,6 +22,11 @@ public class Enemy implements GameObject {
     private double width;
     private double height;
     private boolean destroyed;
+    private boolean explosion;
+    private double explosionX;
+    private double explosionY;
+    private int count;
+    
     
     public Enemy() {
         this.width = 50;
@@ -32,20 +37,38 @@ public class Enemy implements GameObject {
         this.velocityY = 200;
         this.velocityX = 0;
         this.destroyed = false;
+        this.explosion = false;
+        this.count = 0;
     }
 
     @Override
     public void update(double time) {
-        positionY += velocityY * time;
-        if (positionY <= 0) {
-            destroyed = true;
+        if (!explosion) {
+            positionY += velocityY * time;
+            if (positionY >= 800 - height) {
+                explosion = true;
+                explosionX = positionX;
+                explosionY = 800 - width;//Jälkimmäinen on räjähdyksen koko
+                positionX = 0;
+                positionY = 800;
+//              destroyed = true;
+            } 
         }
     }
 
     @Override
     public void render(GraphicsContext gc) {
-        gc.setFill(Color.WHITE);
-        gc.fillRect(positionX, positionY, width, height);
+        if (!explosion) {
+            gc.setFill(Color.WHITE);
+            gc.fillRect(positionX, positionY, width, height);
+        } else {
+            count++;
+            gc.setFill(Color.ORANGE);
+            gc.fillRect(explosionX, explosionY, width, width);
+            if (count == 10) {
+                destroyed = true;
+            }
+        }
     }
 
     @Override
@@ -60,6 +83,16 @@ public class Enemy implements GameObject {
     
     public boolean destroyed() {
         return destroyed;
+    }
+    public void explode() {
+        explosion = true;
+        explosionX = positionX;
+        explosionY = positionY;
+        positionX = 0;
+        positionY = 850;
+    }
+    public double getPositionY() {
+        return positionY;
     }
     
 }

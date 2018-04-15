@@ -1263,6 +1263,13 @@ public class MainApp extends Application {
                 String pointsText = "Points: " + game.getPoints();
                 gc.fillText(pointsText, 560, 50);
                 gc.strokeText(pointsText, 560, 50);
+                String lifesText = "Lives: " + game.getLifes();
+                gc.fillText(lifesText, 50, 50);
+                gc.strokeText(lifesText, 50, 50);
+                if (game.getLifes() == 0) {
+                    game.endGame();
+                    this.stop();
+                }
                 game.collisions();
             }
         }.start();

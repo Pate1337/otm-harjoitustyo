@@ -21,6 +21,8 @@ public class Missile implements GameObject {
     private double width;
     private double height;
     private boolean destroyed;
+    private boolean explosion;
+    private int count;
     
     public Missile(double positionX, double positionY) {
         this.positionX = positionX;
@@ -30,20 +32,33 @@ public class Missile implements GameObject {
         this.width = 10;
         this.height = 30;
         this.destroyed = false;
+        this.explosion = false;
+        this.count = 0;
     }
 
     @Override
     public void update(double time) {
         positionY += velocityY * time;
-        if (positionY <= -50) {
-            destroyed = true;
+        if (positionY <= 0) {
+            explosion = true;
+//          destroyed = true;
         }
     }
 
     @Override
     public void render(GraphicsContext gc) {
-        gc.setFill(Color.RED);
-        gc.fillRect(positionX, positionY, width, height);
+        if (!explosion) {
+            gc.setFill(Color.RED);
+            gc.fillRect(positionX, positionY, width, height);
+        } else {
+            count++;
+            gc.setFill(Color.ORANGE);
+            gc.fillRect(positionX - 10, 0, 30, height);
+            if (count == 10) {
+                destroyed = true;
+            }
+        }
+        
     }
 
     @Override

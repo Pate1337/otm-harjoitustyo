@@ -29,3 +29,4 @@
  13.04.18 | 2h | Pelaaja liikkuu nyt oikein ja pystyy ampumaan. Vihollisia ei vielä tehty.
  13.04.18 | 2h | Lisätty ääniä sekä countdown pelin alkuun.
  15.04.18 | 5h | Luotu vihollisalukset ja logiikka, jolla peli etenee. Opeteltu käyttämään Pintaa kuvien piirtämiseen ja piirretty pelaajan alus.
+ 15.04.18 | 2h | Pelissä nyt myös elämät ja pisteet. Peli päättyy kun elämät loppuvat. Luokan Game collisions()-metodi pitää vielä korjata jossain vaiheessa. Aiheuttaa "java.util.ConcurrentModificationException" virheen kun miljoona vihollisalusta ruudussa.

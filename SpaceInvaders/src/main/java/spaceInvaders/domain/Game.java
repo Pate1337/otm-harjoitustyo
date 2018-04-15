@@ -24,6 +24,7 @@ public class Game {
     private Timer enemyTimer;
     private int rate = 3000;
     private ArrayList<Enemy> enemies;
+    private int lifes;
     
     public Game() {
         this.points = 0;
@@ -33,16 +34,17 @@ public class Game {
         Utils.playSound("utilities/sounds/alarm.wav");
         Utils.playSound("utilities/sounds/three.wav");
         this.levelTimer = new Timer();
-        levelTimer.schedule(levelTimerTask(), 20000, 20000);
+        levelTimer.schedule(levelTimerTask(), 4000, 4000);
         this.enemyTimer = new Timer();
         enemyTimer.schedule(enemyTimerTask(), 0, this.rate);
-        
+        this.lifes = 3;
     }
     
     private TimerTask levelTimerTask() {
         return new TimerTask() {
             @Override
             public void run() {
+                System.out.println("Muutetaan leveliä");
                 rate = (2 * rate) / 3;
                 enemyTimer.cancel();
                 
@@ -75,25 +77,52 @@ public class Game {
             }
         }
     }
+    //Tätä pitää vielä korjata. Aiheuttaa java.util.ConcurrentModificationException
     public void collisions() {
         Iterator<Missile> missileIterator = player.getMissiles().iterator();
-        while (missileIterator.hasNext()) {
-            Missile missile = missileIterator.next();
-            if (missile.destroyed()) {
-                missileIterator.remove();
-                continue;
+        //Tässä ongelma. Jos missileitä ei ole, niin ei päästä poistamaan tuhottua vihollisalusta(fixed)
+        if (missileIterator.hasNext()) {
+            while (missileIterator.hasNext()) {
+                Missile missile = missileIterator.next();
+                if (missile.destroyed()) {
+                    missileIterator.remove();
+                    continue;
+                }
+                Iterator<Enemy> enemyIterator = enemies.iterator();
+                while (enemyIterator.hasNext()) {
+                    Enemy enemy = enemyIterator.next();
+                    if (enemy.destroyed()) {
+                        if (enemy.getPositionY() == 800) {
+                            lifes--;
+                            if (lifes == 0) {
+                                return;
+                            }
+                        }
+                        enemyIterator.remove();
+                        continue;
+                    }
+                    if (missile.intersects(enemy)) {
+                        missileIterator.remove();
+//                      enemyIterator.remove();
+                        enemy.explode();
+                        points++;
+                        //Ei katsota enää muita vihollisia. Kyrvähtää muuten.
+                        break;
+                    }
+                }
             }
+        } else {
             Iterator<Enemy> enemyIterator = enemies.iterator();
             while (enemyIterator.hasNext()) {
                 Enemy enemy = enemyIterator.next();
                 if (enemy.destroyed()) {
+                    if (enemy.getPositionY() == 800) {
+                        lifes--;
+                        if (lifes == 0) {
+                                return;
+                        }
+                    }
                     enemyIterator.remove();
-                    continue;
-                }
-                if (missile.intersects(enemy)) {
-                    missileIterator.remove();
-                    enemyIterator.remove();
-                    points++;
                 }
             }
         }
@@ -128,6 +157,14 @@ public class Game {
     }
     public int getPoints() {
         return points;
+    }
+    public int getLifes() {
+        return lifes;
+    }
+    public void endGame() {
+        System.out.println("Peli päättyi");
+        levelTimer.cancel();
+        enemyTimer.cancel();
     }
 //    public int missileCount() {
 //        return player.missileCount();
