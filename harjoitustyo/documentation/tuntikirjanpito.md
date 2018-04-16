@@ -31,3 +31,5 @@
  15.04.18 | 5h | Luotu vihollisalukset ja logiikka, jolla peli etenee. Opeteltu käyttämään Pintaa kuvien piirtämiseen ja piirretty pelaajan alus.
  15.04.18 | 2h | Pelissä nyt myös elämät ja pisteet. Peli päättyy kun elämät loppuvat. Luokan Game collisions()-metodi pitää vielä korjata jossain vaiheessa. Aiheuttaa "java.util.ConcurrentModificationException" virheen kun miljoona vihollisalusta ruudussa.
  16.04.18 | 2h | Sijoitettu nyt yksi kuvatiedosto kansioon src/main/resources/images ja saatu sitä kautta se käyttöön myös jar-tiedostossa. Pelin ensimmäienn verio rupee olemaan valmis.
+ 16.04.18 | 0.5h | Checkstyle otettu käyttöön ja siistitty koodia.
+ YHTEENSÄ 60h

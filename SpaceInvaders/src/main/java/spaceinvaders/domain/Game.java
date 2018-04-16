@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package spaceInvaders.domain;
+package spaceinvaders.domain;
 
 import com.mycompany.spaceinvaders.Utils;
 import java.util.ArrayList;
@@ -119,7 +119,7 @@ public class Game {
                     if (enemy.getPositionY() == 800) {
                         lifes--;
                         if (lifes == 0) {
-                                return;
+                            return;
                         }
                     }
                     enemyIterator.remove();
@@ -135,7 +135,7 @@ public class Game {
         if (!countDown.ready()) {
             this.countDown.render(gc);
         } else {
-            for(int i = 0; i < enemies.size(); i++) {
+            for (int i = 0; i < enemies.size(); i++) {
                 enemies.get(i).render(gc);
             }
 //            Iterator<Enemy> enemyIterator = enemies.iterator();

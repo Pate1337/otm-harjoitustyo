@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package spaceInvaders.domain;
+package spaceinvaders.domain;
 
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
@@ -91,7 +91,7 @@ public class Player implements GameObject {
         this.velocityX = velocityX;
     }
     public void shoot() {
-        double startX = positionX + (width / 2) - 5;// 5 on ammuksen leveys / 2
+        double startX = positionX + (width / 2) - 5; // 5 on ammuksen leveys / 2
         missiles.add(new Missile(startX, positionY));
     }
     public ArrayList<Missile> getMissiles() {

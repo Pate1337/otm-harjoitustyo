@@ -33,10 +33,10 @@ import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.TextAlignment;
-import spaceInvaders.domain.Game;
-import spaceInvaders.domain.Key;
-import spaceInvaders.domain.KeyService;
-import spaceInvaders.domain.Player;
+import spaceinvaders.domain.Game;
+import spaceinvaders.domain.Key;
+import spaceinvaders.domain.KeyService;
+import spaceinvaders.domain.Player;
 import spaceinvaders.dao.FileKeyDao;
 
 

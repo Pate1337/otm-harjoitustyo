@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package spaceInvaders.domain;
+package spaceinvaders.domain;
 
 import com.mycompany.spaceinvaders.Utils;
 import java.util.ArrayList;
@@ -61,27 +61,19 @@ public class CountDown {
         gc.setFill(Color.RED);
         gc.setStroke(Color.BLACK);
         gc.setLineWidth(5);
-        Font theFont = Font.font( "Times New Roman", FontWeight.BOLD, fontSize );
-        gc.setFont( theFont );
+        Font theFont = Font.font("Times New Roman", FontWeight.BOLD, fontSize);
+        gc.setFont(theFont);
         gc.setTextAlign(TextAlignment.CENTER);
         gc.setTextBaseline(VPos.CENTER);
-        gc.fillText(
-            texts.get(index), 
-            Math.round(400), 
-            Math.round(400)
-        ); 
-        gc.strokeText(texts.get(index), 
-            Math.round(400), 
-            Math.round(400)
-        );
+        gc.fillText(texts.get(index), Math.round(400), Math.round(400)); 
+        gc.strokeText(texts.get(index), Math.round(400), Math.round(400));
         //Asetetaan fontti oikein, jotta voidaan piirtää pisteet
         gc.setTextAlign(TextAlignment.LEFT);
         gc.setTextBaseline(VPos.BOTTOM);
         gc.setStroke(Color.BLACK);
         gc.setLineWidth(1);
-        theFont = Font.font( "Times New Roman", FontWeight.BOLD, 30 );
-        gc.setFont( theFont );
-      
+        theFont = Font.font("Times New Roman", FontWeight.BOLD, 30);
+        gc.setFont(theFont);
     }
    
 }

@@ -10,7 +10,7 @@ import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
-import spaceInvaders.domain.Key;
+import spaceinvaders.domain.Key;
 
 /**
  *

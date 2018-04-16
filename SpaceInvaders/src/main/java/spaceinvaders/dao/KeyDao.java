@@ -6,7 +6,7 @@
 package spaceinvaders.dao;
 
 import java.util.ArrayList;
-import spaceInvaders.domain.Key;
+import spaceinvaders.domain.Key;
 
 /**
  *
