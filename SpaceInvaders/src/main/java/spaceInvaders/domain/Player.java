@@ -5,13 +5,19 @@
  */
 package spaceInvaders.domain;
 
+import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
+import javax.imageio.ImageIO;
 
 /**
  *
@@ -36,7 +42,11 @@ public class Player implements GameObject {
         this.width = 50;
         this.height = 50;
         this.missiles = new ArrayList<>();
-        ship = new Image(new File("utilities/images/ship.png").toURI().toString());
+        
+        
+
+        ship = new Image(this.getClass().getResource("/resources/images/ship.png").toString());
+//        ship = new Image(new File("utilities/images/ship.png").toURI().toString());
 //        this.image = new Rectangle(positionX, positionY, width, height);
     }
     

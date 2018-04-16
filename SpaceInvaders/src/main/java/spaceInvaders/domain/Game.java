@@ -34,7 +34,7 @@ public class Game {
         Utils.playSound("utilities/sounds/alarm.wav");
         Utils.playSound("utilities/sounds/three.wav");
         this.levelTimer = new Timer();
-        levelTimer.schedule(levelTimerTask(), 4000, 4000);
+        levelTimer.schedule(levelTimerTask(), 20000, 20000);
         this.enemyTimer = new Timer();
         enemyTimer.schedule(enemyTimerTask(), 0, this.rate);
         this.lifes = 3;

@@ -1225,6 +1225,12 @@ public class MainApp extends Application {
         
         
         final GraphicsContext gc = canvas.getGraphicsContext2D();
+        gc.setTextAlign(TextAlignment.LEFT);
+        gc.setTextBaseline(VPos.BOTTOM);
+        gc.setStroke(Color.BLACK);
+        gc.setLineWidth(1);
+        Font theFont = Font.font( "Times New Roman", FontWeight.BOLD, 30 );
+        gc.setFont( theFont );
         
         new AnimationTimer()
         {
@@ -1268,6 +1274,9 @@ public class MainApp extends Application {
                 gc.strokeText(lifesText, 50, 50);
                 if (game.getLifes() == 0) {
                     game.endGame();
+                    selected = "Play";
+                    lastNanoTime = 0;
+                    drawMenu();//Väliaikanen
                     this.stop();
                 }
                 game.collisions();
