@@ -46,13 +46,17 @@ public class CountDown {
             fontSize = 200;
             index++;
             if (index == 1) {
-                Utils.playSound("utilities/sounds/two.wav");
+//                Utils.playSound("utilities/sounds/two.wav");
+                Utils.playTwo();
             } else if (index == 2) {
-                Utils.playSound("utilities/sounds/one.wav");
+//                Utils.playSound("utilities/sounds/one.wav");
+                Utils.playOne();
             } else if (index == 3) {
-                Utils.playSound("utilities/sounds/zero.wav");
+//                Utils.playSound("utilities/sounds/zero.wav");
+                Utils.playZero();
             } else if (index == texts.size()) {
-                Utils.playSound("utilities/sounds/motion.wav");
+//                Utils.playSound("utilities/sounds/motion.wav");
+                Utils.playMotion();
                 done = true;
             }
         }

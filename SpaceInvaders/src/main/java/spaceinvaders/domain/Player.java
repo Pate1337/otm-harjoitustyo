@@ -46,6 +46,7 @@ public class Player implements GameObject {
         
 
         ship = new Image(this.getClass().getResource("/resources/images/ship.png").toString());
+        System.out.println(this.getClass().getResource("/resources/images/ship.png").toString());
 //        ship = new Image(new File("utilities/images/ship.png").toURI().toString());
 //        this.image = new Rectangle(positionX, positionY, width, height);
     }

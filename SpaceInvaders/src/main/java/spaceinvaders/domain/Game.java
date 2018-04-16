@@ -31,8 +31,10 @@ public class Game {
         this.player = new Player(400, 700);
         this.countDown = new CountDown();
         this.enemies = new ArrayList<>();
-        Utils.playSound("utilities/sounds/alarm.wav");
-        Utils.playSound("utilities/sounds/three.wav");
+//        Utils.playSound("utilities/sounds/alarm.wav");
+//        Utils.playSound("utilities/sounds/three.wav");
+        Utils.playAlarm();
+        Utils.playThree();
         this.levelTimer = new Timer();
         levelTimer.schedule(levelTimerTask(), 20000, 20000);
         this.enemyTimer = new Timer();

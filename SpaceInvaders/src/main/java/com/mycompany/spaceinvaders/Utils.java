@@ -19,12 +19,15 @@ import javafx.scene.media.MediaPlayer;
  */
 public class Utils {
     private static boolean muted = false;
+    private static MediaPlayer alarm = null;
+    private static boolean soundsPaused = false;
     
     public static void playSound(String fileName) {
 //        Media sound = new Media(new File(fileName).toURI().toString());
 //        MediaPlayer soundPlayer = new MediaPlayer(sound);
 //        soundPlayer.setVolume(0.0);
 //        soundPlayer.play();
+        
         
         //Audioclippi PALJON parempi!!
         try {
@@ -35,11 +38,53 @@ public class Utils {
         } catch (Exception e) {
             System.out.println("Ei voi toistaa");
         }
-        
-        
-        
-        
-        
+    }
+    public static void playOne() {
+        AudioClip clip = new AudioClip(Utils.class.getResource("/resources/sounds/one.wav").toString());
+        if (!muted) {
+            clip.play();
+        }
+    }
+    public static void playTwo() {
+        AudioClip clip = new AudioClip(Utils.class.getResource("/resources/sounds/two.wav").toString());
+        if (!muted) {
+            clip.play();
+        }
+    }
+    public static void playThree() {
+        AudioClip clip = new AudioClip(Utils.class.getResource("/resources/sounds/three.wav").toString());
+        if (!muted) {
+            clip.play();
+        }
+    }
+    public static void playZero() {
+        AudioClip clip = new AudioClip(Utils.class.getResource("/resources/sounds/zero.wav").toString());
+        if (!muted) {
+            clip.play();
+        }
+    }
+    public static void playMotion() {
+        AudioClip clip = new AudioClip(Utils.class.getResource("/resources/sounds/motion.wav").toString());
+        if (!muted) {
+            clip.play();
+        }
+    }
+    public static void playAlarm() {
+        Media sound = new Media(Utils.class.getResource("/resources/sounds/alarm.wav").toString());
+        alarm = new MediaPlayer(sound);
+        alarm.play();
+    }
+    public static void pauseSounds() {
+        if (alarm != null) {
+            alarm.pause();
+            soundsPaused = true;
+        }
+    }
+    public static void continueSounds() {
+        if (alarm != null) {
+            alarm.play();
+            soundsPaused = false;
+        }
     }
     public static void mute() {
         muted = true;
@@ -51,5 +96,8 @@ public class Utils {
     
     public static boolean getSoundState() {
         return muted;
+    }
+    public static boolean getSoundsPaused() {
+        return soundsPaused;
     }
 }

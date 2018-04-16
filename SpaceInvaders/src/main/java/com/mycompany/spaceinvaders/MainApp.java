@@ -87,7 +87,7 @@ public class MainApp extends Application {
         ImageView imageView = new ImageView(image);
         imageView.setX(0); 
         imageView.setY(0);
-        imageView.setFitHeight(800); 
+        imageView.setFitHeight(800);
         imageView.setFitWidth(800);
         imageView.setPreserveRatio(false);
         backGround = imageView;
@@ -420,6 +420,9 @@ public class MainApp extends Application {
                     this.stop();
                 } else if (selected.equals("continueGame")) {
                     gamePaused = false;
+                    if (Utils.getSoundsPaused()) {
+                        Utils.continueSounds();
+                    }
                     drawGame();
                     this.stop();
                 } else if (selected.equals("QuitApp")) {
@@ -1258,6 +1261,7 @@ public class MainApp extends Application {
                     selected = "Resume";
                     cameFromGame = true;
                     lastNanoTime = 0;
+                    Utils.pauseSounds();
                     drawMenu();
                     //Laitetaan kaikki pauselle ja piirretään menu päälle
                     this.stop();
@@ -1274,7 +1278,7 @@ public class MainApp extends Application {
                 gc.strokeText(lifesText, 50, 50);
                 if (game.getLifes() == 0) {
                     game.endGame();
-                    selected = "Play";
+                    selected = "none";
                     lastNanoTime = 0;
                     drawMenu();//Väliaikanen
                     this.stop();
