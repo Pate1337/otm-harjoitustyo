@@ -18,16 +18,22 @@ import javafx.scene.canvas.GraphicsContext;
  */
 public class Game {
     private int points;
+    private int prevPoints; //Nämä vaan timerin takia
     private Player player;
     private CountDown countDown;
-    private Timer levelTimer;
+//    private Timer levelTimer;
     private Timer enemyTimer;
     private int rate = 3000;
     private ArrayList<Enemy> enemies;
     private int lifes;
+    private boolean paused;
+    private int score;
     
     public Game() {
         this.points = 0;
+        this.prevPoints = 0;
+        this.score = 0;
+        this.paused = false;
         this.player = new Player(400, 700);
         this.countDown = new CountDown();
         this.enemies = new ArrayList<>();
@@ -35,33 +41,55 @@ public class Game {
 //        Utils.playSound("utilities/sounds/three.wav");
         Utils.playAlarm();
         Utils.playThree();
-        this.levelTimer = new Timer();
-        levelTimer.schedule(levelTimerTask(), 20000, 20000);
+//        this.levelTimer = new Timer();
+//        levelTimer.schedule(levelTimerTask(), 20000, 20000);
         this.enemyTimer = new Timer();
         enemyTimer.schedule(enemyTimerTask(), 0, this.rate);
         this.lifes = 3;
     }
     
-    private TimerTask levelTimerTask() {
-        return new TimerTask() {
-            @Override
-            public void run() {
-                System.out.println("Muutetaan leveliä");
-                rate = (2 * rate) / 3;
-                enemyTimer.cancel();
-                
-                enemyTimer = new Timer();
-                enemyTimer.schedule(enemyTimerTask(), 0, rate);
-            }
-        };
-    }
+//    private TimerTask levelTimerTask() {
+//        return new TimerTask() {
+//            @Override
+//            public void run() {
+//                System.out.println("Muutetaan leveliä");
+//                rate = (2 * rate) / 3;
+//                enemyTimer.cancel();
+//                
+//                enemyTimer = new Timer();
+//                enemyTimer.schedule(enemyTimerTask(), 0, rate);
+//            }
+//        };
+//    }
     
+//    private TimerTask enemyTimerTask() {
+//        return new TimerTask() {
+//            @Override
+//            public void run() {
+//                if (countDown.ready()) {
+//                    enemies.add(new Enemy());
+//                }
+//            }
+//        };
+//    }
     private TimerTask enemyTimerTask() {
         return new TimerTask() {
             @Override
             public void run() {
-                if (countDown.ready()) {
-                    enemies.add(new Enemy());
+                if (!paused) {
+                    if (countDown.ready()) {
+                     enemies.add(new Enemy("normal"));
+                    }
+                    //Ei haluta luoda uutta Timeria ennen kuin pisteet muuttuneet
+                    if ((prevPoints != points) && (points % 10 == 0) && points != 0) {
+                        enemies.add(new Enemy("bonus"));
+//                        System.out.println("Leveli vaihtuu NYT");
+                        prevPoints = points;
+                        rate = (3 * rate) / 4;
+                        enemyTimer.cancel();
+                        enemyTimer = new Timer();
+                        enemyTimer.schedule(enemyTimerTask(), rate, rate);
+                    }
                 }
             }
         };
@@ -107,7 +135,12 @@ public class Game {
                         missileIterator.remove();
 //                      enemyIterator.remove();
                         enemy.explode();
-                        points++;
+                        if (enemy.getType().equals("bonus")) {
+                            score += 300;
+                        } else {
+                            points++;
+                            score += 50;
+                        }
                         //Ei katsota enää muita vihollisia. Kyrvähtää muuten.
                         break;
                     }
@@ -157,16 +190,23 @@ public class Game {
     public int enemyCount() {
         return enemies.size();
     }
-    public int getPoints() {
-        return points;
+    public int getScore() {
+        return score;
     }
     public int getLifes() {
         return lifes;
     }
     public void endGame() {
         System.out.println("Peli päättyi");
-        levelTimer.cancel();
+        System.out.println("Pisteet: " + score);
+//        levelTimer.cancel();
         enemyTimer.cancel();
+    }
+    public void pause() {
+        this.paused = true;
+    }
+    public void unPause() {
+        this.paused = false;
     }
 //    public int missileCount() {
 //        return player.missileCount();

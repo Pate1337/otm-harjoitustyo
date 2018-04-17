@@ -21,8 +21,9 @@ public class Utils {
     private static boolean muted = false;
     private static MediaPlayer alarm = null;
     private static boolean soundsPaused = false;
+    private static AudioClip menuSound;
     
-    public static void playSound(String fileName) {
+    public static void playMenuSound(String fileName) {
 //        Media sound = new Media(new File(fileName).toURI().toString());
 //        MediaPlayer soundPlayer = new MediaPlayer(sound);
 //        soundPlayer.setVolume(0.0);
@@ -30,14 +31,20 @@ public class Utils {
         
         
         //Audioclippi PALJON parempi!!
-        try {
-            AudioClip clip = new AudioClip(new File(fileName).toURI().toString());
-            if (!muted) {
-                clip.play();
-            }
-        } catch (Exception e) {
-            System.out.println("Ei voi toistaa");
+//        try {
+//            AudioClip clip = new AudioClip(new File(fileName).toURI().toString());
+//            if (!muted) {
+//                clip.play();
+//            }
+//        } catch (Exception e) {
+//            System.out.println("Ei voi toistaa");
+//        }
+        if (!muted) {
+            menuSound.play();
         }
+    }
+    public static void initSounds() {
+        menuSound = new AudioClip(Utils.class.getResource("/resources/sounds/menusound.wav").toString());
     }
     public static void playOne() {
         AudioClip clip = new AudioClip(Utils.class.getResource("/resources/sounds/one.wav").toString());
@@ -72,7 +79,9 @@ public class Utils {
     public static void playAlarm() {
         Media sound = new Media(Utils.class.getResource("/resources/sounds/alarm.wav").toString());
         alarm = new MediaPlayer(sound);
-        alarm.play();
+        if (!muted) {
+            alarm.play();
+        }
     }
     public static void pauseSounds() {
         if (alarm != null) {

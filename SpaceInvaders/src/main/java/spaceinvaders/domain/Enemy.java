@@ -26,33 +26,52 @@ public class Enemy implements GameObject {
     private double explosionX;
     private double explosionY;
     private int count;
+    private String type;
     
     
-    public Enemy() {
-        this.width = 50;
+    public Enemy(String type) {
+        this.type = type;
         this.height = 30;
-        this.positionY = 0;
         Random random = new Random();
-        this.positionX = random.nextInt(801 - (int) width);
-        this.velocityY = 200;
-        this.velocityX = 0;
         this.destroyed = false;
         this.explosion = false;
         this.count = 0;
+        if (type.equals("bonus")) {
+            this.width = 70;
+            this.positionY = 150;
+            this.velocityY = 0;
+            if (random.nextInt(2) == 0) {
+                this.positionX = 0 - width;
+                this.velocityX = 200;
+            } else {
+                this.positionX = 800;
+                this.velocityX = -200;
+            }
+        } else if (type.equals("normal")) {
+            this.width = 50;
+            this.positionY = 0;
+            this.positionX = random.nextInt(801 - (int) width);
+            this.velocityY = 200;
+            this.velocityX = 0;
+        }
     }
 
     @Override
     public void update(double time) {
         if (!explosion) {
             positionY += velocityY * time;
+            positionX += velocityX * time;
             if (positionY >= 800 - height) {
                 explosion = true;
                 explosionX = positionX;
                 explosionY = 800 - width; //Jälkimmäinen on räjähdyksen koko
                 positionX = 0;
                 positionY = 800;
-//              destroyed = true;
-            } 
+            }  else if (positionX < 0 - width) {
+                destroyed = true;
+            } else if (positionX > 800) {
+                destroyed = true;
+            }
         }
     }
 
@@ -93,6 +112,9 @@ public class Enemy implements GameObject {
     }
     public double getPositionY() {
         return positionY;
+    }
+    public String getType() {
+        return type;
     }
     
 }

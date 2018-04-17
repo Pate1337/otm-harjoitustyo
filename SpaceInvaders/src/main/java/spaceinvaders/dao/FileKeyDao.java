@@ -7,6 +7,9 @@ package spaceinvaders.dao;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
@@ -25,7 +28,15 @@ public class FileKeyDao implements KeyDao {
         this.keys = new ArrayList<>();
         
         try {
+//            System.out.println("yolo: " + new File(file).getAbsolutePath().toString());
+//            Scanner reader = new Scanner(new File(this.getClass().getResourceAsStream(file).toString()));
+//            System.out.println("File to string: " + new File(this.getClass().getResource(file)).toString());
+//            InputStream input = this.getClass().getResourceAsStream(file);
             Scanner reader = new Scanner(new File(file));
+              
+              //Tää ainaki toimii, mut update ei onnistu joten
+//            Scanner reader = new Scanner(this.getClass().getResourceAsStream(file).toString());
+           
             while (reader.hasNextLine()) {
                 String[] parts = reader.nextLine().split("=");
                 if (parts[0].equals("left")) {
@@ -47,6 +58,8 @@ public class FileKeyDao implements KeyDao {
             }
         } catch (Exception e) {
             FileWriter writer = new FileWriter(new File(file));
+            System.out.println("VIRHE");
+//            FileWriter writer = new FileWriter(this.getClass().getResource(file).toString());
             writer.close();
         }
     }
@@ -58,10 +71,14 @@ public class FileKeyDao implements KeyDao {
     
     @Override
     public void update() {
+//        File originalFile = new File((this.getClass().getResource(file).toString()));
+//        InputStream input = this.getClass().getResourceAsStream(file);
+//        File originalFile = new File(this.getClass().getResource(file).toString());
         File originalFile = new File(this.file);
         File tempFile = new File("tempfile.txt");
         String line = null;
         try {
+//            Scanner reader = new Scanner(originalFile);
             Scanner reader = new Scanner(originalFile);
             FileWriter writer = new FileWriter(tempFile);
             while (reader.hasNextLine()) {

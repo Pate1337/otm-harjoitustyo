@@ -33,4 +33,5 @@
  16.04.18 | 2h | Sijoitettu nyt yksi kuvatiedosto kansioon src/main/resources/images ja saatu sitä kautta se käyttöön myös jar-tiedostossa. Pelin ensimmäienn verio rupee olemaan valmis.
  16.04.18 | 0.5h | Checkstyle otettu käyttöön ja siistitty koodia.
  16.04.18 | 1h | Refaktoroitu äänitiedostoja.
- YHTEENSÄ 61h
+ 17.04.18 | 4h | Jaettu käytettävät tiedostot fiksusti hakemistoihin, jotka ovat jar-tiedoston sisällä. Luotu peliin vaakasuoraan menevät "bonus"-alukset.
+ YHTEENSÄ 65h
