@@ -85,7 +85,7 @@ public class Game {
                         enemies.add(new Enemy("bonus"));
 //                        System.out.println("Leveli vaihtuu NYT");
                         prevPoints = points;
-                        rate = (3 * rate) / 4;
+                        rate = (4 * rate) / 5;
                         enemyTimer.cancel();
                         enemyTimer = new Timer();
                         enemyTimer.schedule(enemyTimerTask(), rate, rate);

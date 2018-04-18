@@ -35,4 +35,5 @@
  16.04.18 | 1h | Refaktoroitu äänitiedostoja.
  17.04.18 | 4h | Jaettu käytettävät tiedostot fiksusti hakemistoihin, jotka ovat jar-tiedoston sisällä. Luotu peliin vaakasuoraan menevät "bonus"-alukset.
  18.04.18 | 2h | Lisätty hienot räjähdykset aluksille.
- YHTEENSÄ 65h
+ 18.04.18 | 6h | Poistettu config.properties. Ohjelma luo nyt itse tarvittavat tiedostot, mikäli niitä ei ole. Luotu Highscores näkymä ja scoret haetaan tiedostosta.
+ YHTEENSÄ 73h

@@ -39,13 +39,13 @@ public class Player implements GameObject {
         this.positionY = positionY;
         this.velocityX = 0;
         this.velocityY = 0;
-        this.width = 50;
-        this.height = 50;
+        this.width = 45;
+        this.height = 55;
         this.missiles = new ArrayList<>();
         
         
 
-        ship = new Image(this.getClass().getResource("/resources/images/ship.png").toString());
+        ship = new Image(this.getClass().getResource("/resources/images/spaceship.png").toString());
 //        System.out.println(this.getClass().getResource("/resources/images/ship.png").toString());
 //        ship = new Image(new File("utilities/images/ship.png").toURI().toString());
 //        this.image = new Rectangle(positionX, positionY, width, height);
@@ -92,7 +92,7 @@ public class Player implements GameObject {
         this.velocityX = velocityX;
     }
     public void shoot() {
-        double startX = positionX + (width / 2) - 5; // 5 on ammuksen leveys / 2
+        double startX = positionX + (width / 2) - 2.5; // 5 on ammuksen leveys / 2
         missiles.add(new Missile(startX, positionY));
     }
     public ArrayList<Missile> getMissiles() {

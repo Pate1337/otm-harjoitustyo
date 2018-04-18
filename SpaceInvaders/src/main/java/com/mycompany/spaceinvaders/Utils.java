@@ -6,6 +6,8 @@
 package com.mycompany.spaceinvaders;
 
 import java.io.File;
+import java.util.ArrayList;
+import javafx.scene.image.Image;
 import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;
 //import javafx.scene.media.Media;
@@ -22,6 +24,8 @@ public class Utils {
     private static MediaPlayer alarm = null;
     private static boolean soundsPaused = false;
     private static AudioClip menuSound;
+    private static ArrayList<Image> explosionImages;
+    private static ArrayList<Image> hearts;
     
     public static void playMenuSound(String fileName) {
 //        Media sound = new Media(new File(fileName).toURI().toString());
@@ -45,6 +49,28 @@ public class Utils {
     }
     public static void initSounds() {
         menuSound = new AudioClip(Utils.class.getResource("/resources/sounds/menusound.wav").toString());
+        //Kuvat
+        explosionImages = new ArrayList<>();
+        explosionImages.add(new Image(Utils.class.getResource("/resources/images/explosion1.png").toString()));
+        explosionImages.add(new Image(Utils.class.getResource("/resources/images/explosion1.png").toString()));
+        explosionImages.add(new Image(Utils.class.getResource("/resources/images/explosion2.png").toString()));
+        explosionImages.add(new Image(Utils.class.getResource("/resources/images/explosion2.png").toString()));
+        explosionImages.add(new Image(Utils.class.getResource("/resources/images/explosion3.png").toString()));
+        explosionImages.add(new Image(Utils.class.getResource("/resources/images/explosion3.png").toString()));
+        explosionImages.add(new Image(Utils.class.getResource("/resources/images/explosion4.png").toString()));
+        explosionImages.add(new Image(Utils.class.getResource("/resources/images/explosion4.png").toString()));
+        explosionImages.add(new Image(Utils.class.getResource("/resources/images/explosion5.png").toString()));
+        explosionImages.add(new Image(Utils.class.getResource("/resources/images/explosion5.png").toString()));
+        explosionImages.add(new Image(Utils.class.getResource("/resources/images/explosion6.png").toString()));
+        explosionImages.add(new Image(Utils.class.getResource("/resources/images/explosion6.png").toString()));
+        explosionImages.add(new Image(Utils.class.getResource("/resources/images/explosion7.png").toString()));
+        explosionImages.add(new Image(Utils.class.getResource("/resources/images/explosion7.png").toString()));
+        explosionImages.add(new Image(Utils.class.getResource("/resources/images/explosion8.png").toString()));
+        explosionImages.add(new Image(Utils.class.getResource("/resources/images/explosion8.png").toString()));
+    
+        hearts = new ArrayList<>();
+        hearts.add(new Image(Utils.class.getResource("/resources/images/heart1.png").toString()));
+        hearts.add(new Image(Utils.class.getResource("/resources/images/heart2.png").toString()));
     }
     public static void playOne() {
         AudioClip clip = new AudioClip(Utils.class.getResource("/resources/sounds/one.wav").toString());
@@ -108,5 +134,11 @@ public class Utils {
     }
     public static boolean getSoundsPaused() {
         return soundsPaused;
+    }
+    public static ArrayList<Image> getExplosionImages() {
+        return explosionImages;
+    }
+    public static ArrayList<Image> getHearts() {
+        return hearts;
     }
 }

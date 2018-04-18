@@ -5,6 +5,7 @@
  */
 package spaceinvaders.domain;
 
+import com.mycompany.spaceinvaders.Utils;
 import java.util.ArrayList;
 import java.util.Random;
 import javafx.geometry.Rectangle2D;
@@ -60,20 +61,9 @@ public class Enemy implements GameObject {
             this.velocityY = 200;
             this.velocityX = 0;
         }
-        initExplosion();
+        explosionImages = Utils.getExplosionImages();
     }
     
-    public void initExplosion() {
-        explosionImages = new ArrayList<>();
-        explosionImages.add(new Image(this.getClass().getResource("/resources/images/explosion1.png").toString()));
-        explosionImages.add(new Image(this.getClass().getResource("/resources/images/explosion2.png").toString()));
-        explosionImages.add(new Image(this.getClass().getResource("/resources/images/explosion3.png").toString()));
-        explosionImages.add(new Image(this.getClass().getResource("/resources/images/explosion4.png").toString()));
-        explosionImages.add(new Image(this.getClass().getResource("/resources/images/explosion5.png").toString()));
-        explosionImages.add(new Image(this.getClass().getResource("/resources/images/explosion6.png").toString()));
-        explosionImages.add(new Image(this.getClass().getResource("/resources/images/explosion7.png").toString()));
-        explosionImages.add(new Image(this.getClass().getResource("/resources/images/explosion8.png").toString()));
-    }
 
     @Override
     public void update(double time) {
@@ -97,18 +87,10 @@ public class Enemy implements GameObject {
     @Override
     public void render(GraphicsContext gc) {
         if (!explosion) {
-//            if (type.equals("normal")) {
-//                gc.drawImage(enemy, positionX, positionY, width, height);
-//            } else if (type.equals("bonus")) {
             gc.drawImage(enemy, positionX, positionY, width, height);
-//                gc.setFill(Color.WHITE);
-//                gc.fillRect(positionX, positionY, width, height);
-//            }
         } else {
-//            gc.setFill(Color.ORANGE);
-//            gc.fillRect(explosionX, explosionY, width, width);
             gc.drawImage(explosionImages.get(count), explosionX, explosionY, width, width);
-            if (count == 7) {
+            if (count == 15) {
                 destroyed = true;
             } else {
                 count++;

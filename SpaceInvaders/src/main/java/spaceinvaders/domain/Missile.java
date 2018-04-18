@@ -28,8 +28,8 @@ public class Missile implements GameObject {
         this.positionX = positionX;
         this.positionY = positionY;
         this.velocityX = 0;
-        this.velocityY = -1000;
-        this.width = 10;
+        this.velocityY = -1500;
+        this.width = 5;
         this.height = 30;
         this.destroyed = false;
         this.explosion = false;
@@ -48,12 +48,12 @@ public class Missile implements GameObject {
     @Override
     public void render(GraphicsContext gc) {
         if (!explosion) {
-            gc.setFill(Color.RED);
-            gc.fillRect(positionX, positionY, width, height);
+            gc.setFill(Color.GREEN);
+            gc.fillRoundRect(positionX, positionY, width, height, 2, 5);
         } else {
             count++;
-            gc.setFill(Color.ORANGE);
-            gc.fillRect(positionX - 10, 0, 30, height);
+//            gc.setFill(Color.ORANGE);
+//            gc.fillRect(positionX - 10, 0, 30, height);
             if (count == 10) {
                 destroyed = true;
             }

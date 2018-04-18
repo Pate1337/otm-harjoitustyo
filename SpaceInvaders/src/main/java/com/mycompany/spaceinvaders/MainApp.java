@@ -33,11 +33,13 @@ import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.TextAlignment;
+import spaceinvaders.dao.FileHiScoresDao;
 import spaceinvaders.domain.Game;
 import spaceinvaders.domain.Key;
 import spaceinvaders.domain.KeyService;
 import spaceinvaders.domain.Player;
 import spaceinvaders.dao.FileKeyDao;
+import spaceinvaders.domain.ScoreService;
 
 
 public class MainApp extends Application {
@@ -55,6 +57,7 @@ public class MainApp extends Application {
     private boolean cameFromGame = false;
     private Image image;
     private KeyService keyService;
+    private ScoreService scoreService;
     private String selectedKey;
     private String changeKey;
     private String prevSelectedKey;
@@ -77,9 +80,9 @@ public class MainApp extends Application {
     
     @Override
     public void init() throws Exception {
-        Properties properties = new Properties();
+//        Properties properties = new Properties();
 
-        properties.load(new FileInputStream("config.properties"));
+//        properties.load(new FileInputStream("config.properties"));
 //        properties.load(new FileInputStream(this.getClass().getResource("/resources/files/config.properties").toString()));
         
 //        String backGroundPicture = properties.getProperty("backGround");
@@ -93,14 +96,17 @@ public class MainApp extends Application {
         imageView.setFitWidth(800);
         imageView.setPreserveRatio(false);
         backGround = imageView;
-        String keyFile = properties.getProperty("keyFile");
+//        String keyFile = properties.getProperty("keyFile");
 //        File file = new File(this.getClass().getResource("/resources/files/keys.txt").toString());
 //        System.out.println("File to string: " + file.toString());
 //        String keyFile = "/com/mycompany/spaceinvaders/keys.txt";
         
 
-        FileKeyDao keyDao = new FileKeyDao(keyFile);
+        FileKeyDao keyDao = new FileKeyDao("keys.txt");
         keyService = new KeyService(keyDao);
+//        String scoresFile = properties.getProperty("hiScoresFile");
+        FileHiScoresDao scoreDao = new FileHiScoresDao("hiscores.txt");
+        scoreService = new ScoreService(scoreDao);
 //        menuSound = properties.getProperty("menuSound");
         Utils.initSounds();
 //        three = properties.getProperty("three");
@@ -263,6 +269,15 @@ public class MainApp extends Application {
             }
         });
         
+        menuTarget2.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent e) {
+                Utils.playMenuSound(menuSound);
+//                soundPlayer.play();
+                selected = "GoToScores";
+            }
+        });
+        
         menuTarget3.setOnMouseEntered(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent e) {
@@ -401,6 +416,9 @@ public class MainApp extends Application {
                 } else if (code.equals(Key.SHOOT.getKeyCode()) && selected.equals("Settings")) {
                     Utils.playMenuSound(menuSound);
                     selected = "GoToSettings";
+                } else if (code.equals(Key.SHOOT.getKeyCode()) && selected.equals("Highscores")) {
+                    Utils.playMenuSound(menuSound);
+                    selected = "GoToScores";
                 }
             }
         });
@@ -449,6 +467,16 @@ public class MainApp extends Application {
                     menuGroup.getChildren().remove(muteButton);
                     drawSettings();
                     this.stop();
+                } else if (selected.equals("GoToScores")) {
+                    prevSelected = selected;
+                    selected = "Back to menu";
+                    if (menuGroup.getChildren().contains(behind)) {
+                        menuGroup.getChildren().remove(behind);
+                    }
+                    menuGroup.getChildren().remove(soundView);
+                    menuGroup.getChildren().remove(muteButton);
+                    drawScores();
+                    this.stop();
                 } else if (!gamePaused && !selected.equals("none") && !prevSelected.equals(selected)) { // && !inputs.isEmpty()
                     menu.getChildren().clear();
                     menu.getChildren().add(createMenuButton("Play", 400, 50, 40));
@@ -480,6 +508,146 @@ public class MainApp extends Application {
         }.start();
 
         mainStage.show();
+    }
+    
+    public void drawScores() {
+        try {
+            backGroundImage = new Image(this.getClass().getResource("/resources/images/space1.jpg").toString());
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        final ImageView view = new ImageView(backGroundImage);
+        view.setX(0);
+        view.setY(0);
+        view.setFitHeight(800);
+        view.setFitWidth(800);
+        view.setPreserveRatio(false);
+        menuGroup.getChildren().add(view);
+        menuGroup.getChildren().add(soundView);
+        final Node muteButton = muteButton();
+        menuGroup.getChildren().add(muteButton);
+        
+        final ArrayList<String> scores = scoreService.getScores();
+        final VBox scoreList = new VBox();
+        scoreList.setLayoutX(100);
+        scoreList.setLayoutY(100);
+        scoreList.getChildren().add(createScoreListing(0, "Name;Score", 600, 50, 30));
+        for (int i = 0; i < scores.size(); i++) {
+            scoreList.getChildren().add(createScoreListing(i + 1, scores.get(i), 600, 50, 30));
+        }
+        scoreList.getChildren().add(createMenuButton("Back to menu", 600, 50, 40));
+        menuGroup.getChildren().add(scoreList);
+        final Rectangle menuTarget = new Rectangle(100, 150 + (scores.size() * 50), 600, 50);
+        menuTarget.setOpacity(0.0);
+        menuGroup.getChildren().add(menuTarget);
+        menuTarget.setOnMouseEntered(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent e) {
+                System.out.println("Ollaan menutargetin päällä");
+                selected = "Back to menu";
+            }
+        });
+        menuTarget.setOnMouseExited(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent e) {
+                selected = "none";
+            }
+        });
+        menuTarget.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent e) {
+                Utils.playMenuSound(menuSound);
+                selected = "BackToMenu";
+            }
+        });
+        menuScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent e) {
+                String code = e.getCode().toString();
+                if (code.equals(Key.DOWN.getKeyCode()) || code.equals(Key.UP.getKeyCode())) {
+                    if (selected.equals("none")) {
+                        Utils.playMenuSound(menuSound);
+                        selected = "Back to menu";
+                    }
+                } else if (code.equals(Key.SHOOT.getKeyCode())) {
+                    if (selected.equals("Back to menu")) {
+                        Utils.playMenuSound(menuSound);
+                        selected = "BackToMenu";
+                    }
+                }
+            }
+        });
+        
+        new AnimationTimer() {
+            @Override
+            public void handle(long currentNanoTime) {
+                if (mutePressed) {
+                    mutePressed = false;
+                    menuGroup.getChildren().remove(soundView);
+                    menuGroup.getChildren().remove(muteButton);
+                    toggleSounds();
+                    menuGroup.getChildren().add(soundView);
+                    menuGroup.getChildren().add(muteButton());
+                }
+                if (selected.equals("BackToMenu")) {
+                    System.out.println("BackToMenu");
+                    prevSelected = selected;
+                    selected = "Highscores";
+                    menuGroup.getChildren().remove(view);
+                    menuGroup.getChildren().remove(soundView);
+                    menuGroup.getChildren().remove(muteButton);
+                    menuGroup.getChildren().remove(scoreList);
+                    menuGroup.getChildren().remove(menuTarget);
+                    drawMenu();
+                    this.stop();
+                } else if (selected.equals("Back to menu") && !prevSelected.equals(selected)) {
+                    System.out.println("selected = Back to menu");
+                    scoreList.getChildren().clear();
+                    scoreList.getChildren().add(createScoreListing(0, "Name;Score", 600, 50, 30));
+                    for (int i = 0; i < scores.size(); i++) {
+                        scoreList.getChildren().add(createScoreListing(i + 1, scores.get(i), 600, 50, 30));
+                    }
+                    scoreList.getChildren().add(createMenuButton("Back to menu", 600, 50, 40));
+                } else if (selected.equals("none") && !prevSelected.equals(selected)) {
+                    scoreList.getChildren().clear();
+                    scoreList.getChildren().add(createScoreListing(0, "Name;Score", 600, 50, 30));
+                    for (int i = 0; i < scores.size(); i++) {
+                        scoreList.getChildren().add(createScoreListing(i + 1, scores.get(i), 600, 50, 30));
+                    }
+                    scoreList.getChildren().add(createMenuButton("Back to menu", 600, 50, 40));
+                }
+                prevSelected = selected;
+            }
+        }.start();
+    }
+    public Node createScoreListing(int place, String text, double width, double height, double fontSize) {
+        Canvas canvas = new Canvas(width, height);
+        GraphicsContext gc = canvas.getGraphicsContext2D();
+        if (place != 0) {
+            gc.setFill(Color.GREY);
+            gc.fillRect(0, 0, width, height);
+        }
+        
+        gc.setFill(Color.RED);
+        gc.setStroke(Color.BLACK);
+        gc.setLineWidth(2);
+        Font theFont = Font.font( "Times New Roman", FontWeight.BOLD, fontSize );
+        gc.setFont( theFont );
+        gc.setTextBaseline(VPos.CENTER);
+        String[] parts = text.split(";");
+        if (place == 0) {
+            gc.fillText(parts[0], 20, canvas.getHeight() / 2);
+            gc.strokeText(parts[0], 20, canvas.getHeight() / 2);
+            gc.fillText(parts[1], (canvas.getWidth() / 2) + 20, canvas.getHeight() / 2);
+            gc.strokeText(parts[1], (canvas.getWidth() / 2) + 20, canvas.getHeight() / 2);
+        } else {
+            gc.fillText(place + ". " + parts[0], 20, canvas.getHeight() / 2);
+            gc.strokeText(place + ". " + parts[0], 20, canvas.getHeight() / 2);
+            gc.fillText(parts[1], (canvas.getWidth() / 2) + 20, canvas.getHeight() / 2);
+            gc.strokeText(parts[1], (canvas.getWidth() / 2) + 20, canvas.getHeight() / 2);
+        }
+        
+        return canvas;
     }
     
     public void drawSettings() {
@@ -1200,6 +1368,15 @@ public class MainApp extends Application {
         gameScene = new Scene(mainGroup);
         mainStage.setScene(gameScene);
         
+        Image earth = new Image(this.getClass().getResource("/resources/images/earth.png").toString());
+        ImageView earthView = new ImageView(earth);
+        earthView.setX(0); 
+        earthView.setY(753);
+        earthView.setFitHeight(47);
+        earthView.setFitWidth(800);
+//        imageView.setPreserveRatio(false);
+        mainGroup.getChildren().add(earthView);
+        
         Canvas canvas = new Canvas(800, 800);
         mainGroup.getChildren().add( canvas );
         
@@ -1231,7 +1408,6 @@ public class MainApp extends Application {
                     }
                 }
             });
-        
         
         final GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.setTextAlign(TextAlignment.LEFT);
@@ -1280,9 +1456,11 @@ public class MainApp extends Application {
                 String pointsText = "Score: " + game.getScore();
                 gc.fillText(pointsText, 560, 50);
                 gc.strokeText(pointsText, 560, 50);
-                String lifesText = "Lives: " + game.getLifes();
-                gc.fillText(lifesText, 50, 50);
-                gc.strokeText(lifesText, 50, 50);
+//                String lifesText = "Lives: " + game.getLifes();
+                String lifesText = "Lives:";
+                gc.fillText(lifesText, 30, 50);
+                gc.strokeText(lifesText, 30, 50);
+                drawHearts(gc, game.getLifes());
                 if (game.getLifes() == 0) {
                     game.endGame();
                     selected = "none";
@@ -1295,6 +1473,20 @@ public class MainApp extends Application {
         }.start();
         
         mainStage.show();
+    }
+    
+    public void drawHearts(GraphicsContext gc, int lifes) {
+        double positionX = 140;
+        double positionY = 20;
+        ArrayList<Image> hearts = Utils.getHearts();
+        for (int i = 0; i < lifes; i++) {
+            gc.drawImage(hearts.get(0), positionX, positionY, 25, 25);
+            positionX += 30;
+        }
+        for (int i = 0; i < 3 - lifes; i++) {
+            gc.drawImage(hearts.get(1), positionX, positionY, 25, 25);
+            positionX += 30;
+        }
     }
     
     @Override
