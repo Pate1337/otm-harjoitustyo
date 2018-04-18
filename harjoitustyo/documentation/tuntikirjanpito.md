@@ -34,4 +34,5 @@
  16.04.18 | 0.5h | Checkstyle otettu käyttöön ja siistitty koodia.
  16.04.18 | 1h | Refaktoroitu äänitiedostoja.
  17.04.18 | 4h | Jaettu käytettävät tiedostot fiksusti hakemistoihin, jotka ovat jar-tiedoston sisällä. Luotu peliin vaakasuoraan menevät "bonus"-alukset.
+ 18.04.18 | 2h | Lisätty hienot räjähdykset aluksille.
  YHTEENSÄ 65h

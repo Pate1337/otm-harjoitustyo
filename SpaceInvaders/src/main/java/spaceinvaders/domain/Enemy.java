@@ -5,9 +5,11 @@
  */
 package spaceinvaders.domain;
 
+import java.util.ArrayList;
 import java.util.Random;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
 /**
@@ -27,16 +29,19 @@ public class Enemy implements GameObject {
     private double explosionY;
     private int count;
     private String type;
+    private Image enemy;
+    private ArrayList<Image> explosionImages;
     
     
     public Enemy(String type) {
         this.type = type;
-        this.height = 30;
+        this.height = 40;
         Random random = new Random();
         this.destroyed = false;
         this.explosion = false;
         this.count = 0;
         if (type.equals("bonus")) {
+            enemy = new Image(this.getClass().getResource("/resources/images/ufo.png").toString());
             this.width = 70;
             this.positionY = 150;
             this.velocityY = 0;
@@ -48,12 +53,26 @@ public class Enemy implements GameObject {
                 this.velocityX = -200;
             }
         } else if (type.equals("normal")) {
+            enemy = new Image(this.getClass().getResource("/resources/images/enemy.png").toString());
             this.width = 50;
             this.positionY = 0;
             this.positionX = random.nextInt(801 - (int) width);
             this.velocityY = 200;
             this.velocityX = 0;
         }
+        initExplosion();
+    }
+    
+    public void initExplosion() {
+        explosionImages = new ArrayList<>();
+        explosionImages.add(new Image(this.getClass().getResource("/resources/images/explosion1.png").toString()));
+        explosionImages.add(new Image(this.getClass().getResource("/resources/images/explosion2.png").toString()));
+        explosionImages.add(new Image(this.getClass().getResource("/resources/images/explosion3.png").toString()));
+        explosionImages.add(new Image(this.getClass().getResource("/resources/images/explosion4.png").toString()));
+        explosionImages.add(new Image(this.getClass().getResource("/resources/images/explosion5.png").toString()));
+        explosionImages.add(new Image(this.getClass().getResource("/resources/images/explosion6.png").toString()));
+        explosionImages.add(new Image(this.getClass().getResource("/resources/images/explosion7.png").toString()));
+        explosionImages.add(new Image(this.getClass().getResource("/resources/images/explosion8.png").toString()));
     }
 
     @Override
@@ -78,14 +97,21 @@ public class Enemy implements GameObject {
     @Override
     public void render(GraphicsContext gc) {
         if (!explosion) {
-            gc.setFill(Color.WHITE);
-            gc.fillRect(positionX, positionY, width, height);
+//            if (type.equals("normal")) {
+//                gc.drawImage(enemy, positionX, positionY, width, height);
+//            } else if (type.equals("bonus")) {
+            gc.drawImage(enemy, positionX, positionY, width, height);
+//                gc.setFill(Color.WHITE);
+//                gc.fillRect(positionX, positionY, width, height);
+//            }
         } else {
-            count++;
-            gc.setFill(Color.ORANGE);
-            gc.fillRect(explosionX, explosionY, width, width);
-            if (count == 10) {
+//            gc.setFill(Color.ORANGE);
+//            gc.fillRect(explosionX, explosionY, width, width);
+            gc.drawImage(explosionImages.get(count), explosionX, explosionY, width, width);
+            if (count == 7) {
                 destroyed = true;
+            } else {
+                count++;
             }
         }
     }
