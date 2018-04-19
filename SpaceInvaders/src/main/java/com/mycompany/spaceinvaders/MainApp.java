@@ -22,8 +22,11 @@ import java.util.Set;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
@@ -543,7 +546,7 @@ public class MainApp extends Application {
         menuTarget.setOnMouseEntered(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent e) {
-                System.out.println("Ollaan menutargetin päällä");
+                Utils.playMenuSound(menuSound);
                 selected = "Back to menu";
             }
         });
@@ -590,7 +593,6 @@ public class MainApp extends Application {
                     menuGroup.getChildren().add(muteButton());
                 }
                 if (selected.equals("BackToMenu")) {
-                    System.out.println("BackToMenu");
                     prevSelected = selected;
                     selected = "Highscores";
                     menuGroup.getChildren().remove(view);
@@ -601,7 +603,6 @@ public class MainApp extends Application {
                     drawMenu();
                     this.stop();
                 } else if (selected.equals("Back to menu") && !prevSelected.equals(selected)) {
-                    System.out.println("selected = Back to menu");
                     scoreList.getChildren().clear();
                     scoreList.getChildren().add(createScoreListing(0, "Name;Score", 600, 50, 30));
                     for (int i = 0; i < scores.size(); i++) {
@@ -1465,7 +1466,7 @@ public class MainApp extends Application {
                     game.endGame();
                     selected = "none";
                     lastNanoTime = 0;
-                    drawMenu();//Väliaikanen
+                    drawEndScreen();
                     this.stop();
                 }
                 game.collisions();
@@ -1473,6 +1474,370 @@ public class MainApp extends Application {
         }.start();
         
         mainStage.show();
+    }
+    
+    public void drawEndScreen() {
+        Rectangle behind = new Rectangle(0, 0, 800, 800);
+        behind.setFill(Color.BLACK);
+        behind.setOpacity(0.9);
+        menuGroup = mainGroup;
+        menuScene = gameScene;
+        menuGroup.getChildren().add(behind);
+        menuGroup.getChildren().add(soundView);
+        
+        Rectangle screenOuter = new Rectangle(200, 200, 400, 400);
+        screenOuter.setFill(Color.RED);
+        Rectangle screenInner = new Rectangle(205, 205, 390, 390);
+        screenInner.setFill(Color.GREY);
+        menuGroup.getChildren().add(screenOuter);
+        menuGroup.getChildren().add(screenInner);
+        if (scoreService.getLimit() > game.getScore()) {
+            drawGameOver();
+        } else {
+            drawSubmit();
+        }
+    }
+    
+    public void drawSubmit() {
+        Canvas canvas = new Canvas(800, 800);
+        menuGroup.getChildren().add(canvas);
+        
+        final Node muteButton = muteButton();
+        menuGroup.getChildren().add(muteButton);
+        
+        GraphicsContext gc = canvas.getGraphicsContext2D();
+        gc.setStroke(Color.BLACK);
+        gc.setLineWidth(5);
+        Font font = Font.font("Times New Roman", FontWeight.BOLD, 60);
+        gc.setFont(font);
+        gc.setTextAlign(TextAlignment.CENTER);
+        gc.setFill(Color.RED);
+        gc.fillText("Game Over", Math.round(canvas.getWidth() / 2), 280);
+        gc.strokeText("Game Over", Math.round(canvas.getWidth() / 2), 280);
+        font = Font.font("Times New Roman", FontWeight.BOLD, 30);
+        gc.setFont(font);
+        gc.setLineWidth(2);
+        gc.fillText("You made it to top10!", Math.round(canvas.getWidth() / 2), 330);
+        gc.strokeText("You made it to top10!", Math.round(canvas.getWidth() / 2), 330);
+        
+        font = Font.font("Times New Roman", FontWeight.BOLD, 30);
+        gc.setFont(font);
+        gc.setLineWidth(2);
+        gc.fillText("Your score", Math.round(canvas.getWidth() / 2), 370);
+        gc.strokeText("Your score", Math.round(canvas.getWidth() / 2), 370);
+        font = Font.font("Times New Roman", FontWeight.BOLD, 50);
+        gc.setFont(font);
+        String score = "" + game.getScore();
+        gc.setLineWidth(5);
+        gc.fillText(score, Math.round(canvas.getWidth() / 2), 430);
+        gc.strokeText(score, Math.round(canvas.getWidth() / 2), 430);
+        
+        //Tähän submittaus
+        final HBox submit = new HBox();
+        submit.setSpacing(5);
+        submit.setLayoutX(205);
+        submit.setLayoutY(450);
+        menuGroup.getChildren().add(submit);
+        Label name = new Label("Name:");
+        font = Font.font("Times New Roman", FontWeight.BOLD, 20);
+        name.setFont(font);
+        submit.getChildren().add(name);
+        final TextField nameField = new TextField();
+//        nameField.setAlignment(Pos.CENTER);
+        nameField.setPrefWidth(150);
+        nameField.setPrefHeight(40);
+        nameField.setFont(font);
+        
+//        nameField.setOnKeyPressed(new EventHandler<KeyEvent>() {
+//            @Override
+//            public void handle(KeyEvent e) {
+//                System.out.println(nameField.getCharacters());
+//            }
+//        });
+        submit.getChildren().add(nameField);
+        Node submitButton = createMenuButton("Submit", 150, 40, 30);
+        submit.getChildren().add(submitButton);
+        Rectangle submitTarget = new Rectangle(440, 450, 150, 40);
+        submitTarget.setOpacity(0.0);
+        submitTarget.setOnMouseEntered(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent e) {
+                Utils.playMenuSound(menuSound);
+                selected = "Submit";
+            }
+        });
+        submitTarget.setOnMouseExited(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent e) {
+                selected = "none";
+            }
+        });
+        submitTarget.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent e) {
+                Utils.playMenuSound(menuSound);
+                selected = "SubmitScore";
+            }
+        });
+        menuGroup.getChildren().add(submitTarget);
+        
+        final VBox buttons = new VBox();
+        drawEndScreenButtons(buttons, 205, 510);
+        
+//        menuScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+//            @Override
+//            public void handle(KeyEvent e) {
+//                String code = e.getCode().toString();
+//                if (code.equals(Key.DOWN.getKeyCode())) {
+//                    Utils.playMenuSound(menuSound);
+//                    if (selected.equals("none")) {
+//                        selected = "Submit";
+//                    } else if (selected.equals("Submit")) {
+//                        selected = "Play again";
+//                    } else if (selected.equals("Play again")) {
+//                        selected = "Back to menu";
+//                    } else if (selected.equals("Back to menu")) {
+//                        selected = "Submit";
+//                    }
+//                } else if (code.equals(Key.UP.getKeyCode())) {
+//                    Utils.playMenuSound(menuSound);
+//                    if (selected.equals("none")) {
+//                        selected = "Submit";
+//                    } else if (selected.equals("Submit")) {
+//                        selected = "Back to menu";
+//                    } else if (selected.equals("Play again")) {
+//                        selected = "Submit";
+//                    } else if (selected.equals("Back to menu")) {
+//                        selected = "Play again";
+//                    }
+//                } else if (code.equals(Key.SHOOT.getKeyCode())) {
+//                    //Kun textfield on valittuna, niin kaikki painallukset sinne
+//                    if (selected.equals("Play again")) {
+//                        Utils.playMenuSound(menuSound);
+//                        selected = "PlayAgain";
+//                    } else if (selected.equals("Back to menu")) {
+//                        Utils.playMenuSound(menuSound);
+//                        selected = "BackToMenu";
+//                    }
+//                }
+//            }
+//        });
+        
+        //Tänne tulee AnimationTimer
+        //Siellä vaan poistetaan HBoxin vika ja luodaan uusi (eli submit painike),
+        //tai clear() VBox ja luodaan uusi.
+        new AnimationTimer() {
+            @Override
+            public void handle(long currentNanoTime) {
+                if (mutePressed) {
+                    mutePressed = false;
+                    menuGroup.getChildren().remove(soundView);
+                    menuGroup.getChildren().remove(muteButton);
+                    toggleSounds();
+                    menuGroup.getChildren().add(soundView);
+                    menuGroup.getChildren().add(muteButton());
+                }
+                if (selected.equals("BackToMenu")) {
+                    prevSelected = selected;
+                    selected = "Play";
+                    drawMenu();
+                    this.stop();
+                } else if (selected.equals("PlayAgain")) {
+                    game = new Game();
+                    drawGame();
+                    this.stop();
+                } else if (selected.equals("SubmitScore")) {
+                    String toSubmit = nameField.getCharacters() + ";" + game.getScore();
+                    System.out.println(toSubmit);
+                    scoreService.update(toSubmit);
+                    prevSelected = selected;
+                    selected = "none";
+                    menuGroup.getChildren().clear();
+                    drawScores();
+                    this.stop();
+                } else if (selected.equals("Play again") && !prevSelected.equals(selected)) {
+                    submit.getChildren().remove(submit.getChildren().size() - 1);
+                    submit.getChildren().add(createMenuButton("Submit", 150, 40, 30));
+                    buttons.getChildren().clear();
+                    buttons.getChildren().add(createMenuButton("Play again", 390, 40, 30));
+                    buttons.getChildren().add(createMenuButton("Back to menu", 390, 40, 30));
+                } else if (selected.equals("Back to menu") && !prevSelected.equals(selected)) {
+                    submit.getChildren().remove(submit.getChildren().size() - 1);
+                    submit.getChildren().add(createMenuButton("Submit", 150, 40, 30));
+                    buttons.getChildren().clear();
+                    buttons.getChildren().add(createMenuButton("Play again", 390, 40, 30));
+                    buttons.getChildren().add(createMenuButton("Back to menu", 390, 40, 30));
+                } else if (selected.equals("none") && !prevSelected.equals(selected)) {
+                    submit.getChildren().remove(submit.getChildren().size() - 1);
+                    submit.getChildren().add(createMenuButton("Submit", 150, 40, 30));
+                    buttons.getChildren().clear();
+                    buttons.getChildren().add(createMenuButton("Play again", 390, 40, 30));
+                    buttons.getChildren().add(createMenuButton("Back to menu", 390, 40, 30));
+                } else if (selected.equals("Submit") && !prevSelected.equals(selected)) {
+                    submit.getChildren().remove(submit.getChildren().size() - 1);
+                    submit.getChildren().add(createMenuButton("Submit", 150, 40, 30));
+                    buttons.getChildren().clear();
+                    buttons.getChildren().add(createMenuButton("Play again", 390, 40, 30));
+                    buttons.getChildren().add(createMenuButton("Back to menu", 390, 40, 30));
+                }
+                
+                prevSelected = selected;
+            }
+        }.start();
+    }
+    
+    
+    public void drawGameOver() {
+        Canvas canvas = new Canvas(800, 800);
+        menuGroup.getChildren().add(canvas);
+        
+        final Node muteButton = muteButton();
+        menuGroup.getChildren().add(muteButton);
+        
+        GraphicsContext gc = canvas.getGraphicsContext2D();
+        gc.setStroke(Color.BLACK);
+        gc.setLineWidth(5);
+        Font font = Font.font("Times New Roman", FontWeight.BOLD, 60);
+        gc.setFont(font);
+        gc.setTextAlign(TextAlignment.CENTER);
+        gc.setFill(Color.RED);
+        gc.fillText("Game Over", Math.round(canvas.getWidth() / 2), 280);
+        gc.strokeText("Game Over", Math.round(canvas.getWidth() / 2), 280);
+        font = Font.font("Times New Roman", FontWeight.BOLD, 30);
+        gc.setFont(font);
+        gc.setLineWidth(2);
+        gc.fillText("Your score", Math.round(canvas.getWidth() / 2), 360);
+        gc.strokeText("Your score", Math.round(canvas.getWidth() / 2), 360);
+        font = Font.font("Times New Roman", FontWeight.BOLD, 50);
+        gc.setFont(font);
+        String score = "" + game.getScore();
+        gc.setLineWidth(5);
+        gc.fillText(score, Math.round(canvas.getWidth() / 2), 420);
+        gc.strokeText(score, Math.round(canvas.getWidth() / 2), 420);
+        
+        final VBox buttons = new VBox();
+        drawEndScreenButtons(buttons, 205, 510);
+        
+        menuScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent e) {
+                String code = e.getCode().toString();
+                if (code.equals(Key.DOWN.getKeyCode())) {
+                    Utils.playMenuSound(menuSound);
+                    if (selected.equals("none")) {
+                        selected = "Play again";
+                    } else if (selected.equals("Play again")) {
+                        selected = "Back to menu";
+                    } else if (selected.equals("Back to menu")) {
+                        selected = "Play again";
+                    }
+                } else if (code.equals(Key.UP.getKeyCode())) {
+                    Utils.playMenuSound(menuSound);
+                    if (selected.equals("none")) {
+                        selected = "Play again";
+                    } else if (selected.equals("Play again")) {
+                        selected = "Back to menu";
+                    } else if (selected.equals("Back to menu")) {
+                        selected = "Play again";
+                    }
+                } else if (code.equals(Key.SHOOT.getKeyCode())) {
+                    if (selected.equals("Play again")) {
+                        Utils.playMenuSound(menuSound);
+                        selected = "PlayAgain";
+                    } else if (selected.equals("Back to menu")) {
+                        Utils.playMenuSound(menuSound);
+                        selected = "BackToMenu";
+                    }
+                }
+            }
+        });
+        
+        new AnimationTimer() {
+            @Override
+            public void handle(long currentNanoTime) {
+                if (mutePressed) {
+                    mutePressed = false;
+                    menuGroup.getChildren().remove(soundView);
+                    menuGroup.getChildren().remove(muteButton);
+                    toggleSounds();
+                    menuGroup.getChildren().add(soundView);
+                    menuGroup.getChildren().add(muteButton());
+                }
+                if (selected.equals("BackToMenu")) {
+                    prevSelected = selected;
+                    selected = "Play";
+                    drawMenu();
+                    this.stop();
+                } else if (selected.equals("PlayAgain")) {
+                    game = new Game();
+                    drawGame();
+                    this.stop();
+                } else if (selected.equals("Play again") && !prevSelected.equals(selected)) {
+                    buttons.getChildren().clear();
+                    buttons.getChildren().add(createMenuButton("Play again", 390, 40, 30));
+                    buttons.getChildren().add(createMenuButton("Back to menu", 390, 40, 30));
+                } else if (selected.equals("Back to menu") && !prevSelected.equals(selected)) {
+                    buttons.getChildren().clear();
+                    buttons.getChildren().add(createMenuButton("Play again", 390, 40, 30));
+                    buttons.getChildren().add(createMenuButton("Back to menu", 390, 40, 30));
+                } else if (selected.equals("none") && !prevSelected.equals(selected)) {
+                    buttons.getChildren().clear();
+                    buttons.getChildren().add(createMenuButton("Play again", 390, 40, 30));
+                    buttons.getChildren().add(createMenuButton("Back to menu", 390, 40, 30));
+                }
+                prevSelected = selected;
+            }
+        }.start(); 
+    }
+    public void drawEndScreenButtons(VBox buttons, double x, double y) {
+        final double startY = y;
+        buttons.setSpacing(5);
+        buttons.setLayoutX(x);
+        buttons.setLayoutY(startY);
+        menuGroup.getChildren().add(buttons);
+        buttons.getChildren().add(createMenuButton("Play again", 390, 40, 30));
+        buttons.getChildren().add(createMenuButton("Back to menu", 390, 40, 30));
+        //seuraavaks sit rectangelt, eventhandlerit ja animationtimer
+        Rectangle menuTarget1 = new Rectangle(x, startY + 5, 390, 40);
+        menuTarget1.setOpacity(0.0);
+        Rectangle menuTarget2 = new Rectangle(x, startY + 50, 390, 40);
+        menuTarget2.setOpacity(0.0);
+        menuGroup.getChildren().add(menuTarget1);
+        menuGroup.getChildren().add(menuTarget2);
+        EventHandler mouseEnter = new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent e) {
+                Utils.playMenuSound(menuSound);
+                if (e.getY() >= startY + 50) {
+                    selected = "Back to menu";
+                } else {
+                    selected = "Play again";
+                }
+            }
+        };
+        menuTarget1.setOnMouseEntered(mouseEnter);
+        menuTarget2.setOnMouseEntered(mouseEnter);
+        EventHandler mouseExit = new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent e) {
+                selected = "none";
+            }
+        };
+        menuTarget1.setOnMouseExited(mouseExit);
+        menuTarget2.setOnMouseExited(mouseExit);
+        EventHandler onClick = new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent e) {
+                Utils.playMenuSound(menuSound);
+                if (e.getY() >= startY + 50) {
+                    selected = "BackToMenu";
+                } else {
+                    selected = "PlayAgain";
+                }
+            }
+        };
+        menuTarget1.setOnMouseClicked(onClick);
+        menuTarget2.setOnMouseClicked(onClick);
     }
     
     public void drawHearts(GraphicsContext gc, int lifes) {

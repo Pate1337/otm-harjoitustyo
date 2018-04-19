@@ -76,6 +76,7 @@ public class Enemy implements GameObject {
                 explosionY = 800 - width; //Jälkimmäinen on räjähdyksen koko
                 positionX = 0;
                 positionY = 800;
+                Utils.playExplosion();
             }  else if (positionX < 0 - width) {
                 destroyed = true;
             } else if (positionX > 800) {

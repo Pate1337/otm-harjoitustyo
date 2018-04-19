@@ -20,6 +20,26 @@ public class ScoreService {
     }
     
     public ArrayList<String> getScores() {
-        return this.hiScoresDao.getAll();
+        ArrayList<String> scores = this.hiScoresDao.getAll();
+//        return this.hiScoresDao.getAll();
+        if (scores.size() <= 10) {
+            return scores;
+        } else {
+            //Siltä varalta jos hiscores-tiedostoa muokataan käsin.
+            ArrayList<String> scoresToReturn = new ArrayList<>();
+            for (int i = 0; i < 10; i++) {
+                scoresToReturn.add(scores.get(i));
+            }
+            return scoresToReturn;
+        }
+    }
+    //Tähän 10.pisteet
+    public int getLimit() {
+        int limit = this.hiScoresDao.getLimit();
+        return limit;
+    }
+    
+    public void update(String toAdd) {
+        this.hiScoresDao.update(toAdd);
     }
 }

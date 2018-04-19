@@ -6,7 +6,9 @@
 package spaceinvaders.dao;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Scanner;
 
 /**
@@ -33,6 +35,7 @@ public class FileHiScoresDao implements HiScoresDao {
         } catch (Exception e) {
             System.out.println("virhe");
         }
+        sortScores();
         
     }
 
@@ -40,10 +43,59 @@ public class FileHiScoresDao implements HiScoresDao {
     public ArrayList<String> getAll() {
         return scores;
     }
-
-    @Override
-    public void update() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    
+    public void sortScores() {
+        scores.sort(new Comparator<String>() {
+            @Override
+            public int compare(String s1, String s2) {
+                String score1 = s1.split(";")[1];
+                String score2 = s2.split(";")[1];
+                if (Integer.parseInt(score1) == Integer.parseInt(score2)) {
+                    return -1;
+                }
+                if (Integer.parseInt(score1) > Integer.parseInt(score2)) {
+                    return -1;
+                }
+                return 1;
+            }
+        });
     }
     
+    @Override
+    public int getLimit() {
+        if (scores.size() < 10) {
+            return -1;
+        }
+        String line = scores.get(9);
+        int score = Integer.parseInt(line.split(";")[1]);
+        return score;
+    }
+
+    @Override
+    public void update(String text) {
+        //Pitäisi lisätä uusi tulos edelle, jos on sama! KAtsotaan mitä sortti tekee
+        scores.add(text);
+        sortScores();
+        File originalFile = new File(file);
+        File tempFile = new File("temphiscores.txt");
+        try {
+            FileWriter writer = new FileWriter(tempFile);
+            for (int i = 0; i < scores.size(); i++) {
+                writer.write(scores.get(i) + "\n");
+                if (i == 9) {
+                    break;
+                }
+            }
+            writer.close();
+            if (!originalFile.delete()) {
+                System.out.println("Could not delete file");
+                return;
+            }
+            if (!tempFile.renameTo(originalFile)) {
+                System.out.println("Could not rename file");
+            }
+        } catch (Exception e) {
+            System.out.println("Can't write to file");
+        }
+    }
 }

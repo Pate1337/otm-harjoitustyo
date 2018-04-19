@@ -26,23 +26,10 @@ public class Utils {
     private static AudioClip menuSound;
     private static ArrayList<Image> explosionImages;
     private static ArrayList<Image> hearts;
+    private static AudioClip laser;
+    private static String explosion;
     
     public static void playMenuSound(String fileName) {
-//        Media sound = new Media(new File(fileName).toURI().toString());
-//        MediaPlayer soundPlayer = new MediaPlayer(sound);
-//        soundPlayer.setVolume(0.0);
-//        soundPlayer.play();
-        
-        
-        //Audioclippi PALJON parempi!!
-//        try {
-//            AudioClip clip = new AudioClip(new File(fileName).toURI().toString());
-//            if (!muted) {
-//                clip.play();
-//            }
-//        } catch (Exception e) {
-//            System.out.println("Ei voi toistaa");
-//        }
         if (!muted) {
             menuSound.play();
         }
@@ -71,6 +58,20 @@ public class Utils {
         hearts = new ArrayList<>();
         hearts.add(new Image(Utils.class.getResource("/resources/images/heart1.png").toString()));
         hearts.add(new Image(Utils.class.getResource("/resources/images/heart2.png").toString()));
+        
+        laser = new AudioClip(Utils.class.getResource("/resources/sounds/laser.wav").toString());
+        explosion = Utils.class.getResource("/resources/sounds/explosion.wav").toString();
+    }
+    public static void playExplosion() {
+        if (!muted) {
+            AudioClip explosionClip = new AudioClip(explosion);
+            explosionClip.play();
+        }
+    }
+    public static void playLaser() {
+        if (!muted) {
+            laser.play();
+        }
     }
     public static void playOne() {
         AudioClip clip = new AudioClip(Utils.class.getResource("/resources/sounds/one.wav").toString());

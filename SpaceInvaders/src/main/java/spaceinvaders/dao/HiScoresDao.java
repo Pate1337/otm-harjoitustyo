@@ -13,5 +13,6 @@ import java.util.ArrayList;
  */
 public interface HiScoresDao {
     ArrayList<String> getAll();
-    void update();
+    void update(String text);
+    int getLimit();
 }
