@@ -37,4 +37,5 @@
  18.04.18 | 2h | Lisätty hienot räjähdykset aluksille.
  18.04.18 | 6h | Poistettu config.properties. Ohjelma luo nyt itse tarvittavat tiedostot, mikäli niitä ei ole. Luotu Highscores näkymä ja scoret haetaan tiedostosta.
  19.04.18 | 6h | Tuloksen voi nyt tallettaa huipputuloksiin, jos se riittää top10:een. Lisätty ääniä.
- YHTEENSÄ 79h
+ 20.04.18 | 4h | Kirjoitettu testejä. FileKeyDao ja FileHiScoresDao käsitelty. Yksi testi kirjoitettu luokalle Player.
+ YHTEENSÄ 83h

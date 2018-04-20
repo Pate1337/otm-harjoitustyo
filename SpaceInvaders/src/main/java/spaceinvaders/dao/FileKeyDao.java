@@ -34,9 +34,6 @@ public class FileKeyDao implements KeyDao {
                 fillFile(keyFile);
             }
             Scanner reader = new Scanner(keyFile);
-           if (!reader.hasNextLine()) {
-               fillFile(keyFile);
-           }
             while (reader.hasNextLine()) {
                 String[] parts = reader.nextLine().split("=");
                 if (parts[0].equals("left")) {
@@ -55,6 +52,9 @@ public class FileKeyDao implements KeyDao {
                     Key.SHOOT.setKeyCode(parts[1]);
                     keys.add(Key.SHOOT);
                 }
+            }
+            if (keys.size() == 0) {
+                fillFile(keyFile);
             }
         } catch (Exception e) {
             FileWriter writer = new FileWriter(new File(file));
