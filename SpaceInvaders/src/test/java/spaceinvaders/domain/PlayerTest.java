@@ -7,6 +7,9 @@ package spaceinvaders.domain;
 
 import java.util.List;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import org.junit.Before;
@@ -20,9 +23,12 @@ public class PlayerTest {
     Player player;
     double width;
     double height;
+    GraphicsContext gc;
     
     @Before
     public void setUp() {
+        Canvas canvas = new Canvas();
+        gc = canvas.getGraphicsContext2D();
         player = new Player(400, 400);
         width = player.getBoundary().getWidth();
         height = player.getBoundary().getHeight();
@@ -98,5 +104,18 @@ public class PlayerTest {
         player.update(0.15);
         List<Missile> missiles = player.getMissiles();
         assertTrue(missiles.get(0).getBoundary().contains(400 + (width / 2) - 2.5, 175, 5, 30));
+    }
+    @Test
+    public void whenPlayerShootsAndIsRenderedMissilesAreAlsoRendered() {
+        player.shoot();
+        assertEquals(1, player.getMissiles().size());
+        player.render(gc);
+        assertTrue(gc.getFill() == Color.GREEN);
+        gc.setFill(Color.WHITE);
+        assertTrue(gc.getFill() != Color.GREEN);
+        player.shoot();
+        assertEquals(2, player.getMissiles().size());
+        player.render(gc);
+        assertTrue(gc.getFill() == Color.GREEN);
     }
 }

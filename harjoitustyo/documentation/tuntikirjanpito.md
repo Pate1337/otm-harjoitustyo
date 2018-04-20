@@ -39,4 +39,5 @@
  19.04.18 | 6h | Tuloksen voi nyt tallettaa huipputuloksiin, jos se riittää top10:een. Lisätty ääniä.
  20.04.18 | 4h | Kirjoitettu testejä. FileKeyDao ja FileHiScoresDao käsitelty. Yksi testi kirjoitettu luokalle Player.
  20.04.18 | 1h | Testejä Playerille. Rivikattavuus 43%.
- YHTEENSÄ 84h
+ 21.04.18 | 1h | Testit Missilelle. Rivikattavuus 46%.
+ YHTEENSÄ 85h
