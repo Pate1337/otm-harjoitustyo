@@ -42,7 +42,10 @@ public class Enemy implements GameObject {
         this.explosion = false;
         this.count = 0;
         if (type.equals("bonus")) {
-            enemy = new Image(this.getClass().getResource("/resources/images/ufo.png").toString());
+            try {
+                enemy = new Image(this.getClass().getResource("/resources/images/ufo.png").toString());
+            } catch (Exception e) {
+            }
             this.width = 70;
             this.positionY = 150;
             this.velocityY = 0;
@@ -54,7 +57,10 @@ public class Enemy implements GameObject {
                 this.velocityX = -200;
             }
         } else if (type.equals("normal")) {
-            enemy = new Image(this.getClass().getResource("/resources/images/enemy.png").toString());
+            try {
+                enemy = new Image(this.getClass().getResource("/resources/images/enemy.png").toString());
+            } catch (Exception e) {
+            }
             this.width = 50;
             this.positionY = 0;
             this.positionX = random.nextInt(801 - (int) width);
@@ -76,7 +82,10 @@ public class Enemy implements GameObject {
                 explosionY = 800 - width; //Jälkimmäinen on räjähdyksen koko
                 positionX = 0;
                 positionY = 800;
-                Utils.playExplosion();
+                try {
+                    Utils.playExplosion();
+                } catch (Exception e) {
+                }
             }  else if (positionX < 0 - width) {
                 destroyed = true;
             } else if (positionX > 800) {

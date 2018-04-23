@@ -40,4 +40,5 @@
  20.04.18 | 4h | Kirjoitettu testejä. FileKeyDao ja FileHiScoresDao käsitelty. Yksi testi kirjoitettu luokalle Player.
  20.04.18 | 1h | Testejä Playerille. Rivikattavuus 43%.
  21.04.18 | 1h | Testit Missilelle. Rivikattavuus 46%.
- YHTEENSÄ 85h
+ 23.04.18 | 2h | Testit Enemylle. Rivikattavuus 57%.
+ YHTEENSÄ 87h

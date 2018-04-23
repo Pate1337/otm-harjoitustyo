@@ -110,6 +110,7 @@ public class PlayerTest {
         player.shoot();
         assertEquals(1, player.getMissiles().size());
         player.render(gc);
+        //Missilen render asettaa gc.setFill(Color.GREEN)
         assertTrue(gc.getFill() == Color.GREEN);
         gc.setFill(Color.WHITE);
         assertTrue(gc.getFill() != Color.GREEN);
