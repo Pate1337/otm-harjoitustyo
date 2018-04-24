@@ -11,6 +11,6 @@ Metodissa drawGame() luodaan uusi grouppi mainGroup ja asetetaan mainStageen uus
 
 ### Pelin loppuminen
 Peli päättyy, kun pelaajan elämät loppuvat. Toiminta kuvattuna:
-<img src="https://raw.githubusercontent.com/Pate1337/otm-harjoitustyo/master/harjoitustyo/documentation/kuvat/PelinAloitus.png" width="750">
+<img src="https://raw.githubusercontent.com/Pate1337/otm-harjoitustyo/master/harjoitustyo/documentation/kuvat/PelinLoppu.png" width="750">
 
-drawGame()-metodin AnimationTimerissa jokaisella suorituskerralla, kutsutaan Gamen metodia getLifes(). Jos metodi palauttaa 0, kutsutaan metodia drawEndScreen() ja AnimationTimerin suoritus lopetetaan. Game Over-ikkuna piirretään mainStageen gameScenen päälle, siten että peli näkyy taustalla tummennettuna. 
+drawGame()-metodin AnimationTimerissa jokaisella suorituskerralla, kutsutaan Gamen metodia getLifes(). Jos metodi palauttaa 0, kutsutaan metodia drawEndScreen() ja AnimationTimerin suoritus lopetetaan. Game Over-ikkuna piirretään mainStageen gameScenen päälle, siten että peli näkyy taustalla tummennettuna.
