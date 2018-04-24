@@ -10,6 +10,8 @@ Projekti kurssille Ohjelmistotekniikan menetelmät. Sovellus on peli, joka pohja
 
 [Työaikakirjanpito](https://github.com/Pate1337/otm-harjoitustyo/blob/master/harjoitustyo/documentation/tuntikirjanpito.md)
 
+[Arkkitehtuuri](https://github.com/Pate1337/otm-harjoitustyo/blob/master/harjoitustyo/documentation/arkkitehtuuri.md)
+
 ## Releaset
 
 [v1.2](https://github.com/Pate1337/otm-harjoitustyo/releases/tag/v1.2)
