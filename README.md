@@ -1,6 +1,6 @@
 # Space Invaders
 
-Projekti kurssille Ohjelmistotekniikan menetelmät. Sovellus on peli, joka pohjautuu vanhaan arcadepeliin Space Invacers.
+Projekti kurssille Ohjelmistotekniikan menetelmät. Sovellus on peli, joka pohjautuu vanhaan arcadepeliin Space Invaders.
 
 ## Dokumentaatio
 
@@ -14,7 +14,7 @@ Projekti kurssille Ohjelmistotekniikan menetelmät. Sovellus on peli, joka pohja
 
 ## Releaset
 
-[v1.2](https://github.com/Pate1337/otm-harjoitustyo/releases/tag/v1.2)
+[v1.3](https://github.com/Pate1337/otm-harjoitustyo/releases/tag/v1.3)
 
 ## Komentorivitoiminnot
 
