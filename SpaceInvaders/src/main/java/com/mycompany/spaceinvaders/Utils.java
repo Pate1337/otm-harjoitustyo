@@ -38,22 +38,11 @@ public class Utils {
         menuSound = new AudioClip(Utils.class.getResource("/resources/sounds/menusound.wav").toString());
         //Kuvat
         explosionImages = new ArrayList<>();
-        explosionImages.add(new Image(Utils.class.getResource("/resources/images/explosion1.png").toString()));
-        explosionImages.add(new Image(Utils.class.getResource("/resources/images/explosion1.png").toString()));
-        explosionImages.add(new Image(Utils.class.getResource("/resources/images/explosion2.png").toString()));
-        explosionImages.add(new Image(Utils.class.getResource("/resources/images/explosion2.png").toString()));
-        explosionImages.add(new Image(Utils.class.getResource("/resources/images/explosion3.png").toString()));
-        explosionImages.add(new Image(Utils.class.getResource("/resources/images/explosion3.png").toString()));
-        explosionImages.add(new Image(Utils.class.getResource("/resources/images/explosion4.png").toString()));
-        explosionImages.add(new Image(Utils.class.getResource("/resources/images/explosion4.png").toString()));
-        explosionImages.add(new Image(Utils.class.getResource("/resources/images/explosion5.png").toString()));
-        explosionImages.add(new Image(Utils.class.getResource("/resources/images/explosion5.png").toString()));
-        explosionImages.add(new Image(Utils.class.getResource("/resources/images/explosion6.png").toString()));
-        explosionImages.add(new Image(Utils.class.getResource("/resources/images/explosion6.png").toString()));
-        explosionImages.add(new Image(Utils.class.getResource("/resources/images/explosion7.png").toString()));
-        explosionImages.add(new Image(Utils.class.getResource("/resources/images/explosion7.png").toString()));
-        explosionImages.add(new Image(Utils.class.getResource("/resources/images/explosion8.png").toString()));
-        explosionImages.add(new Image(Utils.class.getResource("/resources/images/explosion8.png").toString()));
+        for (int i = 1; i <= 8; i++) {
+            String name = "/resources/images/explosion" + i + ".png";
+            explosionImages.add(new Image(Utils.class.getResource(name).toString()));
+            explosionImages.add(new Image(Utils.class.getResource(name).toString()));
+        }
     
         hearts = new ArrayList<>();
         hearts.add(new Image(Utils.class.getResource("/resources/images/heart1.png").toString()));

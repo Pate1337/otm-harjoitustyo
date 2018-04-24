@@ -49,7 +49,7 @@ public class Game {
             public void run() {
                 if (!paused) {
                     if (countDown.ready()) {
-                     enemies.add(new Enemy("normal"));
+                        enemies.add(new Enemy("normal"));
                     }
                     //Ei haluta luoda uutta Timeria ennen kuin pisteet muuttuneet
                     if ((prevPoints != points) && (points % 10 == 0) && points != 0) {

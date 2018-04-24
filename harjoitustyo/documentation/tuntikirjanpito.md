@@ -41,4 +41,5 @@
  20.04.18 | 1h | Testejä Playerille. Rivikattavuus 43%.
  21.04.18 | 1h | Testit Missilelle. Rivikattavuus 46%.
  23.04.18 | 2h | Testit Enemylle. Rivikattavuus 57%.
- YHTEENSÄ 87h
+ 24.04.18 | 3h | Paranneltu submit näkymän toiminnallisuutta toimimaan pelkällä näppäimistöllä. Edelleen melko huono. Piirretty sekvenssikaavio pelin aloittamisesta. Paranneltu koodia noudattamaan enemmän checkstyle-sääntöjä.
+ YHTEENSÄ 90h

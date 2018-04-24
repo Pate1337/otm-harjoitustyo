@@ -5,7 +5,6 @@
  */
 package spaceinvaders.domain;
 
-import com.mycompany.spaceinvaders.Utils;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;

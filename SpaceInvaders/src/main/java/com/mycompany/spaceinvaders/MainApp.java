@@ -1547,13 +1547,67 @@ public class MainApp extends Application {
         nameField.setPrefWidth(150);
         nameField.setPrefHeight(40);
         nameField.setFont(font);
+        selected = "none";
         
-//        nameField.setOnKeyPressed(new EventHandler<KeyEvent>() {
-//            @Override
-//            public void handle(KeyEvent e) {
-//                System.out.println(nameField.getCharacters());
-//            }
-//        });
+        nameField.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent e) {
+                selected = "textField";
+                nameField.setEditable(true);
+            }
+        });
+        
+        nameField.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent e) {
+                String code = e.getCode().toString();
+                if (selected.equals("textField")) {
+                    if (code.equals(Key.SHOOT.getKeyCode())) {
+                        nameField.setEditable(false);
+                        selected = "Submit";
+                    }
+                } else {
+                    if (code.equals(Key.DOWN.getKeyCode())) {
+                        Utils.playMenuSound(menuSound);
+                        if (selected.equals("none")) {
+                            selected = "Submit";
+                        } else if (selected.equals("Submit")) {
+                            selected = "Play again";
+                        } else if (selected.equals("Play again")) {
+                         selected = "Back to menu";
+                        } else if (selected.equals("Back to menu")) {
+                         selected = "Submit";
+                        }
+                    } else if (code.equals(Key.UP.getKeyCode())) {
+                        Utils.playMenuSound(menuSound);
+                        if (selected.equals("none")) {
+                            selected = "Submit";
+                        } else if (selected.equals("Submit")) {
+                            selected = "Back to menu";
+                        } else if (selected.equals("Play again")) {
+                            selected = "Submit";
+                        } else if (selected.equals("Back to menu")) {
+                            selected = "Play again";
+                        }
+                    } else if (code.equals(Key.LEFT.getKeyCode()) && selected.equals("Submit")) {
+                        selected = "textField";
+                        nameField.setEditable(true);
+                    } else if (code.equals(Key.SHOOT.getKeyCode())) {
+                        //Kun textfield on valittuna, niin kaikki painallukset sinne
+                        if (selected.equals("Play again")) {
+                            Utils.playMenuSound(menuSound);
+                            selected = "PlayAgain";
+                        } else if (selected.equals("Back to menu")) {
+                            Utils.playMenuSound(menuSound);
+                            selected = "BackToMenu";
+                        } else if (selected.equals("Submit")) {
+                            Utils.playMenuSound(menuSound);
+                            selected = "SubmitScore";
+                        }
+                    }
+                }
+            }
+        });
         submit.getChildren().add(nameField);
         Node submitButton = createMenuButton("Submit", 150, 40, 30);
         submit.getChildren().add(submitButton);
@@ -1584,44 +1638,6 @@ public class MainApp extends Application {
         final VBox buttons = new VBox();
         drawEndScreenButtons(buttons, 205, 510);
         
-//        menuScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
-//            @Override
-//            public void handle(KeyEvent e) {
-//                String code = e.getCode().toString();
-//                if (code.equals(Key.DOWN.getKeyCode())) {
-//                    Utils.playMenuSound(menuSound);
-//                    if (selected.equals("none")) {
-//                        selected = "Submit";
-//                    } else if (selected.equals("Submit")) {
-//                        selected = "Play again";
-//                    } else if (selected.equals("Play again")) {
-//                        selected = "Back to menu";
-//                    } else if (selected.equals("Back to menu")) {
-//                        selected = "Submit";
-//                    }
-//                } else if (code.equals(Key.UP.getKeyCode())) {
-//                    Utils.playMenuSound(menuSound);
-//                    if (selected.equals("none")) {
-//                        selected = "Submit";
-//                    } else if (selected.equals("Submit")) {
-//                        selected = "Back to menu";
-//                    } else if (selected.equals("Play again")) {
-//                        selected = "Submit";
-//                    } else if (selected.equals("Back to menu")) {
-//                        selected = "Play again";
-//                    }
-//                } else if (code.equals(Key.SHOOT.getKeyCode())) {
-//                    //Kun textfield on valittuna, niin kaikki painallukset sinne
-//                    if (selected.equals("Play again")) {
-//                        Utils.playMenuSound(menuSound);
-//                        selected = "PlayAgain";
-//                    } else if (selected.equals("Back to menu")) {
-//                        Utils.playMenuSound(menuSound);
-//                        selected = "BackToMenu";
-//                    }
-//                }
-//            }
-//        });
         
         //Tänne tulee AnimationTimer
         //Siellä vaan poistetaan HBoxin vika ja luodaan uusi (eli submit painike),
@@ -1674,6 +1690,12 @@ public class MainApp extends Application {
                     buttons.getChildren().add(createMenuButton("Play again", 390, 40, 30));
                     buttons.getChildren().add(createMenuButton("Back to menu", 390, 40, 30));
                 } else if (selected.equals("Submit") && !prevSelected.equals(selected)) {
+                    submit.getChildren().remove(submit.getChildren().size() - 1);
+                    submit.getChildren().add(createMenuButton("Submit", 150, 40, 30));
+                    buttons.getChildren().clear();
+                    buttons.getChildren().add(createMenuButton("Play again", 390, 40, 30));
+                    buttons.getChildren().add(createMenuButton("Back to menu", 390, 40, 30));
+                } else if (selected.equals("textField") && !prevSelected.equals(selected)) {
                     submit.getChildren().remove(submit.getChildren().size() - 1);
                     submit.getChildren().add(createMenuButton("Submit", 150, 40, 30));
                     buttons.getChildren().clear();
