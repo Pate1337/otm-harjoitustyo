@@ -15,8 +15,8 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
 
 /**
+ * Luokka näyttää pelin alkaessa lähtölaskenta-animaation.
  *
- * @author paavo
  */
 public class CountDown {
     private boolean done;
@@ -25,6 +25,9 @@ public class CountDown {
     private ArrayList<String> texts;
     private int index;
     
+    /**
+     * Konstruktori alustaa lähtölaskennassa näytettävän tekstin ja nopeuden.
+     */
     public CountDown() {
         this.done = false;
         this.velocity = -70;
@@ -36,9 +39,22 @@ public class CountDown {
         texts.add("GO");
         this.index = 0;
     }
+    /**
+     * Metodi lähettää tiedon, kun lähtölaskenta on saatu päätökseen.
+     * @return lähtölaskenta valmis (true tai false)
+     */
     public boolean ready() {
         return done;
     }
+    /**
+     * Metodi päivittää lähtölaskennan tilannetta ja soittaa mahdolliset ääniefektit.
+     * @param time viimeisimmästä päivityksestä kulunut aika
+     * 
+     * @see com.mycompany.spaceinvaders.Utils#playTwo()
+     * @see com.mycompany.spaceinvaders.Utils#playOne()
+     * @see com.mycompany.spaceinvaders.Utils#playZero()
+     * @see com.mycompany.spaceinvaders.Utils#playMotion()
+     */
     public void update(double time) {
         fontSize += velocity * time;
         if (fontSize <= 100) {
@@ -61,6 +77,10 @@ public class CountDown {
             }
         }
     }
+    /**
+     * Metodi piirtää ruudulle lähtölaskennan sen hetkisen tilanteen.
+     * @param gc käyttöliittymän piirtoalusta
+     */
     public void render(GraphicsContext gc) {
         gc.setFill(Color.RED);
         gc.setStroke(Color.BLACK);

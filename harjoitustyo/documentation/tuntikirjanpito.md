@@ -43,4 +43,5 @@
  23.04.18 | 2h | Testit Enemylle. Rivikattavuus 57%.
  24.04.18 | 3h | Paranneltu submit näkymän toiminnallisuutta toimimaan pelkällä näppäimistöllä. Edelleen melko huono. Piirretty sekvenssikaavio pelin aloittamisesta. Paranneltu koodia noudattamaan enemmän checkstyle-sääntöjä.
  24.04.18 | 1h | Sekvenssikaavio pelin päättymisestä.
- YHTEENSÄ 91h
+ 02.05.18 | 2h | JavaDoc määritelty viidelle luokalle.
+ YHTEENSÄ 93h

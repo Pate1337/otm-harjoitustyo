@@ -13,8 +13,7 @@ import java.util.TimerTask;
 import javafx.scene.canvas.GraphicsContext;
 
 /**
- *
- * @author paavo
+ * Luokka pitää huolen pelin toimintalogiikasta.
  */
 public class Game {
     private int points;
@@ -28,6 +27,11 @@ public class Game {
     private boolean paused;
     private int score;
     
+    /**
+     * Konstruktorissa alustetaan peli ja luodaan uusi countDown-olio.
+     * 
+     * @see spaceinvaders.domain.CountDown
+     */
     public Game() {
         this.points = 0;
         this.prevPoints = 0;
@@ -43,6 +47,14 @@ public class Game {
         this.lifes = 3;
     }
     
+    /**
+     * Metodi luo uuden vihollisaluksen tietyn aikajakson välein.
+     * 
+     * Aina kun 10 vihollisalusta on tuhottu, metodi luo bonusaluksen
+     * ja samalla nopeuttaa tahtia, jolla vihollisaluksia luodaan.
+     *  
+     * @return uusi ajastin nopeammalla tahdilla
+     */
     private TimerTask enemyTimerTask() {
         return new TimerTask() {
             @Override
@@ -66,6 +78,14 @@ public class Game {
         };
     }
     
+    /**
+     * Metodi päivittää jokaisen pelissä olevan komponentin.
+     * @param time aika joka viimeisimmästä päivityksestä on kulunut
+     * 
+     * @see spaceinvaders.domain.CountDown#update(double) 
+     * @see spaceinvaders.domain.Player#update(double) 
+     * @see spaceinvaders.domain.Enemy#update(double) 
+     */
     public void update(double time) {
         if (time != 0 && !countDown.ready()) {
             this.countDown.update(time);
@@ -78,6 +98,11 @@ public class Game {
             }
         }
     }
+    /**
+     * Metodi poistaa kaikki tuhoutuneet pelin komponentit.
+     * 
+     * Metodi pitää myös kirjaa pelaajan jäljellä olevista elämistä.
+     */
     //Tätä pitää vielä korjata. Aiheuttaa java.util.ConcurrentModificationException
     public void collisions() {
         Iterator<Missile> missileIterator = player.getMissiles().iterator();
@@ -134,9 +159,23 @@ public class Game {
             }
         }
     }
+    /**
+     * Metodi määrittää pelaajan nopeuden.
+     * @param velocityX pelaajan horisontaalinen nopeus (oletus 700 tai -700).
+     * 
+     * @see spaceinvaders.domain.Player#addVelocity(double)
+     */
     public void addPlayerVelocity(double velocityX) {
         this.player.addVelocity(velocityX);
     }
+    /**
+     * Metodi kutsuu pelin komponenttien render-metodeja.
+     * @param gc käyttöliittymän piirtoalusta
+     * 
+     * @see spaceinvaders.domain.Player#render(javafx.scene.canvas.GraphicsContext) 
+     * @see spaceinvaders.domain.CountDown#render(javafx.scene.canvas.GraphicsContext) 
+     * @see spaceinvaders.domain.Enemy#render(javafx.scene.canvas.GraphicsContext)
+     */
     public void render(GraphicsContext gc) {
         this.player.render(gc);
         if (!countDown.ready()) {
@@ -147,28 +186,55 @@ public class Game {
             }
         }
     }
+    /**
+     * Metodi kutsuu Player-olion shoot() metodia sekä Utils-luokan playLaser() metodia.
+     * 
+     * @see spaceinvaders.domain.Player#shoot()
+     * @see com.mycompany.spaceinvaders.Utils#playLaser()
+     */
     public void playerShoot() {
         Utils.playLaser();
         this.player.shoot();
     }
+    /**
+     * Metodi palauttaa kuvaruudussa näkyvien vihollisalusten määrän.
+     * @return vihollisalusten määrä
+     */
     public int enemyCount() {
         return enemies.size();
     }
+    /**
+     * Metodi palauttaa pelaajan scoren.
+     * @return pelaajan score
+     */
     public int getScore() {
         return score;
     }
+    /**
+     * Metodi palauttaa pelaajan elämät.
+     * @return pelaajan elämät
+     */
     public int getLifes() {
         return lifes;
     }
+    /**
+     * Metodi pysäyttää pelin ajastimen.
+     * 
+     * @see spaceinvaders.domain.Game#enemyTimerTask() 
+     */
     public void endGame() {
-        System.out.println("Peli päättyi");
-        System.out.println("Pisteet: " + score);
 //        levelTimer.cancel();
         enemyTimer.cancel();
     }
+    /**
+     * Metodi asettaa muuttujan paused = true.
+     */
     public void pause() {
         this.paused = true;
     }
+    /**
+     * Metodi asettaa muuttujan paused = false.
+     */
     public void unPause() {
         this.paused = false;
     }

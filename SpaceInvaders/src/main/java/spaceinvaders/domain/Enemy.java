@@ -14,8 +14,7 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
 /**
- *
- * @author paavo
+ * Luokka pitää kirjaa yhden vihollialuksen tiedoista.
  */
 public class Enemy implements GameObject {
     private double positionX;
@@ -33,7 +32,15 @@ public class Enemy implements GameObject {
     private Image enemy;
     private ArrayList<Image> explosionImages;
     
-    
+    /**
+     * Konstruktorissa alustetaan uusi vihollisalus.
+     * Normaalin vihollisaluksen alku y-koordinaatti on 0 ja x-koordinaatti satunnainen
+     * luku ruudulta.
+     * Bonusaluksen alku y-koordinaatti on 150. Bonusalus lähtee ruudun vasemmalta tai oikealta.
+     * @param type vihollisaluksen tyyppi ("bonus" tai "normal").
+     * 
+     * @see java.util.Random
+     */
     public Enemy(String type) {
         this.type = type;
         this.height = 40;
@@ -70,7 +77,11 @@ public class Enemy implements GameObject {
         explosionImages = Utils.getExplosionImages();
     }
     
-
+    /**
+     * Metodi päivittää vihollisaluksen tilanteen.
+     * Jos alus menee ruudun alareunaan se asetetaan räjähtämään.
+     * @param time viimeisimmästä päivityksestä kulunut aika.
+     */
     @Override
     public void update(double time) {
         if (!explosion) {
@@ -93,7 +104,12 @@ public class Enemy implements GameObject {
             }
         }
     }
-
+    /**
+     * Metodi piirtää vihollisaluksen ruudulle.
+     * Jos alus on määritelty räjähtämään, metodi suoritetaan 16 kertaa, 
+     * jolloin piirretään räjähdysanimaatio. Tämän jälkeen alus asetetaan tuhoutuneeksi.
+     * @param gc käyttöliittymän piirtoalusta.
+     */
     @Override
     public void render(GraphicsContext gc) {
         if (!explosion) {
@@ -107,20 +123,33 @@ public class Enemy implements GameObject {
             }
         }
     }
-
+    /**
+     * Metodi palauttaa vihollisaluksen koordinaatit.
+     * @return vihollisaluksen rajat
+     */
     @Override
     public Rectangle2D getBoundary() {
         return new Rectangle2D(positionX, positionY, width, height);
     }
-
+    /**
+     * Metodi laskee, kohtaavatko alus ja parametrina annettuna olio.
+     * @param o Pelin komponentti. (Missile)
+     * @return palauttaa true tai false sen mukaan, kohtaavatko komponenttien rajat.
+     */
     @Override
     public boolean intersects(GameObject o) {
         return o.getBoundary().intersects(this.getBoundary());
     }
-    
+    /**
+     * Metodi palauttaa tiedon, onko alus tuhoutunut.
+     * @return true tai false
+     */
     public boolean destroyed() {
         return destroyed;
     }
+    /**
+     * Metodi asettaa aluksen tuhoutuneeksi.
+     */
     public void explode() {
         explosion = true;
         explosionX = positionX;
@@ -128,9 +157,17 @@ public class Enemy implements GameObject {
         positionX = 0;
         positionY = 850;
     }
+    /**
+     * Metodi palauttaa aluksen y-koordinaatin.
+     * @return vihollisaluksen y-koordinaatti.
+     */
     public double getPositionY() {
         return positionY;
     }
+    /**
+     * Metodi palauttaa vihollisaluksen tyypin.
+     * @return "normal" tai "bonus"
+     */
     public String getType() {
         return type;
     }

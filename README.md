@@ -42,3 +42,10 @@ Tiedostoon [checkstyle.xml](https://github.com/Pate1337/otm-harjoitustyo/blob/ma
 mvn jxr:jxr checkstyle:checkstyle
 ```
 Mahdollisia virheilmoituksia pääsee tarkastelemaan selaimella osoitteessa target/site/checkstyle.html
+
+### JavaDoc
+JavaDoc generoidaan komennolla
+```
+mvn javadoc:javadoc
+```
+JavaDocia voi tarkastella selaimella osoitteessa /target/site/apidocs
