@@ -40,8 +40,12 @@ public class Game {
         this.player = new Player(400, 700);
         this.countDown = new CountDown();
         this.enemies = new ArrayList<>();
-        Utils.playAlarm();
-        Utils.playThree();
+        try {
+            Utils.playAlarm();
+            Utils.playThree();
+        } catch (Exception e) {
+            System.out.println("Could not play sounds");
+        }
         this.enemyTimer = new Timer();
         enemyTimer.schedule(enemyTimerTask(), 0, this.rate);
         this.lifes = 3;
@@ -237,5 +241,13 @@ public class Game {
      */
     public void unPause() {
         this.paused = false;
+    }
+    
+    public Player getPlayer() {
+        return this.player;
+    }
+    
+    public CountDown getCountDown() {
+        return this.countDown;
     }
 }

@@ -1664,7 +1664,6 @@ public class MainApp extends Application {
                     this.stop();
                 } else if (selected.equals("SubmitScore")) {
                     String toSubmit = nameField.getCharacters() + ";" + game.getScore();
-                    System.out.println(toSubmit);
                     scoreService.update(toSubmit);
                     prevSelected = selected;
                     selected = "none";

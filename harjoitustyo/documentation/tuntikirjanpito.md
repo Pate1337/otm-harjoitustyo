@@ -44,4 +44,5 @@
  24.04.18 | 3h | Paranneltu submit näkymän toiminnallisuutta toimimaan pelkällä näppäimistöllä. Edelleen melko huono. Piirretty sekvenssikaavio pelin aloittamisesta. Paranneltu koodia noudattamaan enemmän checkstyle-sääntöjä.
  24.04.18 | 1h | Sekvenssikaavio pelin päättymisestä.
  02.05.18 | 2h | JavaDoc määritelty viidelle luokalle.
- YHTEENSÄ 93h
+ 02.05.18 | 0,5h | Testit luotu Gamen konstruktorille. Rivikattavuus 65%. Poistettu turha FXML-luokka.
+ YHTEENSÄ 93,5h
