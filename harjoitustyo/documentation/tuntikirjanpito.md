@@ -46,4 +46,5 @@
  02.05.18 | 2h | JavaDoc määritelty viidelle luokalle.
  02.05.18 | 0,5h | Testit luotu Gamen konstruktorille. Rivikattavuus 65%. Poistettu turha FXML-luokka.
  11.05.18 | 0,5h | Poistettu kommentit sekä käyttämättömät importit.
- YHTEENSÄ | 94h
+ 11.05.18 | 1h | Äänien kanssa oli vielä ongelmia. Korjattu nyt siten, ettei äänet soi mitenkään, jos peli on mutella. Luotu release 1.4 ja päivitetty käyttöohjeet ja README. Myös vaatimusmäärittely dokumentti päivitetty vastaamaan nykyistä sovellusta.
+ YHTEENSÄ | 95h

@@ -14,7 +14,7 @@ Projekti kurssille Ohjelmistotekniikan menetelmät. Sovellus on peli, joka pohja
 
 ## Releaset
 
-[v1.3](https://github.com/Pate1337/otm-harjoitustyo/releases/tag/v1.3)
+[v1.4](https://github.com/Pate1337/otm-harjoitustyo/releases/tag/v1.4)
 
 ## Komentorivitoiminnot
 

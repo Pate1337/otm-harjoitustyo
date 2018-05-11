@@ -1,5 +1,5 @@
 # Käyttöohje
-Lataa tiedosto [spaceinvaders.jar](https://github.com/Pate1337/otm-harjoitustyo/releases/tag/v1.3)
+Lataa tiedosto [spaceinvaders.jar](https://github.com/Pate1337/otm-harjoitustyo/releases/tag/v1.4)
 
 ## Konfigurointi
 Peli luo ensimmäisellä suorituskerralla tiedostot _keys.txt_ ja _hiscores.txt_ samaan hakemistoon, jossa tiedosto _spaceinvaders.jar_ sijaitsee.
