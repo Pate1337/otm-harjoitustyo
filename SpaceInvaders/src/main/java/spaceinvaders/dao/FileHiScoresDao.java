@@ -6,10 +6,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Scanner;
 
-/**
- *
- * @author paavo
- */
 public class FileHiScoresDao implements HiScoresDao {
     private String file;
     private ArrayList<String> scores;

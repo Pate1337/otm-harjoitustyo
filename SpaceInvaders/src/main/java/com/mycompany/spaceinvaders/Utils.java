@@ -6,10 +6,6 @@ import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
-/**
- *
- * @author paavo
- */
 public class Utils {
     private static boolean muted = false;
     private static MediaPlayer alarm = null;
@@ -97,7 +93,9 @@ public class Utils {
     }
     public static void continueSounds() {
         if (alarm != null) {
-            alarm.play();
+            if (!muted) {
+                alarm.play();
+            }
             soundsPaused = false;
         }
     }

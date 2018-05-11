@@ -6,10 +6,6 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import spaceinvaders.domain.Key;
 
-/**
- *
- * @author paavo
- */
 public class FileKeyDao implements KeyDao {
     private String file;
     private ArrayList<Key> keys;
