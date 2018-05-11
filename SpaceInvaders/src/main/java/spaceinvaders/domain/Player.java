@@ -1,30 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package spaceinvaders.domain;
 
-import java.awt.Toolkit;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileInputStream;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Iterator;
-import javafx.embed.swing.SwingFXUtils;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
-import javax.imageio.ImageIO;
 
-/**
- *
- * @author paavo
- */
 public class Player implements GameObject {
-//    private Node image;
     private double positionX;
     private double positionY;    
     private double velocityX;
@@ -43,16 +24,11 @@ public class Player implements GameObject {
         this.height = 55;
         this.missiles = new ArrayList<>();
         
-        
-
         try {
             ship = new Image(this.getClass().getResource("/resources/images/spaceship.png").toString());
         } catch (Exception e) {
             System.out.println("Image not loaded");
         }
-//        System.out.println(this.getClass().getResource("/resources/images/ship.png").toString());
-//        ship = new Image(new File("utilities/images/ship.png").toURI().toString());
-//        this.image = new Rectangle(positionX, positionY, width, height);
     }
     
     @Override
@@ -74,15 +50,6 @@ public class Player implements GameObject {
         for (int i = 0; i < missiles.size(); i++) {
             missiles.get(i).render(gc);
         }
-//        Iterator<Missile> missileIterator = missiles.iterator();
-//        while (missileIterator.hasNext()) {
-//            Missile missile = missileIterator.next();
-//            if (missile.destroyed()) {
-//                missileIterator.remove();
-//            } else {
-//                missile.render(gc);
-//            }
-//        }
     }
     @Override
     public Rectangle2D getBoundary() {
@@ -96,14 +63,10 @@ public class Player implements GameObject {
         this.velocityX = velocityX;
     }
     public void shoot() {
-        double startX = positionX + (width / 2) - 2.5; // 5 on ammuksen leveys / 2
+        double startX = positionX + (width / 2) - 2.5;
         missiles.add(new Missile(startX, positionY));
     }
     public ArrayList<Missile> getMissiles() {
         return this.missiles;
     }
-//    public int missileCount() {
-//        return missiles.size();
-//    }
-   
 }

@@ -1,14 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package spaceinvaders.domain;
 
-/**
- *
- * @author paavo
- */
 public enum Key {
     LEFT("A", "Left"),
     UP("W", "Up"),

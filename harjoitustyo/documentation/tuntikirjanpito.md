@@ -45,4 +45,5 @@
  24.04.18 | 1h | Sekvenssikaavio pelin päättymisestä.
  02.05.18 | 2h | JavaDoc määritelty viidelle luokalle.
  02.05.18 | 0,5h | Testit luotu Gamen konstruktorille. Rivikattavuus 65%. Poistettu turha FXML-luokka.
- YHTEENSÄ 93,5h
+ 11.05.18 | 0,5h | Poistettu kommentit sekä käyttämättömät importit.
+ YHTEENSÄ | 94h

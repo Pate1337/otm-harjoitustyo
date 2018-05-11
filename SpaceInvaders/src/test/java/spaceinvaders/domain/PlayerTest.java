@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package spaceinvaders.domain;
 
 import java.util.List;
@@ -15,10 +10,6 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
-/**
- *
- * @author paavo
- */
 public class PlayerTest {
     Player player;
     double width;
@@ -38,7 +29,6 @@ public class PlayerTest {
         assertEquals(0, player.getMissiles().size());
         Rectangle2D playerRect = player.getBoundary();
         
-        //Rects over player boundaries
         Rectangle2D rightRect = new Rectangle2D(446, 0, 354, 800);
         Rectangle2D leftRect = new Rectangle2D(0, 0, 399, 800);
         Rectangle2D upRect = new Rectangle2D(0, 0, 800, 399);
@@ -62,7 +52,6 @@ public class PlayerTest {
         player.update(0.15);
         Rectangle2D playerRect = player.getBoundary();
         assertTrue(!playerRect.contains(400, 400, width, height));
-        //Right position
         assertTrue(playerRect.contains(407.5, 400, width, height));
     }
     @Test
@@ -110,7 +99,6 @@ public class PlayerTest {
         player.shoot();
         assertEquals(1, player.getMissiles().size());
         player.render(gc);
-        //Missilen render asettaa gc.setFill(Color.GREEN)
         assertTrue(gc.getFill() == Color.GREEN);
         gc.setFill(Color.WHITE);
         assertTrue(gc.getFill() != Color.GREEN);

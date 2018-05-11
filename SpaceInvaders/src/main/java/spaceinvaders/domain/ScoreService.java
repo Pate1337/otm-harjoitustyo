@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package spaceinvaders.domain;
 
 import java.util.ArrayList;
@@ -36,11 +31,9 @@ public class ScoreService {
      */
     public ArrayList<String> getScores() {
         ArrayList<String> scores = this.hiScoresDao.getAll();
-//        return this.hiScoresDao.getAll();
         if (scores.size() <= 10) {
             return scores;
         } else {
-            //Siltä varalta jos hiscores-tiedostoa muokataan käsin.
             ArrayList<String> scoresToReturn = new ArrayList<>();
             for (int i = 0; i < 10; i++) {
                 scoresToReturn.add(scores.get(i));
@@ -53,7 +46,6 @@ public class ScoreService {
      * Metodi hakee rajatuloksen, jota suuremmalla scorella päästään huipputulos tietokantaan.
      * @return top10 rajapyykki
      */
-    //Tähän 10.pisteet
     public int getLimit() {
         int limit = this.hiScoresDao.getLimit();
         return limit;

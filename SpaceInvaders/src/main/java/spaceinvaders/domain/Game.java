@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package spaceinvaders.domain;
 
 import com.mycompany.spaceinvaders.Utils;
@@ -17,7 +12,7 @@ import javafx.scene.canvas.GraphicsContext;
  */
 public class Game {
     private int points;
-    private int prevPoints; //Nämä vaan timerin takia
+    private int prevPoints;
     private Player player;
     private CountDown countDown;
     private Timer enemyTimer;
@@ -67,10 +62,8 @@ public class Game {
                     if (countDown.ready()) {
                         enemies.add(new Enemy("normal"));
                     }
-                    //Ei haluta luoda uutta Timeria ennen kuin pisteet muuttuneet
                     if ((prevPoints != points) && (points % 10 == 0) && points != 0) {
                         enemies.add(new Enemy("bonus"));
-//                        System.out.println("Leveli vaihtuu NYT");
                         prevPoints = points;
                         rate = (4 * rate) / 5;
                         enemyTimer.cancel();
@@ -96,7 +89,6 @@ public class Game {
             this.player.update(time);
         } else if (time != 0) {
             this.player.update(time);
-            //Ja tähän sit mylös vihollisalukset
             for (int i = 0; i < enemies.size(); i++) {
                 enemies.get(i).update(time);
             }
@@ -107,10 +99,8 @@ public class Game {
      * 
      * Metodi pitää myös kirjaa pelaajan jäljellä olevista elämistä.
      */
-    //Tätä pitää vielä korjata. Aiheuttaa java.util.ConcurrentModificationException
     public void collisions() {
         Iterator<Missile> missileIterator = player.getMissiles().iterator();
-        //Tässä ongelma. Jos missileitä ei ole, niin ei päästä poistamaan tuhottua vihollisalusta(fixed)
         if (missileIterator.hasNext()) {
             while (missileIterator.hasNext()) {
                 Missile missile = missileIterator.next();
@@ -133,7 +123,6 @@ public class Game {
                     }
                     if (missile.intersects(enemy)) {
                         missileIterator.remove();
-//                      enemyIterator.remove();
                         enemy.explode();
                         Utils.playExplosion();
                         if (enemy.getType().equals("bonus")) {
@@ -142,7 +131,6 @@ public class Game {
                             points++;
                             score += 50;
                         }
-                        //Ei katsota enää muita vihollisia. Kyrvähtää muuten.
                         break;
                     }
                 }
@@ -227,7 +215,6 @@ public class Game {
      * @see spaceinvaders.domain.Game#enemyTimerTask() 
      */
     public void endGame() {
-//        levelTimer.cancel();
         enemyTimer.cancel();
     }
     /**

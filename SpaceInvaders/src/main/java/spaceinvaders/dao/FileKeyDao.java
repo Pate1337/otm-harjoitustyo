@@ -1,17 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package spaceinvaders.dao;
 
 import java.io.File;
 import java.io.FileWriter;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Scanner;
 import spaceinvaders.domain.Key;
 
@@ -59,7 +50,6 @@ public class FileKeyDao implements KeyDao {
         } catch (Exception e) {
             FileWriter writer = new FileWriter(new File(file));
             System.out.println("VIRHE");
-//            FileWriter writer = new FileWriter(this.getClass().getResource(file).toString());
             writer.close();
         }
     }
@@ -86,14 +76,10 @@ public class FileKeyDao implements KeyDao {
     
     @Override
     public void update() {
-//        File originalFile = new File((this.getClass().getResource(file).toString()));
-//        InputStream input = this.getClass().getResourceAsStream(file);
-//        File originalFile = new File(this.getClass().getResource(file).toString());
         File originalFile = new File(this.file);
         File tempFile = new File("tempfile.txt");
         String line = null;
         try {
-//            Scanner reader = new Scanner(originalFile);
             Scanner reader = new Scanner(originalFile);
             FileWriter writer = new FileWriter(tempFile);
             while (reader.hasNextLine()) {

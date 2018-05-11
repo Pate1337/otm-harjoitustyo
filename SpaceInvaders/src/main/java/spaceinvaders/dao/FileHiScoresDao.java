@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package spaceinvaders.dao;
 
 import java.io.File;
@@ -73,7 +68,6 @@ public class FileHiScoresDao implements HiScoresDao {
 
     @Override
     public void update(String text) {
-        //Pitäisi lisätä uusi tulos edelle, jos on sama! KAtsotaan mitä sortti tekee
         scores.add(text);
         sortScores();
         File originalFile = new File(file);

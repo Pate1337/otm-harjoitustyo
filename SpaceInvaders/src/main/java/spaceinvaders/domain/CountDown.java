@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package spaceinvaders.domain;
 
 import com.mycompany.spaceinvaders.Utils;
@@ -58,20 +53,15 @@ public class CountDown {
     public void update(double time) {
         fontSize += velocity * time;
         if (fontSize <= 100) {
-            //Tähän voi laittaa äänen
             fontSize = 200;
             index++;
             if (index == 1) {
-//                Utils.playSound("utilities/sounds/two.wav");
                 Utils.playTwo();
             } else if (index == 2) {
-//                Utils.playSound("utilities/sounds/one.wav");
                 Utils.playOne();
             } else if (index == 3) {
-//                Utils.playSound("utilities/sounds/zero.wav");
                 Utils.playZero();
             } else if (index == texts.size()) {
-//                Utils.playSound("utilities/sounds/motion.wav");
                 Utils.playMotion();
                 done = true;
             }
@@ -91,7 +81,6 @@ public class CountDown {
         gc.setTextBaseline(VPos.CENTER);
         gc.fillText(texts.get(index), Math.round(400), Math.round(400)); 
         gc.strokeText(texts.get(index), Math.round(400), Math.round(400));
-        //Asetetaan fontti oikein, jotta voidaan piirtää pisteet
         gc.setTextAlign(TextAlignment.LEFT);
         gc.setTextBaseline(VPos.BOTTOM);
         gc.setStroke(Color.BLACK);

@@ -1,7 +1,5 @@
 package com.mycompany.spaceinvaders;
 
-import java.io.File;
-import java.io.FileInputStream;
 import javafx.scene.paint.Color;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
@@ -15,14 +13,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Properties;
-import java.util.Set;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
-import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -31,16 +24,12 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
-import javafx.scene.media.MediaView;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.TextAlignment;
 import spaceinvaders.dao.FileHiScoresDao;
 import spaceinvaders.domain.Game;
 import spaceinvaders.domain.Key;
 import spaceinvaders.domain.KeyService;
-import spaceinvaders.domain.Player;
 import spaceinvaders.dao.FileKeyDao;
 import spaceinvaders.domain.ScoreService;
 
@@ -66,30 +55,15 @@ public class MainApp extends Application {
     private String prevSelectedKey;
     private String menuSound = "jotainVaan";
     private ImageView soundOnView;
-//    private Image soundOnIcon;
-//    private Image soundOffIcon;
     private ImageView soundOffView;
     private ImageView soundView;
     private boolean mutePressed = false;
     private Game game;
     private long lastNanoTime = 0;
     private boolean allowedToShoot = true;
-//    private String three;
-//    private String two;
-//    private String one;
-//    private GameObject player;
-//    private MediaPlayer soundPlayer;
-//    private MediaView media;
     
     @Override
     public void init() throws Exception {
-//        Properties properties = new Properties();
-
-//        properties.load(new FileInputStream("config.properties"));
-//        properties.load(new FileInputStream(this.getClass().getResource("/resources/files/config.properties").toString()));
-        
-//        String backGroundPicture = properties.getProperty("backGround");
-//        backGroundImage = backGroundPicture;
         
         backGroundImage = new Image(this.getClass().getResource("/resources/images/space1.jpg").toString());
         ImageView imageView = new ImageView(backGroundImage);
@@ -99,26 +73,13 @@ public class MainApp extends Application {
         imageView.setFitWidth(800);
         imageView.setPreserveRatio(false);
         backGround = imageView;
-//        String keyFile = properties.getProperty("keyFile");
-//        File file = new File(this.getClass().getResource("/resources/files/keys.txt").toString());
-//        System.out.println("File to string: " + file.toString());
-//        String keyFile = "/com/mycompany/spaceinvaders/keys.txt";
-        
 
         FileKeyDao keyDao = new FileKeyDao("keys.txt");
         keyService = new KeyService(keyDao);
-//        String scoresFile = properties.getProperty("hiScoresFile");
         FileHiScoresDao scoreDao = new FileHiScoresDao("hiscores.txt");
         scoreService = new ScoreService(scoreDao);
-//        menuSound = properties.getProperty("menuSound");
         Utils.initSounds();
-//        three = properties.getProperty("three");
-//        two = properties.getProperty("two");
-//        one = properties.getProperty("one");
         
-        //Mutepainike
-//        String soundOn = properties.getProperty("soundIconWhite");
-//        Image soundOnIcon = new Image(new FileInputStream(soundOn));
         Image soundOnIcon = new Image(this.getClass().getResource("/resources/images/whitesoundon.png").toString());
         ImageView soundIsOnView = new ImageView(soundOnIcon);
         soundIsOnView.setX(700); 
@@ -128,8 +89,6 @@ public class MainApp extends Application {
         soundIsOnView.setPreserveRatio(false);
         soundOnView = soundIsOnView;
         
-//        String soundOff = properties.getProperty("whiteMuteIcon");
-//        Image soundOffIcon = new Image(new FileInputStream(soundOff));
         Image soundOffIcon = new Image(this.getClass().getResource("/resources/images/whitemute.png").toString());
         ImageView muteView = new ImageView(soundOffIcon);
         muteView.setX(690); 
@@ -172,7 +131,6 @@ public class MainApp extends Application {
         behind.setFill(Color.BLACK);
         behind.setOpacity(0.9);
         if (gamePaused) {
-            //Tää on tod näk se mikä kusee kun tullaan settingeistä
             if (cameFromGame) {
                 menuGroup = mainGroup;
                 menuScene = gameScene;
@@ -187,7 +145,6 @@ public class MainApp extends Application {
             menuScene = new Scene(menuGroup);
             mainStage.setScene(menuScene); 
         }
-//        menuGroup.getChildren().add(media);
         
         Rectangle menuTarget1 = new Rectangle(200, 400, 400, 50);
         menuTarget1.setOpacity(0.0);
@@ -227,7 +184,6 @@ public class MainApp extends Application {
             @Override
             public void handle(MouseEvent e) {
                 Utils.playMenuSound(menuSound);
-//                soundPlayer.play();
                 if (!gamePaused) {
                     selected = "Play";
                 } else {
@@ -247,7 +203,6 @@ public class MainApp extends Application {
             @Override
             public void handle(MouseEvent e) {
                 Utils.playMenuSound(menuSound);
-//                soundPlayer.play();
                 if (!gamePaused) {
                     selected = "newGame";
                 } else {
@@ -260,7 +215,6 @@ public class MainApp extends Application {
             @Override
             public void handle(MouseEvent e) {
                 Utils.playMenuSound(menuSound);
-//                soundPlayer.play();
                 selected = "Highscores";
             }
         });
@@ -276,7 +230,6 @@ public class MainApp extends Application {
             @Override
             public void handle(MouseEvent e) {
                 Utils.playMenuSound(menuSound);
-//                soundPlayer.play();
                 selected = "GoToScores";
             }
         });
@@ -285,7 +238,6 @@ public class MainApp extends Application {
             @Override
             public void handle(MouseEvent e) {
                 Utils.playMenuSound(menuSound);
-//                soundPlayer.play();
                 selected = "Settings";
             }
         });
@@ -301,7 +253,6 @@ public class MainApp extends Application {
             @Override
             public void handle(MouseEvent e) {
                 Utils.playMenuSound(menuSound);
-//                soundPlayer.play();
                 selected = "GoToSettings";
             }
         });
@@ -309,7 +260,6 @@ public class MainApp extends Application {
         menuTarget4.setOnMouseEntered(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent e) {
-//                soundPlayer.play();
                 Utils.playMenuSound(menuSound);
                 if (!gamePaused) {
                     selected = "Quit";
@@ -329,7 +279,6 @@ public class MainApp extends Application {
         menuTarget4.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent e) {
-//                soundPlayer.play();
                 Utils.playMenuSound(menuSound);
                 if (gamePaused) {
                     selected = "ExitToMenu";
@@ -461,7 +410,6 @@ public class MainApp extends Application {
                     this.stop();
                 } else if (selected.equals("GoToSettings")) {
                     prevSelected = selected;
-                    //Laitetaan se mikä halutaan olla valittuna kun mennään settings
                     selected = "Keyboard";
                     if (menuGroup.getChildren().contains(behind)) {
                         menuGroup.getChildren().remove(behind);
@@ -505,7 +453,6 @@ public class MainApp extends Application {
                     menu.getChildren().add(createMenuButton("Settings", 400, 50, 40));
                     menu.getChildren().add(createMenuButton("Exit to main menu", 400, 50, 40));
                 }
-                //Piirretään vain kun tapahtuu muutos, ei turhaan
                 prevSelected = selected;
             }
         }.start();
@@ -653,7 +600,6 @@ public class MainApp extends Application {
     
     public void drawSettings() {
         try {
-//            image = new Image(new FileInputStream(backGroundImage));
             backGroundImage = new Image(this.getClass().getResource("/resources/images/space1.jpg").toString());
         } catch (Exception e) {
             System.out.println(e);
@@ -665,7 +611,6 @@ public class MainApp extends Application {
         view.setFitWidth(800);
         view.setPreserveRatio(false);
         menuGroup.getChildren().add(view);
-//        menuGroup.getChildren().remove(soundView);
         menuGroup.getChildren().add(soundView);
         final Node muteButton = muteButton();
         menuGroup.getChildren().add(muteButton);
@@ -782,7 +727,6 @@ public class MainApp extends Application {
                 if (selected.equals("KeyboardSettings")) {
                     prevSelected = selected;
                     selected = "Keyboard";
-                    //keyboardSettingissä ei käytetä samaa selectediä
                     menuGroup.getChildren().remove(view);
                     menuGroup.getChildren().remove(settingsMenu);
                     menuGroup.getChildren().remove(settingsTarget1);
@@ -814,8 +758,6 @@ public class MainApp extends Application {
                 prevSelected = selected;
             }
         }.start();
-        
-//        mainStage.show();
     }
     
     public void drawKeyboardSettings() {
@@ -824,7 +766,6 @@ public class MainApp extends Application {
         prevSelectedKey = "none";
         changeKey = "none";
         try {
-//            image = new Image(new FileInputStream(backGroundImage));
             backGroundImage = new Image(this.getClass().getResource("/resources/images/space1.jpg").toString());
         } catch (Exception e) {
             System.out.println(e);
@@ -839,10 +780,6 @@ public class MainApp extends Application {
         final EventHandler onClick = new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent e) {
-//                if (selectedKey.equals("none")) {
-//                    changeKey = "none";
-//                    prevSelectedKey = "jotain";
-//                }
                 selectedKey = "none";
                 prevSelectedKey = "jotain";
                 changeKey = "none";
@@ -864,7 +801,6 @@ public class MainApp extends Application {
         for (int i = 0; i < keys.size(); i++) {
             keyButtons.getChildren().add(createKeyButton(keys.get(i), 600, 100, 40));
         }
-        //Vielä painikkeet Back to Settings ja Apply settings
         keyButtons.getChildren().add(createMenuButton("Apply settings", 600, 50, 40));
         keyButtons.getChildren().add(createMenuButton("Back to settings", 600, 50, 40));
         menuGroup.getChildren().add(keyButtons);
@@ -945,20 +881,15 @@ public class MainApp extends Application {
                 String code = e.getCode().toString();
                 if (!changeKey.equals("none")) {
                     Utils.playMenuSound(menuSound);
-                    //Nyt pitää asettaa uusi näppäin!!
-                    //Tarkistetaan onko jollain jo se näppäin
                     for (int i = 0; i < keys.size(); i++) {
                         if (keys.get(i).getKeyCode().equals(code)) {
-                            //asetetaan tyhjäksi
                             keys.get(i).setKeyCode("");
                         }
                     }
-                    //Asetetaan uusi
                     int index = keyNames.indexOf(changeKey);
                     Key key = keys.get(index);
                     key.setKeyCode(code);
                     changeKey = "none";
-//                    selectedKey = "none";
                     prevSelected = "jotain";
                 } else if (code.equals(Key.DOWN.getKeyCode())) {
                     Utils.playMenuSound(menuSound);
@@ -1015,41 +946,23 @@ public class MainApp extends Application {
                 }
             }
         });
-        //Jos tarvii nii tän voi poistaa ku tekee EventHandler = new EventHanddler..
-//        final EventHandler onClick = new EventHandler<MouseEvent>() {
-//            @Override
-//            public void handle(MouseEvent e) {
-//                System.out.println("Menusceneen asetettu onclick");
-//                if (selectedKey.equals("none")) {
-//                    changeKey = "none";
-//                    prevSelectedKey = "jotain";
-//                }
-//            }
-//        };
-//        menuScene.setOnMouseClicked(onClick);
         
         new AnimationTimer() {
             @Override
             public void handle(long currentNanoTime) {
                 if (selected.equals("BackToSettings")) {
-                    //Poistetaan kaikki lisätyt lapset menuGrouppiin
                     int kidsNow = menuGroup.getChildren().size();
                     int kidsAdded = kidsNow - kidsAtStart;
                     for (int i = 0; i < kidsAdded; i++) {
                         menuGroup.getChildren().remove(menuGroup.getChildren().size() - 1);
                     }
-                    //Ei nyt onnistu toi mouseEventhandlerin poisto. Olkoon.
-                    //Asetetaan selected = "Keyboard"
                     selected = "Keyboard";
-                    //Haetaan painikkeet tiedostosta, eli init()
                     try {
                         init();
                     } catch (Exception e) {
                         System.out.println(e);
                     }
-                    //Piirretään drawSetting()
                     drawSettings();
-                    //this.stop();
                     this.stop();
                 } else if (selected.equals("SaveSettings")) {
                     selected = "Back to settings";
@@ -1103,7 +1016,6 @@ public class MainApp extends Application {
         gc.fillText(key.getKeyName(), 20, canvas.getHeight() / 2);
         gc.strokeText(key.getKeyName(), 20, canvas.getHeight() / 2);
         
-        //Nyt vielä pikkulaatikko johon näppäin
         gc.setFill(Color.BLACK);
         gc.fillRect(Math.round(canvas.getWidth() / 2), 
             Math.round(canvas.getHeight() / 4), 
@@ -1310,7 +1222,6 @@ public class MainApp extends Application {
                     menuGroup.getChildren().remove(behind);
                     menuGroup.getChildren().remove(areYouSure);
                     menuGroup.getChildren().remove(soundView);
-//                    menuGroup.getChildren().remove(muteButton);
                     prevSelected = selected;
                     if (text.equals("Quit")) {
                         selected = "Quit";
@@ -1375,13 +1286,11 @@ public class MainApp extends Application {
         earthView.setY(753);
         earthView.setFitHeight(47);
         earthView.setFitWidth(800);
-//        imageView.setPreserveRatio(false);
         mainGroup.getChildren().add(earthView);
         
         Canvas canvas = new Canvas(800, 800);
         mainGroup.getChildren().add( canvas );
         
-        //Tähän eventit
         final ArrayList<String> input = new ArrayList<String>();
         gameScene.setOnKeyPressed(
             new EventHandler<KeyEvent>() {
@@ -1447,7 +1356,6 @@ public class MainApp extends Application {
                     game.pause();
                     Utils.pauseSounds();
                     drawMenu();
-                    //Laitetaan kaikki pauselle ja piirretään menu päälle
                     this.stop();
                 }
                 game.update(elapsedTime);
@@ -1457,7 +1365,6 @@ public class MainApp extends Application {
                 String pointsText = "Score: " + game.getScore();
                 gc.fillText(pointsText, 560, 50);
                 gc.strokeText(pointsText, 560, 50);
-//                String lifesText = "Lives: " + game.getLifes();
                 String lifesText = "Lives:";
                 gc.fillText(lifesText, 30, 50);
                 gc.strokeText(lifesText, 30, 50);
@@ -1532,7 +1439,6 @@ public class MainApp extends Application {
         gc.fillText(score, Math.round(canvas.getWidth() / 2), 430);
         gc.strokeText(score, Math.round(canvas.getWidth() / 2), 430);
         
-        //Tähän submittaus
         final HBox submit = new HBox();
         submit.setSpacing(5);
         submit.setLayoutX(205);
@@ -1543,7 +1449,6 @@ public class MainApp extends Application {
         name.setFont(font);
         submit.getChildren().add(name);
         final TextField nameField = new TextField();
-//        nameField.setAlignment(Pos.CENTER);
         nameField.setPrefWidth(150);
         nameField.setPrefHeight(40);
         nameField.setFont(font);
@@ -1593,7 +1498,6 @@ public class MainApp extends Application {
                         selected = "textField";
                         nameField.setEditable(true);
                     } else if (code.equals(Key.SHOOT.getKeyCode())) {
-                        //Kun textfield on valittuna, niin kaikki painallukset sinne
                         if (selected.equals("Play again")) {
                             Utils.playMenuSound(menuSound);
                             selected = "PlayAgain";
@@ -1639,9 +1543,6 @@ public class MainApp extends Application {
         drawEndScreenButtons(buttons, 205, 510);
         
         
-        //Tänne tulee AnimationTimer
-        //Siellä vaan poistetaan HBoxin vika ja luodaan uusi (eli submit painike),
-        //tai clear() VBox ja luodaan uusi.
         new AnimationTimer() {
             @Override
             public void handle(long currentNanoTime) {
@@ -1818,7 +1719,6 @@ public class MainApp extends Application {
         menuGroup.getChildren().add(buttons);
         buttons.getChildren().add(createMenuButton("Play again", 390, 40, 30));
         buttons.getChildren().add(createMenuButton("Back to menu", 390, 40, 30));
-        //seuraavaks sit rectangelt, eventhandlerit ja animationtimer
         Rectangle menuTarget1 = new Rectangle(x, startY + 5, 390, 40);
         menuTarget1.setOpacity(0.0);
         Rectangle menuTarget2 = new Rectangle(x, startY + 50, 390, 40);
@@ -1877,13 +1777,10 @@ public class MainApp extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-        //Alkunäytön asetus
         mainStage = stage;
         mainGroup = new Group();
         
         mainGroup.getChildren().add(backGround);
-//        mainGroup.getChildren().add(soundView);
-//        mainGroup.getChildren().add(media);
         
         Canvas canvas = new Canvas(800, 800);
         mainGroup.getChildren().add( canvas );
@@ -1903,9 +1800,7 @@ public class MainApp extends Application {
             new EventHandler<KeyEvent>() {
                 @Override
                 public void handle(KeyEvent e) {
-//                    soundPlayer.play();
                         Utils.playMenuSound(menuSound);
-//                    stage.setScene(menuScene);
                     drawMenu();
                 }
             });
@@ -1914,8 +1809,6 @@ public class MainApp extends Application {
                 @Override
                 public void handle(MouseEvent e) {
                     Utils.playMenuSound(menuSound);
-//                    soundPlayer.play();
-//                    stage.setScene(menuScene);
                     drawMenu();
                 }
             });

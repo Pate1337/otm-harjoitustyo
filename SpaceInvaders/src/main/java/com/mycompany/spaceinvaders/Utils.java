@@ -1,19 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.mycompany.spaceinvaders;
 
-import java.io.File;
 import java.util.ArrayList;
 import javafx.scene.image.Image;
 import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;
-//import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-//import javafx.scene.media.Media;
-//import javafx.scene.media.MediaPlayer;
 
 /**
  *
@@ -36,7 +27,6 @@ public class Utils {
     }
     public static void initSounds() {
         menuSound = new AudioClip(Utils.class.getResource("/resources/sounds/menusound.wav").toString());
-        //Kuvat
         explosionImages = new ArrayList<>();
         for (int i = 1; i <= 8; i++) {
             String name = "/resources/images/explosion" + i + ".png";

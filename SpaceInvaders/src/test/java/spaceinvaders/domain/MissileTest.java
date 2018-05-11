@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package spaceinvaders.domain;
 
 
@@ -13,10 +8,6 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
-/**
- *
- * @author paavo
- */
 public class MissileTest {
     Missile missile;
     double width;
@@ -54,12 +45,10 @@ public class MissileTest {
         missile = new Missile(400, 25);
         assertTrue(!missile.destroyed());
         missile.update(0.15);
-        //Goes out of screen now. Explosion is set to true
         assertTrue(!missile.destroyed());
         for (int i = 0; i < 10; i++) {
             assertTrue(!missile.destroyed());
             missile.render(gc);
-            //update does not bother
             missile.update(0.15);
         }
         assertTrue(missile.destroyed());

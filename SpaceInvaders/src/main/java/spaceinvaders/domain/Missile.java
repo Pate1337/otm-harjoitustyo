@@ -1,18 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package spaceinvaders.domain;
 
 import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
-/**
- *
- * @author paavo
- */
 public class Missile implements GameObject {
     private double positionX;
     private double positionY;    
@@ -41,7 +32,6 @@ public class Missile implements GameObject {
         positionY += velocityY * time;
         if (positionY <= 0) {
             explosion = true;
-//          destroyed = true;
         }
     }
 
@@ -52,8 +42,6 @@ public class Missile implements GameObject {
             gc.fillRoundRect(positionX, positionY, width, height, 2, 5);
         } else {
             count++;
-//            gc.setFill(Color.ORANGE);
-//            gc.fillRect(positionX - 10, 0, 30, height);
             if (count == 10) {
                 destroyed = true;
             }

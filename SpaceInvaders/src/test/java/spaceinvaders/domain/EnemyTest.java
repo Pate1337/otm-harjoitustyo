@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package spaceinvaders.domain;
 
 import javafx.geometry.Rectangle2D;
@@ -13,10 +8,6 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
-/**
- *
- * @author paavo
- */
 public class EnemyTest {
     Enemy enemyNormal;
     Enemy enemyBonus;
@@ -34,10 +25,8 @@ public class EnemyTest {
     public void constructorWorksOnNormalEnemy() {
         Rectangle2D startRectangle = new Rectangle2D(0, 0, 800, 40);
         
-        //Kokeillaan 1000 vihollisella
         for (int i = 0; i < 1000; i++) {
             enemyNormal = new Enemy("normal");
-            //Alkusijainti on satunnainen välillä [0, 750]
             assertTrue(startRectangle.contains(enemyNormal.getBoundary()));
         }
         assertTrue(enemyNormal.getPositionY() == 0);
@@ -49,7 +38,6 @@ public class EnemyTest {
     public void consructorWorksOnBonusEnemy() {
         for (int i = 0; i < 1000; i++) {
             enemyBonus = new Enemy("bonus");
-            //Alkusijainti on joko (-70, 150) tai (800, 150)
             assertTrue(enemyBonus.getBoundary().contains(-70, 150, 70, 40) || enemyBonus.getBoundary().contains(800, 150, 70, 40));
         }
         assertTrue(!enemyBonus.destroyed());
@@ -62,7 +50,6 @@ public class EnemyTest {
         double positionY = enemyNormal.getPositionY();
         
         enemyNormal.update(0.15);
-        //velocityY = 200, 200 * 0.15 = 30
         assertTrue(enemyNormal.getPositionY() == positionY + 30);
     }
     @Test
@@ -74,7 +61,6 @@ public class EnemyTest {
                 break;
             }
         }
-        //PositionY is set to 800 and positionX is set to 0.
         assertTrue(enemyNormal.getBoundary().contains(0, 800, 50, 40));
         enemyNormal.update(0.15);
         assertTrue(enemyNormal.getBoundary().contains(0, 800, 50, 40));
@@ -83,7 +69,6 @@ public class EnemyTest {
     public void whenBonusEnemyGoesOutOfScreenItIsSetToDetroyed() {
         enemyBonus = new Enemy("bonus");
         Rectangle2D outOfBounds = null;
-        //Jos lähtö vasemmalta
         if (enemyBonus.getBoundary().contains(-70, 150, 70, 40)) {
             outOfBounds = new Rectangle2D(801, 150, 200, 40);
             while (true) {

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package spaceinvaders.dao;
 
 import java.io.File;
@@ -16,10 +11,6 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import spaceinvaders.domain.Key;
 
-/**
- *
- * @author paavo
- */
 public class FileKeyDaoTest {
     @Rule
     public TemporaryFolder testFolder = new TemporaryFolder();    
